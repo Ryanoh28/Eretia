@@ -1,0 +1,115 @@
+from items import Inventory, Potion
+from utilities import clear_console
+
+def return_to_camp(player, shop):
+    print("\nYou are back at the camp. What would you like to do?\n")
+    while True:
+        choice = input("(T)rain, (S)hop, (C)onverse with the captain, (R)est, or (L)eave camp? ").lower()
+        clear_console()
+
+        if choice == "t":
+            player.training_strength()
+        elif choice == "r":
+            player.regain_health(20)  # Regenerate 20 health points
+            print(f"\nYou have rested and regenerated health. Current health: {player.health}.\n")
+        elif choice == "c":
+            converse_with_camp_captain(player)
+        elif choice == "s":
+            shop = Shop()
+            shop.display_items()
+            item_choice = input("Enter the name of the item you would like to buy: ").lower()
+            shop.buy_item(player, item_choice)
+
+        elif choice == "l":
+            print("\nYou leave the camp ready to encounter another monster.\n")
+            break  # Exit the camp loop to go to combat
+        
+        else:
+            print("\nInvalid choice. Please enter 'T' to train, 'C' to converse, 'R' to rest, or 'L' to leave camp.\n")
+
+def post_combat_options(player):
+    leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
+    if leave_choice == "r":
+        player.in_combat = False
+    elif leave_choice == "c":
+        print("\nYou prepare to encounter another monster.\n")
+    elif leave_choice == "i":
+        manage_inventory(player)
+    else:
+        print("Invalid choice. Please enter 'C' to continue, 'R' to return, or 'I' to check inventory.\n")
+
+def manage_inventory(player):
+    while True:
+        player.inventory.show_inventory()
+        item_choice = input("Choose an item to use or type '(B)ack' to return: ").lower()
+
+        if item_choice in ['b', 'back']:
+            print("Returning to previous options.")
+            break
+        else:
+            used = player.inventory.use_item(item_choice, player)
+            if used:
+                break  
+            else:
+                print("You don't have that item. Try again or type '(B)ack' to return.")
+
+def converse_with_camp_captain(player):
+    level_ups = 0  
+    while player.experience >= 100:  
+        player.level += 1
+        player.experience -= 100  
+        level_ups += 1  
+        player.increase_stats()  
+    
+    if level_ups > 0:
+        print(f"\nCamp Captain: \"Congratulations, {player.name}! Your hard work has paid off and you've been granted {level_ups} {'level' if level_ups == 1 else 'levels'}. You are now level {player.level}.\"\n")
+    else:
+        print(f"\nCamp Captain: \"You're not ready to level up yet, {player.name}. Keep fighting to gain more experience!\"\n")
+
+def meet_camp_captain(player):
+    print("\nAs you enter the camp, the captain approaches you with a stern look.")
+    print(f"Camp Captain: 'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
+    
+    health_potion = Potion("Health Potion", "A potion that restores 50 health.", 50)
+    player.inventory.add_item(health_potion)
+    print(f"Camp Captain: 'Remember, use it wisely, and don't hesitate to return should you need more supplies or assistance.'\n")
+
+class Shop:
+    def __init__(self):
+        self.items_for_sale = {
+            'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)}
+        }
+
+    def display_items(self):
+        print("Welcome to the Camp Shop!\n")
+        for item_name, item_info in self.items_for_sale.items():
+            print(f"{item_name.title()}: {item_info['price']} gold")
+
+    def find_item_by_partial_name(self, partial_name):
+        partial_name_lower = partial_name.lower()
+        print(f"Searching for items that contain: '{partial_name_lower}'")  # Debug print#################
+        matches = {name: item for name, item in self.items_for_sale.items() if partial_name_lower in name.lower()}
+        return matches
+
+    def buy_item(self, player, partial_item_name):
+        matching_items = self.find_item_by_partial_name(partial_item_name)
+        print(f"Matching items: {matching_items}")  # Debug print##########################
+
+        if not matching_items:
+            print("Item not found.")
+        elif len(matching_items) == 1:
+            item_name, item_info = next(iter(matching_items.items()))
+            price = item_info['price']
+            item = item_info['object']
+            if player.gold >= price:
+                player.spend_gold(price)
+                player.inventory.add_item(item)
+                print(f"{item_name.title()} has been added to your inventory.")
+            else:
+                print("You do not have enough Gold to buy this item.")
+        else:
+            print("Multiple items found. Please be more specific:")
+            for item_name in matching_items:
+                print(f"- {item_name.title()}")
+
+
