@@ -21,7 +21,7 @@ class Inventory:
         self.items.append(item)
         
     def show_inventory(self, player):  
-        print(f"Inventory: {player.gold} gold")  
+        print(f"Inventory: {player.gold} Gold\n")  
         if not self.items:
             print("*Your inventory is empty*")
         else:
