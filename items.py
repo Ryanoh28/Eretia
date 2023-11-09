@@ -14,7 +14,6 @@ class Potion(Item):
     def use(self, target):
         target.regain_health(self.healing_amount)
         print(f"*{target.name} uses {self.name} and restores {self.healing_amount} health*")
-
 class Inventory:
     def __init__(self):
         self.items = []
@@ -36,23 +35,23 @@ class Inventory:
             for item_name, count in item_count.items():
                 print(f"- {item_name}: {self.items[0].description} ({count})")
                 
-    def inventory_menu(self, player):  
+    def inventory_menu(self, player):
         while True:
             clear_console()
             print("\nInventory Menu")
             print(f"Health: {player.health} Health | Gold: {player.gold} Gold\n")
-            player.inventory.show_inventory(player)
+            self.show_inventory(player)
             inventory_choice = input("\nEnter the name of the item you want to use or (B)ack: ").lower().strip()
 
             if inventory_choice == 'b':
                 return  
             else:
-                item_used = player.inventory.use_item(inventory_choice, player)
+                item_used = self.use_item(inventory_choice, player)
                 if item_used:
-                    
+                    # Handle any actions or messages for successfully using an item
                     pass
                 else:
-                    print("Item not found")
+                    # Handle the case where the item was not found or can't be used
                     pass
 
     def use_item(self, item_name, target):
@@ -69,6 +68,7 @@ class Inventory:
             return False
         else:
             item = matching_items[0]
+            
             if isinstance(item, Potion):  
                 item.use(target)
                 self.items.remove(item)
@@ -77,5 +77,3 @@ class Inventory:
             else:
                 print(f"You can't use {item.name} in this way.")
                 return False
-
-
