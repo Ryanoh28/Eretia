@@ -89,18 +89,44 @@ def fight_monster(player):
 
 
 
-def main():
-    player_name = welcome()
-    player = Warrior(player_name)
+def main_menu():
+    while True:
+        clear_console()
+        print("\n=== Main Menu ===")
+        print("1. Start Game")
+        print("2. Instructions")
+        print("3. Exit")
+        choice = input("Enter your choice (1-3): ").lower().strip()
+
+        if choice == '1':
+            start_game()  
+        elif choice == '2':
+            show_instructions() 
+        elif choice == '3':
+            print("Exiting game. Goodbye!")
+            exit() 
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
+
+
+def start_game():
+    player_name = welcome()  
+    player = Warrior(player_name)  
     player.gold = 50  
     shop = Shop()  
-
-    meet_camp_captain(player)  
+    # ... other setup ...
     combat_phase(player, shop)  
 
-if __name__ == "__main__":
-    main()
 
+def show_instructions():
+    clear_console()
+    print("\n=== Instructions ===")
+    print("Here are the instructions for the game...")
+    # ... other instructions ...
+
+
+if __name__ == "__main__":
+    main_menu()  
 
 
 
