@@ -41,18 +41,19 @@ def post_combat_options(player):
 
 def manage_inventory(player):
     while True:
-        player.inventory.show_inventory()
-        item_choice = input("Choose an item to use or type '(B)ack' to return: ").lower()
+        
+        player.inventory.show_inventory(player)
+        item_choice = input("Choose an item to use or type '(B)ack' to return: \n").lower()
 
         if item_choice in ['b', 'back']:
-            print("Returning to previous options.")
+            print("Returning to previous options.\n")
             break
         else:
             used = player.inventory.use_item(item_choice, player)
             if used:
                 break  
             else:
-                print("You don't have that item. Try again or type '(B)ack' to return.")
+                print("\nYou don't have that item. Try again or type '(B)ack' to return.\n")
 
 def converse_with_camp_captain(player):
     level_ups = 0  
