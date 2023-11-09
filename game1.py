@@ -34,6 +34,7 @@ def combat(player, monster):
                     print(f"{player.name} has been defeated by the {monster.name}.")
                     return 'player_defeated'
         elif choice == "r":
+            clear_console()
             print("You managed to escape from the Monster Wolf.")
             return 'escaped'  
 
@@ -45,7 +46,7 @@ def combat(player, monster):
 
 def combat_phase(player, shop):
     while player.alive:
-        print("\nWhat would you like to do at the camp?")
+        print("\nWhat would you like to do at the camp?\n")
         
         choice = input("(T)rain, (F)ight, (C)onverse with the captain, (R)est, check (I)nventory, or visit the (S)hop: ").lower()
         clear_console()
@@ -109,12 +110,19 @@ def main_menu():
         input("Press Enter to continue...")
 
 def start_game():
-    
-    pass
+    player_name = welcome()
+    player = Warrior(player_name)
+    player.gold = 50
+    shop = Shop()
+    meet_camp_captain(player)
+    combat_phase(player, shop)
 
 def show_instructions():
-    
-    pass
+    print("\n=== Game Instructions ===")
+    print("Here you will fight monsters and gain gold.")
+    print("Use the commands provided to interact with the game.")
+    input("\nPress Enter to return to the main menu...")
+    clear_console()
 
 if __name__ == "__main__":
     main_menu()
