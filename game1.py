@@ -1,121 +1,59 @@
-from classes import Warrior, Monster, Shop  
-from items import Potion, Inventory  
-from camp import return_to_camp, post_combat_options, manage_inventory, converse_with_camp_captain, meet_camp_captain
+from classes import Warrior, Shop  
+from camp import meet_camp_captain, return_to_camp
 from utilities import clear_console
 
 
 def welcome():
+    clear_console()
     print("\nWelcome to the land of Eretia.")
     print("You are a warrior and you must defeat the monsters!\n")
     name = input("What is your name?\n")
     return name
 
-def create_monster_wolf():
-    return Monster("Monster Wolf", 60)
 
 def game_over():
     print("Game over.\n")
     exit()    
 
-def combat(player, monster):
-    while player.alive and monster.alive:
-        choice = input("Do you want to (A)ttack or (R)un? ").lower()
-        clear_console()
-
-        if choice == "a":
-            damage_dealt = player.normal_attack(monster)
-            if not monster.check_if_alive():  
-                print(f"The {monster.name} has been defeated!")  
-                player.gain_experience(10) 
-                break  
-            if monster.alive:
-                monster.monster_attack(player)
-                if not player.check_if_alive():
-                    print(f"{player.name} has been defeated by the {monster.name}.")
-                    return 'player_defeated'
-        elif choice == "r":
-            clear_console()
-            print("You managed to escape from the Monster Wolf.")
-            return 'escaped'  
-
-    # After combat, decide the outcome
-    if player.alive and not monster.alive:
-        return 'monster_defeated'  
-    elif not player.alive:
-        return 'player_defeated'  
-
-def combat_phase(player, shop):
-    while player.alive:
-        print("\nWhat would you like to do at the camp?\n")
-        
-        choice = input("(T)rain, (F)ight, (C)onverse with the captain, (R)est, check (I)nventory, or visit the (S)hop: ").lower()
-        clear_console()
-
-        if choice == "f":
-            player.in_combat = True
-            fight_monster(player)
-        elif choice == "t":
-            player.training_strength()
-        elif choice == "c":
-            converse_with_camp_captain(player)
-        elif choice == "r":
-            player.regain_health(20)
-            print(f"\nYou have rested and regained health. Current health: {player.health}.\n")
-        elif choice == "i":
-            manage_inventory(player)
-        elif choice == "s":  # Shop option
-            shop.display_items()
-            item_choice = input("Enter the name of the item you would like to buy: ").lower().strip()
-            shop.buy_item(player, item_choice)
-        else:
-            print("\nInvalid choice. Please enter 'T' to train, 'F' to fight, 'C' to converse, 'R' to rest, 'I' to check inventory, or 'S' to visit the shop.\n")
-
-
-
-def fight_monster(player):
-    while player.in_combat:
-        print("You venture out and encounter a Monster Wolf...\n")
-        monster_wolf = create_monster_wolf()
-        combat_result = combat(player, monster_wolf)
-        if combat_result == 'monster_defeated':
-            print("The Monster Wolf has been defeated!\n")
-            player.gain_experience(10)
-            post_combat_options(player)
-        elif combat_result == 'escaped':
-            player.in_combat = False
-            return_to_camp(player)
-        elif combat_result == 'player_defeated':
-            game_over()
-            break
-
-def main_menu():
-    clear_console()
-    print("\n=== Main Menu ===")
-    print("1. Start Game")
-    print("2. Instructions")
-    print("3. Exit")
-    choice = input("Enter your choice (1-3): ").lower().strip()
-
-    if choice == '1':
-        clear_console()
-        start_game()
-    elif choice == '2':
-        clear_console()
-        show_instructions()
-    elif choice == '3':
-        print("Exiting game. Goodbye!")
-        exit()
-    else:
-        print("Invalid choice. Please enter 1, 2, or 3.")
-        input("Press Enter to continue...")
-
 def start_game():
+    from camp import return_to_camp
     player_name = welcome()
     player = Warrior(player_name)
     player.gold = 50
     shop = Shop()
     meet_camp_captain(player)
-    combat_phase(player, shop)
+    return_to_camp(player, shop)
+
+def main_menu(player=None, shop=None):
+    clear_console()
+    print("\n=== Main Menu ===")
+    print("1. New Game")
+    print("2. Return to Camp")
+    print("3. Save Game")
+    print("4. Load Game")
+    print("5. Exit to Desktop")
+    choice = input("Enter your choice (1-5): ").lower().strip()
+
+    if choice == '1':
+        start_game()
+    elif choice == '2' and player and shop:
+        return_to_camp(player, shop)
+    elif choice == '3':
+        # Implement save game functionality here
+        pass  
+    elif choice == '4':
+        # Implement load game functionality here
+        pass  
+    elif choice == '5':
+        print("Exiting game. Goodbye!")
+        exit()
+    else:
+        print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
+        input("Press Enter to continue...")
+
+
+if __name__ == "__main__":
+    main_menu()
 
 def show_instructions():
     print("\n=== Game Instructions ===")
@@ -124,8 +62,7 @@ def show_instructions():
     input("\nPress Enter to return to the main menu...")
     clear_console()
 
-if __name__ == "__main__":
-    main_menu()
+
 
 
 

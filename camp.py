@@ -1,43 +1,52 @@
-from items import Inventory, Potion
+from items import Potion
 from utilities import clear_console
-from classes import Shop
+from locations import enter_dark_forest
 
 def return_to_camp(player, shop):
-    print("\nYou are back at the camp. What would you like to do?\n")
     while True:
-        choice = input("(T)rain, (S)hop, (C)onverse with the captain, (R)est, or (L)eave camp? ").lower()
+        print("\nYou are back at the camp. What would you like to do?\n")
+        choice = input("(T)rain, (L)eave camp, (C)onverse with the captain, (R)est, check (I)nventory, visit the (S)hop, or access the (M)enu: ").lower().strip()
         clear_console()
 
         if choice == "t":
             player.training_strength()
-        elif choice == "r":
-            player.regain_health(20)  # Regenerate 20 health points
-            print(f"\nYou have rested and regenerated health. Current health: {player.health}.\n")
+        elif choice == "l":
+            leave_camp(player)
         elif choice == "c":
             converse_with_camp_captain(player)
+        elif choice == "r":
+            player.regain_health(20)
+            print(f"\nYou have rested and regained health. Current health: {player.health}.\n")
+        elif choice == "i":
+            manage_inventory(player)
         elif choice == "s":
-            shop = Shop()
             shop.display_items()
-            item_choice = input("Enter the name of the item you would like to buy: ").lower()
+            item_choice = input("Enter the name of the item you would like to buy: ").lower().strip()
             shop.buy_item(player, item_choice)
-
-        elif choice == "l":
-            print("\nYou leave the camp ready to encounter another monster.\n")
-            break  # Exit the camp loop to go to combat
-        
+        elif choice == "m":
+            from game1 import main_menu
+            main_menu(player, shop)
         else:
-            print("\nInvalid choice. Please enter 'T' to train, 'C' to converse, 'R' to rest, or 'L' to leave camp.\n")
+            print("\nInvalid choice. Please enter a valid command.\n")
 
-def post_combat_options(player):
-    leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
-    if leave_choice == "r":
-        player.in_combat = False
-    elif leave_choice == "c":
-        print("\nYou prepare to encounter another monster.\n")
-    elif leave_choice == "i":
-        manage_inventory(player)
-    else:
-        print("Invalid choice. Please enter 'C' to continue, 'R' to return, or 'I' to check inventory.\n")
+def leave_camp(player):
+    while True:
+        clear_console()
+        print("Where would you like to go?")
+        choice = input("(D)ark Forest or (B)ack to camp: ").lower().strip()
+
+        if choice == "d":
+            enter_dark_forest(player)  
+            break
+        elif choice == "b":
+            print("\nYou decide to stay in the camp for now.")
+            break
+        else:
+            print("\nInvalid choice. Please enter 'D' to go to the Dark Forest or 'B' to go back to camp.")
+
+
+
+
 
 def manage_inventory(player):
     while True:
