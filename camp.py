@@ -46,6 +46,7 @@ def manage_inventory(player):
         item_choice = input("Choose an item to use or type '(B)ack' to return: \n").lower()
 
         if item_choice in ['b', 'back']:
+            clear_console()
             print("Returning to previous options.\n")
             break
         else:
@@ -53,6 +54,7 @@ def manage_inventory(player):
             if used:
                 break  
             else:
+                clear_console()
                 print("\nYou don't have that item. Try again or type '(B)ack' to return.\n")
 
 def converse_with_camp_captain(player):
@@ -64,11 +66,14 @@ def converse_with_camp_captain(player):
         player.increase_stats()  
     
     if level_ups > 0:
+        clear_console()
         print(f"\nCamp Captain: \"Congratulations, {player.name}! Your hard work has paid off and you've been granted {level_ups} {'level' if level_ups == 1 else 'levels'}. You are now level {player.level}.\"\n")
     else:
+        clear_console()
         print(f"\nCamp Captain: \"You're not ready to level up yet, {player.name}. Keep fighting to gain more experience!\"\n")
 
 def meet_camp_captain(player):
+    clear_console()
     print("\nAs you enter the camp, the captain approaches you with a stern look.")
     print(f"Camp Captain: 'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     
