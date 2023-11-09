@@ -66,45 +66,45 @@ def combat_phase(player, shop):
 
 
 
-def fight_monster(player):
-    print("You venture out and encounter a Monster Wolf...\n")
+# combat.py
+
+def fight_monster(player, shop):
+    print("\nYou venture out and encounter a Monster Wolf...\n")
     monster_wolf = create_monster_wolf()
-    player.in_combat = True  
+    player.in_combat = True
 
     while player.in_combat:
         combat_result = combat(player, monster_wolf)
         if combat_result == 'monster_defeated':
             print("The Monster Wolf has been defeated!\n")
             player.gain_experience(10)
-            post_combat_options(player)
-            break  
+            post_combat_options(player, shop)  
+            break
         elif combat_result == 'escaped':
-            print("You managed to escape safely back to camp.\n")
-            break  
+            player.in_combat = False
+            break
         elif combat_result == 'player_defeated':
-            print("You have been defeated by the Monster Wolf.\n")
-            break  
+            break
 
-    player.in_combat = False  
+    player.in_combat = False
 
-    
-    if combat_result == 'escaped':
+    if combat_result == 'escaped' or combat_result == 'player_defeated':
         from camp import return_to_camp
-        return_to_camp(player)
+        return_to_camp(player, shop)  
+
     elif combat_result == 'player_defeated':
         from game1 import game_over
         game_over()
 
 
-def post_combat_options(player):
+def post_combat_options(player, shop):
     leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
     if leave_choice == "c":
         print("\nYou prepare to encounter another monster.\n")
-        fight_monster(player)
+        fight_monster(player, shop) 
     elif leave_choice == "r":
-        player.in_combat = False
         from camp import return_to_camp
-        return_to_camp(player)
+        return_to_camp(player, shop)  
     elif leave_choice == "i":
         from camp import manage_inventory
         manage_inventory(player)

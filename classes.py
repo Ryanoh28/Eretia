@@ -55,7 +55,7 @@ class Warrior(Human):
         if self.health > self.max_health:
             self.health = self.max_health
         self.health = round(self.health, 1)  
-        print(f"{self.name} regained {healing} health and now has {self.health} health.\n")
+        #print(f"{self.name} regained {healing} health and now has {self.health} health.\n")
 
     def gain_experience(self, amount):
         self.experience += amount
@@ -138,9 +138,8 @@ class Shop:
 
     def display_items(self):
         clear_console()
-        print("Welcome to the Camp Shop!\n")
-        for item_name, item_info in self.items_for_sale.items():
-            print(f"{item_name.title()}: {item_info['price']} gold")
+        self.shop_menu()
+        print("\nPress (Q) to leave the shop.\n")
 
     def find_item_by_partial_name(self, partial_name):
         partial_name_lower = partial_name.lower()
@@ -149,8 +148,11 @@ class Shop:
         return matches
 
     def buy_item(self, player, partial_item_name):
+        if not partial_item_name:
+            print("Please specify an item name to buy.")
+            return
+
         matching_items = self.find_item_by_partial_name(partial_item_name)
-        #print(f"Matching items: {matching_items}")  # Debug print##########################
 
         if not matching_items:
             print("Item not found.")
@@ -161,10 +163,16 @@ class Shop:
             if player.gold >= price:
                 player.spend_gold(price)
                 player.inventory.add_item(item)
-                print(f"\n*{item_name.title()} has been added to your inventory*")  # Encapsulated message
+                print(f"\n*{item_name.title()} has been added to your inventory*")
             else:
                 print("You do not have enough Gold to buy this item.")
         else:
             print("Multiple items found. Please be more specific:")
             for item_name in matching_items:
                 print(f"- {item_name.title()}")
+    
+    def shop_menu(self):
+        clear_console()
+        print("Welcome to the Camp Shop!\n")
+        for item_name, item_info in self.items_for_sale.items():
+            print(f"{item_name.title()}: {item_info['price']} gold")

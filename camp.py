@@ -29,6 +29,8 @@ def return_to_camp(player, shop):
         else:
             print("\nInvalid choice. Please enter a valid command.\n")
 
+        
+
 def leave_camp(player):
     while True:
         clear_console()
@@ -36,7 +38,9 @@ def leave_camp(player):
         choice = input("(D)ark Forest or (B)ack to camp: ").lower().strip()
 
         if choice == "d":
-            enter_dark_forest(player)  
+            
+            enter_dark_forest(player)
+ 
             break
         elif choice == "b":
             print("\nYou decide to stay in the camp for now.")
@@ -52,7 +56,7 @@ def manage_inventory(player):
     while True:
         
         player.inventory.show_inventory(player)
-        item_choice = input("Choose an item to use or type '(B)ack' to return: \n").lower()
+        item_choice = input("\nChoose an item to use or type '(B)ack' to return: \n").lower()
 
         if item_choice in ['b', 'back']:
             clear_console()

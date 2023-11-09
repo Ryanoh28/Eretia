@@ -24,6 +24,15 @@ def start_game():
     meet_camp_captain(player)
     return_to_camp(player, shop)
 
+def show_instructions():
+    print("\n=== Game Instructions ===")
+    print("Here you will fight monsters and gain gold.")
+    print("Use the commands provided to interact with the game.")
+    print("Menu can only be accessed from the camp")
+    input("\nPress Enter to return to the main menu...")
+    clear_console()
+    main_menu()
+
 def main_menu(player=None, shop=None):
     clear_console()
     print("\n=== Main Menu ===")
@@ -31,8 +40,9 @@ def main_menu(player=None, shop=None):
     print("2. Return to Camp")
     print("3. Save Game")
     print("4. Load Game")
-    print("5. Exit to Desktop")
-    choice = input("Enter your choice (1-5): ").lower().strip()
+    print("5. Instructions")
+    print("6. Exit to Desktop")
+    choice = input("Enter your choice (1-6): ").lower().strip()
 
     if choice == '1':
         start_game()
@@ -44,7 +54,8 @@ def main_menu(player=None, shop=None):
     elif choice == '4':
         # Implement load game functionality here
         pass  
-    elif choice == '5':
+    elif choice == '5': show_instructions()
+    elif choice == '6':
         print("Exiting game. Goodbye!")
         exit()
     else:
@@ -55,12 +66,7 @@ def main_menu(player=None, shop=None):
 if __name__ == "__main__":
     main_menu()
 
-def show_instructions():
-    print("\n=== Game Instructions ===")
-    print("Here you will fight monsters and gain gold.")
-    print("Use the commands provided to interact with the game.")
-    input("\nPress Enter to return to the main menu...")
-    clear_console()
+
 
 
 

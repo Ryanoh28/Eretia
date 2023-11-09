@@ -1,3 +1,5 @@
+from utilities import clear_console
+
 class Item:
     def __init__(self, name, description, effect=None):
         self.name = name
@@ -21,9 +23,10 @@ class Inventory:
         self.items.append(item)
         
     def show_inventory(self, player):  
-        print(f"Inventory: {player.gold} Gold\n")  
+        clear_console()
+        print(f"\nInventory: {player.health} Health | {player.gold} Gold\n")  
         if not self.items:
-            print("*Your inventory is empty*")
+            print("\n*Your inventory is empty*\n")
         else:
             item_count = {}
             for item in self.items:
@@ -32,8 +35,26 @@ class Inventory:
             
             for item_name, count in item_count.items():
                 print(f"- {item_name}: {self.items[0].description} ({count})")
+                
+    def inventory_menu(self, player):  
+        while True:
+            clear_console()
+            print("\nInventory Menu")
+            print(f"Health: {player.health} Health | Gold: {player.gold} Gold\n")
+            player.inventory.show_inventory(player)
+            inventory_choice = input("\nEnter the name of the item you want to use or (B)ack: ").lower().strip()
 
-    
+            if inventory_choice == 'b':
+                return  
+            else:
+                item_used = player.inventory.use_item(inventory_choice, player)
+                if item_used:
+                    
+                    pass
+                else:
+                    print("Item not found")
+                    pass
+
     def use_item(self, item_name, target):
         item_name = item_name.lower()
         matching_items = [item for item in self.items if item_name in item.name.lower()]
@@ -48,6 +69,13 @@ class Inventory:
             return False
         else:
             item = matching_items[0]
-            item.use(target)
-            self.items.remove(item)
-            return True
+            if isinstance(item, Potion):  
+                item.use(target)
+                self.items.remove(item)
+                #print(f"You use {item.name} and restore {item.healing_amount} health.")
+                return True
+            else:
+                print(f"You can't use {item.name} in this way.")
+                return False
+
+
