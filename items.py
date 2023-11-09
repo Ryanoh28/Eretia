@@ -16,22 +16,20 @@ class Potion(Item):
 class Inventory:
     def __init__(self):
         self.items = []
-
+        
     def add_item(self, item):
         self.items.append(item)
         
-
-    def show_inventory(self):
-        print(f"Inventory: {self.gold} gold")  
+    def show_inventory(self, player):  
+        print(f"Inventory: {player.gold} gold")  
         if not self.items:
             print("*Your inventory is empty*")
         else:
             item_count = {}
             for item in self.items:
-                if item.name in item_count:
-                    item_count[item.name] += 1
-                else:
-                    item_count[item.name] = 1
+                item_name = item.name
+                item_count[item_name] = item_count.get(item_name, 0) + 1
+            
             for item_name, count in item_count.items():
                 print(f"- {item_name}: {self.items[0].description} ({count})")
 
