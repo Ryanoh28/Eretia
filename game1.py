@@ -87,47 +87,37 @@ def fight_monster(player):
             game_over()
             break
 
-
-
 def main_menu():
-    while True:
+    clear_console()
+    print("\n=== Main Menu ===")
+    print("1. Start Game")
+    print("2. Instructions")
+    print("3. Exit")
+    choice = input("Enter your choice (1-3): ").lower().strip()
+
+    if choice == '1':
         clear_console()
-        print("\n=== Main Menu ===")
-        print("1. Start Game")
-        print("2. Instructions")
-        print("3. Exit")
-        choice = input("Enter your choice (1-3): ").lower().strip()
-
-        if choice == '1':
-            start_game()  
-        elif choice == '2':
-            show_instructions() 
-        elif choice == '3':
-            print("Exiting game. Goodbye!")
-            exit() 
-        else:
-            print("Invalid choice. Please enter 1, 2, or 3.")
-
+        start_game()
+    elif choice == '2':
+        clear_console()
+        show_instructions()
+    elif choice == '3':
+        print("Exiting game. Goodbye!")
+        exit()
+    else:
+        print("Invalid choice. Please enter 1, 2, or 3.")
+        input("Press Enter to continue...")
 
 def start_game():
-    player_name = welcome()  
-    player = Warrior(player_name)  
-    player.gold = 50  
-    shop = Shop()  
-    # ... other setup ...
-    combat_phase(player, shop)  
-
+    
+    pass
 
 def show_instructions():
-    clear_console()
-    print("\n=== Instructions ===")
-    print("Here are the instructions for the game...")
-    # ... other instructions ...
-
+    
+    pass
 
 if __name__ == "__main__":
-    main_menu()  
-
+    main_menu()
 
 
 
