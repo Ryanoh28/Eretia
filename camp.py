@@ -1,5 +1,6 @@
 from items import Inventory, Potion
 from utilities import clear_console
+from classes import Shop
 
 def return_to_camp(player, shop):
     print("\nYou are back at the camp. What would you like to do?\n")
@@ -74,42 +75,6 @@ def meet_camp_captain(player):
     player.inventory.add_item(health_potion)
     print(f"Camp Captain: 'Remember, use it wisely, and don't hesitate to return should you need more supplies or assistance.'\n")
 
-class Shop:
-    def __init__(self):
-        self.items_for_sale = {
-            'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)}
-        }
 
-    def display_items(self):
-        print("Welcome to the Camp Shop!\n")
-        for item_name, item_info in self.items_for_sale.items():
-            print(f"{item_name.title()}: {item_info['price']} gold")
-
-    def find_item_by_partial_name(self, partial_name):
-        partial_name_lower = partial_name.lower()
-        print(f"Searching for items that contain: '{partial_name_lower}'")  # Debug print#################
-        matches = {name: item for name, item in self.items_for_sale.items() if partial_name_lower in name.lower()}
-        return matches
-
-    def buy_item(self, player, partial_item_name):
-        matching_items = self.find_item_by_partial_name(partial_item_name)
-        print(f"Matching items: {matching_items}")  # Debug print##########################
-
-        if not matching_items:
-            print("Item not found.")
-        elif len(matching_items) == 1:
-            item_name, item_info = next(iter(matching_items.items()))
-            price = item_info['price']
-            item = item_info['object']
-            if player.gold >= price:
-                player.spend_gold(price)
-                player.inventory.add_item(item)
-                print(f"{item_name.title()} has been added to your inventory.")
-            else:
-                print("You do not have enough Gold to buy this item.")
-        else:
-            print("Multiple items found. Please be more specific:")
-            for item_name in matching_items:
-                print(f"- {item_name.title()}")
 
 

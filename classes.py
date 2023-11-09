@@ -1,6 +1,6 @@
 import random
-from items import Inventory
-from camp import Potion
+from items import Inventory, Potion
+
 class Human:
     def __init__(self, name):
         self.name = name
@@ -131,24 +131,38 @@ class Monster:
 
 class Shop:
     def __init__(self):
-        
         self.items_for_sale = {
-            'health potion': (10, Potion("Health Potion", "A potion that restores 50 health.", 50))
+            'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)}
         }
 
     def display_items(self):
-        print("Items for sale:")
-        for item_name, (price, _) in self.items_for_sale.items():
-            print(f"{item_name.title()} - {price} Gold")
+        print("Welcome to the Camp Shop!\n")
+        for item_name, item_info in self.items_for_sale.items():
+            print(f"{item_name.title()}: {item_info['price']} gold")
 
-    def buy_item(self, player, item_name):
-        if item_name in self.items_for_sale:
-            price, item = self.items_for_sale[item_name]
+    def find_item_by_partial_name(self, partial_name):
+        partial_name_lower = partial_name.lower()
+        #print(f"Searching for items that contain: '{partial_name_lower}'")  # Debug print#################
+        matches = {name: item for name, item in self.items_for_sale.items() if partial_name_lower in name.lower()}
+        return matches
+
+    def buy_item(self, player, partial_item_name):
+        matching_items = self.find_item_by_partial_name(partial_item_name)
+        #print(f"Matching items: {matching_items}")  # Debug print##########################
+
+        if not matching_items:
+            print("Item not found.")
+        elif len(matching_items) == 1:
+            item_name, item_info = next(iter(matching_items.items()))
+            price = item_info['price']
+            item = item_info['object']
             if player.gold >= price:
-                player.gold -= price
+                player.spend_gold(price)
                 player.inventory.add_item(item)
-                print(f"You have purchased a {item_name} for {price} Gold.")
+                print(f"*{item_name.title()} has been added to your inventory*")  # Encapsulated message
             else:
                 print("You do not have enough Gold to buy this item.")
         else:
-            print("Item not found.")
+            print("Multiple items found. Please be more specific:")
+            for item_name in matching_items:
+                print(f"- {item_name.title()}")

@@ -19,15 +19,21 @@ class Inventory:
 
     def add_item(self, item):
         self.items.append(item)
-        print(f"*{item.name} added to inventory*")
+        
 
     def show_inventory(self):
+        print(f"Inventory: {self.gold} gold")  
         if not self.items:
             print("*Your inventory is empty*")
         else:
-            print("Inventory:")
+            item_count = {}
             for item in self.items:
-                print(f"- {item.name}: {item.description}")
+                if item.name in item_count:
+                    item_count[item.name] += 1
+                else:
+                    item_count[item.name] = 1
+            for item_name, count in item_count.items():
+                print(f"- {item_name}: {self.items[0].description} ({count})")
 
     
     def use_item(self, item_name, target):
