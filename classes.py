@@ -1,6 +1,6 @@
 import random
 from items import Inventory, Potion
-
+from utilities import clear_console
 class Human:
     def __init__(self, name):
         self.name = name
@@ -83,6 +83,7 @@ class Warrior(Human):
     def spend_gold(self, amount):
         if self.gold >= amount:
             self.gold -= amount
+            clear_console()
             print(f"{self.name} spent {amount} gold.")
             return True
         else:
@@ -136,6 +137,7 @@ class Shop:
         }
 
     def display_items(self):
+        clear_console()
         print("Welcome to the Camp Shop!\n")
         for item_name, item_info in self.items_for_sale.items():
             print(f"{item_name.title()}: {item_info['price']} gold")
@@ -159,7 +161,7 @@ class Shop:
             if player.gold >= price:
                 player.spend_gold(price)
                 player.inventory.add_item(item)
-                print(f"*{item_name.title()} has been added to your inventory*")  # Encapsulated message
+                print(f"\n*{item_name.title()} has been added to your inventory*")  # Encapsulated message
             else:
                 print("You do not have enough Gold to buy this item.")
         else:
