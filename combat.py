@@ -67,31 +67,44 @@ def combat_phase(player, shop):
 
 
 def fight_monster(player):
+    print("You venture out and encounter a Monster Wolf...\n")
+    monster_wolf = create_monster_wolf()
+    player.in_combat = True  
+
     while player.in_combat:
-        print("You venture out and encounter a Monster Wolf...\n")
-        monster_wolf = create_monster_wolf()
         combat_result = combat(player, monster_wolf)
         if combat_result == 'monster_defeated':
             print("The Monster Wolf has been defeated!\n")
             player.gain_experience(10)
             post_combat_options(player)
+            break  
         elif combat_result == 'escaped':
-            player.in_combat = False
-            from camp import return_to_camp
-            return_to_camp(player)
+            print("You managed to escape safely back to camp.\n")
+            break  
         elif combat_result == 'player_defeated':
-            from game1 import game_over
-            game_over()
-            break
+            print("You have been defeated by the Monster Wolf.\n")
+            break  
+
+    player.in_combat = False  
+
+    
+    if combat_result == 'escaped':
+        from camp import return_to_camp
+        return_to_camp(player)
+    elif combat_result == 'player_defeated':
+        from game1 import game_over
+        game_over()
+
 
 def post_combat_options(player):
     leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
-    if leave_choice == "r":
-        player.in_combat = False
-    elif leave_choice == "c":
+    if leave_choice == "c":
         print("\nYou prepare to encounter another monster.\n")
+        fight_monster(player)
+    elif leave_choice == "r":
+        player.in_combat = False
+        from camp import return_to_camp
+        return_to_camp(player)
     elif leave_choice == "i":
         from camp import manage_inventory
         manage_inventory(player)
-    else:
-        print("Invalid choice. Please enter 'C' to continue, 'R' to return, or 'I' to check inventory.\n")
