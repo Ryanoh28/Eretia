@@ -11,15 +11,15 @@ class Human:
 
     def lose_health(self, damage):
         self.health -= damage
-        self.health = round(self.health, 1)  
+        self.health = round(self.health, 1)
         if self.health <= 0:
-            self.dead()
+            self.defeated()  
         else:
             print(f"{self.name} lost {damage} health and now has {self.health} health.\n")
 
-    def dead(self):
+    def defeated(self):
         self.alive = False
-        print(f"{self.name} is dead.\n")
+        
 
 class Warrior(Human):
     def __init__(self, name):
@@ -34,7 +34,7 @@ class Warrior(Human):
         self.in_combat = False
         self.gold = 0
         self.choice = None
-        
+
     def training_strength(self):
         self.strength += 2
         print(f"{self.name}'s training increased strength by 2 points to {self.strength}.\n")
@@ -94,11 +94,20 @@ class Warrior(Human):
         
     def check_if_alive(self):
         if self.health <= 0:
-            self.dead()
+            self.defeated()
             return False
         else:
             return True
-        
+    
+    def handle_player_defeat(self, shop):
+        clear_console()
+        print(f"{self.name} has been defeated.\n")  
+        self.health = self.max_health * 0.5  # Regain 50% of max health
+        print(f"{self.name} stumbled back to camp after being defeated.")
+        print(f"{self.name} has regained 50% of their health.")  
+        from camp import return_to_camp
+        return_to_camp(self, shop)  
+
 class Monster:
     def __init__(self, name, health=60):
         self.alive = True

@@ -80,17 +80,12 @@ def fight_monster(player, shop):
                 break  
 
         elif combat_result == 'player_defeated':
-            handle_player_defeat(player, shop)  
+            player.handle_player_defeat(shop)  
             break
 
     player.in_combat = False  
 
 
-def handle_player_defeat(player, shop):
-    player.health = player.max_health * 0.5  
-    print(f"{player.name} stumbled back to camp after being defeated.")
-    from camp import return_to_camp
-    return_to_camp(player, shop)
 
 
 def post_combat_options(player, shop):
