@@ -29,10 +29,11 @@ def show_instructions():
     input("\nPress Enter to return to the main menu...")
     clear_console()
 
-def main_menu():
+def main_menu(player=None, shop=None):
     clear_console()
-    shop = Shop()  # Create the shop instance here
-    player = None
+
+    if shop is None:
+        shop = Shop()
 
     while True:
         print("\n=== Main Menu ===")
@@ -45,12 +46,12 @@ def main_menu():
         choice = input("Enter your choice (1-6): ").lower().strip()
 
         if choice == '1':
-            if not player:
+            if player is None:
                 player = start_game(shop)
             else:
                 print("Game already started. Returning to camp.")
                 return_to_camp(player, shop)
-        elif choice == '2' and player:
+        elif choice == '2' and player is not None:
             return_to_camp(player, shop)
         elif choice == '3':
             # Implement save game functionality here
@@ -69,4 +70,5 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
+
 

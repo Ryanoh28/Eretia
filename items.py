@@ -83,7 +83,7 @@ class Inventory:
                 print(f"Used {item.name}.")
                 return True
             else:
-                print(f"{target.name}'s health is already full. Cannot use {item.name}.")
+                print(f"\n{target.name}'s health is already full. Cannot use {item.name}.")
                 return False
         else:
             print(f"You can't use {item.name} in this way.")
