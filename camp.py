@@ -1,9 +1,10 @@
 from items import Potion
 from utilities import clear_console
-from locations import enter_dark_forest
+
 
 def return_to_camp(player, shop):
     while True:
+        
         print("\nYou are back at the camp. What would you like to do?\n")
         choice = input("(T)rain, (L)eave camp, (C)onverse with the captain, (R)est, check (I)nventory, visit the (S)hop, or access the (M)enu: ").lower().strip()
         clear_console()
@@ -11,14 +12,14 @@ def return_to_camp(player, shop):
         if choice == "t":
             player.training_strength()
         elif choice == "l":
-            leave_camp(player)
+            leave_camp(player, shop)
         elif choice == "c":
             converse_with_camp_captain(player)
         elif choice == "r":
             player.regain_health(20)
             print(f"\nYou have rested and regained health. Current health: {player.health}.\n")
         elif choice == "i":
-            manage_inventory(player)
+            player.inventory.inventory_menu(player)
         elif choice == "s":
             shop.display_items()
             item_choice = input("Enter the name of the item you would like to buy: ").lower().strip()
@@ -31,7 +32,8 @@ def return_to_camp(player, shop):
 
         
 
-def leave_camp(player):
+def leave_camp(player, shop):
+    from locations import enter_dark_forest
     while True:
         clear_console()
         print("Where would you like to go?")
@@ -39,7 +41,7 @@ def leave_camp(player):
 
         if choice == "d":
             
-            enter_dark_forest(player)
+            enter_dark_forest(player, shop)
  
             break
         elif choice == "b":
@@ -47,28 +49,6 @@ def leave_camp(player):
             break
         else:
             print("\nInvalid choice. Please enter 'D' to go to the Dark Forest or 'B' to go back to camp.")
-
-
-
-
-
-def manage_inventory(player):
-    while True:
-        
-        player.inventory.show_inventory(player)
-        item_choice = input("\nChoose an item to use or type '(B)ack' to return: \n").lower()
-
-        if item_choice in ['b', 'back']:
-            clear_console()
-            print("Returning to previous options.\n")
-            break
-        else:
-            used = player.inventory.use_item(item_choice, player)
-            if used:
-                break  
-            else:
-                clear_console()
-                print("\nYou don't have that item. Try again or type '(B)ack' to return.\n")
 
 def converse_with_camp_captain(player):
     level_ups = 0  

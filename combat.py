@@ -99,12 +99,12 @@ def fight_monster(player, shop):
 
 def post_combat_options(player, shop):
     leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
+
     if leave_choice == "c":
         print("\nYou prepare to encounter another monster.\n")
-        fight_monster(player, shop) 
+        fight_monster(player, shop)
     elif leave_choice == "r":
         from camp import return_to_camp
-        return_to_camp(player, shop)  
+        return_to_camp(player, shop)
     elif leave_choice == "i":
-        from camp import manage_inventory
-        manage_inventory(player)
+        player.inventory.inventory_menu(player)  

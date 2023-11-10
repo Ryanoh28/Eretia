@@ -1,3 +1,4 @@
+#classes.py
 import random
 from items import Inventory, Potion
 from utilities import clear_console
@@ -148,6 +149,9 @@ class Shop:
         return matches
 
     def buy_item(self, player, partial_item_name):
+        if partial_item_name.lower() == 'q':
+            return
+
         if not partial_item_name:
             print("Please specify an item name to buy.")
             return
@@ -170,6 +174,7 @@ class Shop:
             print("Multiple items found. Please be more specific:")
             for item_name in matching_items:
                 print(f"- {item_name.title()}")
+
     
     def shop_menu(self):
         clear_console()
