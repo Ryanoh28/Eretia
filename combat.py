@@ -1,6 +1,7 @@
 from classes import Monster
 from utilities import clear_console
-
+from items import GildedFeather, EnchantedStone
+import random
 
 def create_monster_wolf():
     return Monster("Monster Wolf", 60)
@@ -13,14 +14,27 @@ def combat(player, monster):
         if choice == "a":
             damage_dealt = player.normal_attack(monster)
             if not monster.check_if_alive():
+                # Monster defeated logic
                 print(f"The {monster.name} has been defeated!")
+                
+                # Determine loot drop
+                drop_chance = random.randint(1, 100)
+                if drop_chance <= 15:  
+                    player.inventory.add_item(GildedFeather())
+                    print("You found a Gilded Feather!")
+                elif drop_chance <= 5:  
+                    player.inventory.add_item(EnchantedStone())
+                    print("You found an Enchanted Stone!")
+
                 player.gain_experience(10)
                 input("You gained experience! Press Enter to continue...")
                 return 'monster_defeated'
+
             if monster.alive:
                 monster.monster_attack(player)
                 if not player.check_if_alive():
                     return 'player_defeated'
+
         elif choice == "r":
             clear_console()
             print("You managed to escape from the Monster Wolf.\n")
