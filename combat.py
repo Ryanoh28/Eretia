@@ -1,6 +1,6 @@
 from classes import Monster
 from utilities import clear_console
-from items import GildedFeather, EnchantedStone
+from items import get_loot_drop
 import random
 
 def create_monster_wolf():
@@ -12,19 +12,15 @@ def combat(player, monster):
         clear_console()
 
         if choice == "a":
-            damage_dealt = player.normal_attack(monster)
+            player.normal_attack(monster)
             if not monster.check_if_alive():
-                # Monster defeated logic
                 print(f"The {monster.name} has been defeated!")
-                
-                # Determine loot drop
-                drop_chance = random.randint(1, 100)
-                if drop_chance <= 15:  
-                    player.inventory.add_item(GildedFeather())
-                    print("You found a Gilded Feather!")
-                elif drop_chance <= 5:  
-                    player.inventory.add_item(EnchantedStone())
-                    print("You found an Enchanted Stone!")
+
+                # Get loot drop
+                loot = get_loot_drop()
+                for item in loot:
+                    player.inventory.add_item(item)
+                    print(f"You found a {item.name}!")
 
                 player.gain_experience(10)
                 input("You gained experience! Press Enter to continue...")
@@ -38,17 +34,13 @@ def combat(player, monster):
         elif choice == "r":
             clear_console()
             print("You managed to escape from the Monster Wolf.\n")
-            player.choice = 'return_to_camp'  
+            player.choice = 'return_to_camp'
             return 'escaped'
 
     if player.alive and not monster.alive:
         return 'monster_defeated'
     elif not player.alive:
         return 'player_defeated'
-
-
-
-
 
 def combat_phase(player, shop):
     while player.alive:
@@ -59,7 +51,7 @@ def combat_phase(player, shop):
 
         if choice == "f":
             player.in_combat = True
-            fight_monster(player)
+            fight_monster(player, shop)
         elif choice == "t":
             player.training_strength()
         elif choice == "c":
@@ -71,14 +63,11 @@ def combat_phase(player, shop):
         elif choice == "i":
             from camp import manage_inventory
             manage_inventory(player)
-        elif choice == "s":  # Shop option
-            shop.display_items()
-            item_choice = input("Enter the name of the item you would like to buy: ").lower().strip()
-            shop.buy_item(player, item_choice)
+        elif choice == "s": 
+            shop.display_items(player)
         elif choice == 'm':
             from game1 import main_menu
-            main_menu()  # Access the main menu
-            clear_console()
+            main_menu(player, shop)
         else:
             print("\nInvalid choice. Please enter 'T' to train, 'F' to fight, 'C' to converse, 'R' to rest, 'I' to check inventory, or 'S' to visit the shop.\n")
 
@@ -88,7 +77,6 @@ def fight_monster(player, shop):
 
     while player.in_combat:
         monster_wolf = create_monster_wolf()
-        clear_console()
         print("\nYou encounter a Monster Wolf...\n")
         combat_result = combat(player, monster_wolf)
 
@@ -110,14 +98,18 @@ def fight_monster(player, shop):
 
     player.in_combat = False
 
-
-
 def post_combat_options(player, shop):
-    leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
-    
-    if leave_choice == "r":
-        player.choice = 'return_to_camp'
-    elif leave_choice == "i":
+    while True:
         clear_console()
-        player.inventory.inventory_menu(player)
-  
+        leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
+
+        if leave_choice == "r":
+            player.choice = 'return_to_camp'
+            break
+        elif leave_choice == "i":
+            player.inventory.inventory_menu(player)
+            clear_console()
+        elif leave_choice == "c":
+            break
+        else:
+            print("\nInvalid choice. Please enter 'C' to continue fighting, 'R' to return to camp, or 'I' to check inventory.\n")

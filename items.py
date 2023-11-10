@@ -1,10 +1,9 @@
 from utilities import clear_console
-
+import random
 class Item:
-    def __init__(self, name, description, effect=None):
+    def __init__(self, name, description):
         self.name = name
         self.description = description
-        self.effect = effect
 
 class Potion(Item):
     def __init__(self, name, description, healing_amount):
@@ -18,20 +17,15 @@ class Potion(Item):
             return True
         else:
             return False
-class GildedFeather(Item):
-    def __init__(self):
-        super().__init__("Gilded Feather", "A rare feather with golden tips, valuable to merchants.")
-
-class EnchantedStone(Item):
-    def __init__(self):
-        super().__init__("Enchanted Stone", "A small, glowing stone containing ancient magic.")
 
 class Inventory:
     def __init__(self):
         self.items = []
-        
+
     def add_item(self, item):
         self.items.append(item)
+        print(f"Added {item.name} to inventory")
+
         
     def show_inventory(self):
         if not self.items:
@@ -122,3 +116,17 @@ class Inventory:
                 input("Press Enter to continue...")
 
             clear_console()
+    
+    # Loot Items
+LOOT_ITEMS = {
+    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 100},
+    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 100}
+}
+
+def get_loot_drop():
+    dropped_items = []
+    roll = random.randint(1, 100)
+    for name, data in LOOT_ITEMS.items():
+        if roll <= data["chance"]:
+            dropped_items.append(Item(name, data["description"]))
+    return dropped_items
