@@ -22,9 +22,7 @@ def return_to_camp(player, shop):
         elif choice == "i":
             player.inventory.inventory_menu(player)
         elif choice == "s":
-            shop.display_items()
-            item_choice = input("Enter the name of the item you would like to buy: ").lower().strip()
-            shop.buy_item(player, item_choice)
+            shop.shop_menu(player)
         elif choice == "m":
             from game1 import main_menu
             main_menu(player, shop)
