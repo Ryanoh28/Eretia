@@ -65,6 +65,7 @@ class Warrior(Human):
         if self.experience >= 100:
             print(f"{self.name} has enough experience to level up. Speak to the camp captain!\n")
 
+
     def check_level_up(self):
         while self.experience >= 100:  # Level up for every 100 experience points
             self.experience -= 100
@@ -103,10 +104,12 @@ class Warrior(Human):
         clear_console()
         print(f"{self.name} has been defeated.\n")  
         self.health = self.max_health * 0.5  # Regain 50% of max health
+        self.alive = True  # Reset the alive status to True
         print(f"{self.name} stumbled back to camp after being defeated.")
         print(f"{self.name} has regained 50% of their health.")  
         from camp import return_to_camp
         return_to_camp(self, shop)  
+
 
 class Monster:
     def __init__(self, name, health=60):

@@ -1,6 +1,17 @@
+import pickle
 from classes import Warrior, Shop
 from camp import meet_camp_captain, return_to_camp
 from utilities import clear_console
+
+def save_game(player, shop, filename="savegame.pkl"):
+    with open(filename, 'wb') as file:
+        pickle.dump({'player': player, 'shop': shop}, file)
+    print("Game saved successfully.")
+
+def load_game(filename="savegame.pkl"):
+    with open(filename, 'rb') as file:
+        game_data = pickle.load(file)
+    return game_data['player'], game_data['shop']
 
 def welcome():
     clear_console()
@@ -38,7 +49,7 @@ def main_menu(player=None, shop=None):
     while True:
         print("\n=== Main Menu ===")
         print("1. New Game")
-        print("2. Return to Camp")
+        print("2. Continue Game")
         print("3. Save Game")
         print("4. Load Game")
         print("5. Instructions")
@@ -51,8 +62,11 @@ def main_menu(player=None, shop=None):
             else:
                 print("Game already started. Returning to camp.")
                 return_to_camp(player, shop)
-        elif choice == '2' and player is not None:
-            return_to_camp(player, shop)
+        elif choice == '2':
+            if player and shop:
+                return_to_camp(player, shop)
+            else:
+                print("No ongoing game to continue. Please start a new game.")
         elif choice == '3':
             # Implement save game functionality here
             pass
@@ -65,10 +79,12 @@ def main_menu(player=None, shop=None):
             print("Exiting game. Goodbye!")
             exit()
         else:
-            print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
+            print("Invalid choice. Please enter a number between 1 and 6.")
             input("Press Enter to continue...")
 
 if __name__ == "__main__":
     main_menu()
+
+
 
 

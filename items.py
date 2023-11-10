@@ -18,6 +18,13 @@ class Potion(Item):
             return True
         else:
             return False
+class GildedFeather(Item):
+    def __init__(self):
+        super().__init__("Gilded Feather", "A rare feather with golden tips, valuable to merchants.")
+
+class EnchantedStone(Item):
+    def __init__(self):
+        super().__init__("Enchanted Stone", "A small, glowing stone containing ancient magic.")
 
 class Inventory:
     def __init__(self):

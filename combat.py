@@ -68,8 +68,6 @@ def combat_phase(player, shop):
         else:
             print("\nInvalid choice. Please enter 'T' to train, 'F' to fight, 'C' to converse, 'R' to rest, 'I' to check inventory, or 'S' to visit the shop.\n")
 
-
-
 def fight_monster(player, shop):
     clear_console()
     player.in_combat = True
@@ -108,3 +106,4 @@ def post_combat_options(player, shop):
     elif leave_choice == "i":
         clear_console()
         player.inventory.inventory_menu(player)
+  
