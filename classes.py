@@ -33,7 +33,8 @@ class Warrior(Human):
         self.experience = 0
         self.in_combat = False
         self.gold = 0
-
+        self.choice = None
+        
     def training_strength(self):
         self.strength += 2
         print(f"{self.name}'s training increased strength by 2 points to {self.strength}.\n")
