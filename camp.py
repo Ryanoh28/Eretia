@@ -1,10 +1,9 @@
 from items import Potion
 from utilities import clear_console
-
+from locations import enter_dark_forest
 
 def return_to_camp(player, shop):
     while True:
-        
         print("\nYou are back at the camp. What would you like to do?\n")
         choice = input("(T)rain, (L)eave camp, (C)onverse with the captain, (R)est, check (I)nventory, visit the (S)hop, or access the (M)enu: ").lower().strip()
         clear_console()
@@ -14,6 +13,7 @@ def return_to_camp(player, shop):
             player.training_strength()
         elif choice == "l":
             leave_camp(player, shop)
+            break
         elif choice == "c":
             converse_with_camp_captain(player)
         elif choice == "r":
@@ -31,19 +31,14 @@ def return_to_camp(player, shop):
         else:
             print("\nInvalid choice. Please enter a valid command.\n")
 
-        
-
 def leave_camp(player, shop):
-    from locations import enter_dark_forest
     while True:
         clear_console()
         print("Where would you like to go?")
         choice = input("(D)ark Forest or (B)ack to camp: ").lower().strip()
 
         if choice == "d":
-            
             enter_dark_forest(player, shop)
- 
             break
         elif choice == "b":
             print("\nYou decide to stay in the camp for now.")

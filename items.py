@@ -50,7 +50,8 @@ class Inventory:
             elif inventory_choice:  # Check for a valid choice
                 item_used = self.use_item(inventory_choice, player)
                 if item_used:
-                    print(f"\n{inventory_choice.title()} used successfully.\n")
+                    pass
+                #print(f"\n{inventory_choice.title()} used successfully.\n")
                 else:
                     print("\nItem not found. Try again or type '(B)ack' to return.\n")
                 input("Press Enter to continue...")  # Allow the player to read the message

@@ -15,21 +15,26 @@ def combat(player, monster):
             if not monster.check_if_alive():
                 print(f"The {monster.name} has been defeated!")
                 player.gain_experience(10)
-                break
+                input("You gained experience! Press Enter to continue...")
+                return 'monster_defeated'
             if monster.alive:
                 monster.monster_attack(player)
                 if not player.check_if_alive():
-                    return 'player_defeated'  
+                    return 'player_defeated'
         elif choice == "r":
             clear_console()
-            print("You managed to escape from the Monster Wolf.")
+            print("You managed to escape from the Monster Wolf.\n")
+            player.choice = 'return_to_camp'  
             return 'escaped'
 
     if player.alive and not monster.alive:
         return 'monster_defeated'
     elif not player.alive:
-        return 'player_defeated'  
- 
+        return 'player_defeated'
+
+
+
+
 
 def combat_phase(player, shop):
     while player.alive:
@@ -71,20 +76,27 @@ def fight_monster(player, shop):
 
     while player.in_combat:
         monster_wolf = create_monster_wolf()
+        clear_console()
         print("\nYou encounter a Monster Wolf...\n")
         combat_result = combat(player, monster_wolf)
 
         if combat_result in ['monster_defeated', 'escaped']:
-            post_combat_options(player, shop)
-            if player.choice == 'return_to_camp':
-                break  
-
+            if combat_result == 'monster_defeated':
+                print(f"The {monster_wolf.name} has been defeated!")
+                player.gain_experience(10)
+                input("Press Enter to continue...\n")
+                post_combat_options(player, shop)
+                if player.choice == 'return_to_camp':
+                    return  
+            elif combat_result == 'escaped':
+                print("You managed to escape from the Monster Wolf.\n")
+                player.choice = 'return_to_camp'  
+                return  
         elif combat_result == 'player_defeated':
-            player.handle_player_defeat(shop)  
+            player.handle_player_defeat(shop)
             break
 
-    player.in_combat = False  
-
+    player.in_combat = False
 
 
 
@@ -94,4 +106,5 @@ def post_combat_options(player, shop):
     if leave_choice == "r":
         player.choice = 'return_to_camp'
     elif leave_choice == "i":
+        clear_console()
         player.inventory.inventory_menu(player)
