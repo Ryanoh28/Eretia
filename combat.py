@@ -66,10 +66,7 @@ def combat_phase(player, shop):
 
 
 
-# combat.py
-
 def fight_monster(player, shop):
-    print("\nYou venture out and encounter a Monster Wolf...\n")
     monster_wolf = create_monster_wolf()
     player.in_combat = True
 
@@ -101,10 +98,10 @@ def post_combat_options(player, shop):
     leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn to camp, or check (I)nventory? ").lower()
 
     if leave_choice == "c":
-        print("\nYou prepare to encounter another monster.\n")
+        print("\nYou encounter another monster...\n")  
         fight_monster(player, shop)
     elif leave_choice == "r":
         from camp import return_to_camp
         return_to_camp(player, shop)
     elif leave_choice == "i":
-        player.inventory.inventory_menu(player)  
+        player.inventory.inventory_menu(player)
