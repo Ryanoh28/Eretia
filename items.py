@@ -106,7 +106,8 @@ class Inventory:
             else:
                 used = player.inventory.use_item(item_choice, player)
                 if used:
-                    print(f"\n{item_choice.title()} used successfully.\n")
+                    pass
+                    #print(f"\n{item_choice.title()} used successfully.\n")
                 else:
                     print("\nYou don't have that item. Try again or type '(B)ack' to return.\n")
                 
