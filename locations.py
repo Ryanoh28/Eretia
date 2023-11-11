@@ -2,7 +2,6 @@ from combat import fight_monster
 from utilities import clear_console
 
 def enter_dark_forest(player, shop):
-    
     while True:
         clear_console()
         print("\nYou are in the Dark Forest. What would you like to do?")
@@ -14,6 +13,6 @@ def enter_dark_forest(player, shop):
         elif choice == "r":
             from camp import return_to_camp
             return_to_camp(player, shop)
-            break  
+            break
         else:
             print("\nInvalid choice. Please enter 'H' to hunt monsters or 'R' to return to camp.\n")

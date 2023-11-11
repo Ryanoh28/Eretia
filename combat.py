@@ -6,35 +6,31 @@ from items import get_loot_drop
 def create_monster_wolf():
     return Monster("Monster Wolf", 60)
 
-def combat(player, monster):
+def combat(player, monster, shop):
     while player.alive and monster.alive:
-        choice = input("Do you want to (A)ttack or (R)un? ").lower()
+        choice = input("\nDo you want to (A)ttack or (R)un? ").lower()
         clear_console()
 
         if choice == "a":
             player.normal_attack(monster)
             if not monster.check_if_alive():
                 print(f"\nThe {monster.name} has been defeated!\n")
-
-                # Get loot drop
                 loot = get_loot_drop()
                 for item in loot:
                     print(f"\nYou found a {item.name}!")
                     player.inventory.add_item(item)
-                    #print("Added to inventory.\n")  
-
                 player.gain_experience(10)
-                input("Press Enter to continue...")  
+                input("Press Enter to continue...")
                 return 'monster_defeated'
 
-            if monster.alive:
-                monster.monster_attack(player)
-                if not player.check_if_alive():
-                    return 'player_defeated'
+            elif monster.alive:
+                damage_dealt = monster.monster_attack(player)
+                player.lose_health(damage_dealt, monster.strength)
 
         elif choice == "r":
             clear_console()
-            print("You managed to escape from the Monster Wolf.\n")
+            print("You managed to escape from the Monster safely.\n")
+            input("Press Enter to continue...")
             player.choice = 'return_to_camp'
             return 'escaped'
 
@@ -43,6 +39,7 @@ def combat(player, monster):
     elif not player.alive:
         return 'player_defeated'
 
+
 def fight_monster(player, shop):
     clear_console()
     player.in_combat = True
@@ -50,25 +47,28 @@ def fight_monster(player, shop):
     while player.in_combat:
         monster_wolf = create_monster_wolf()
         print("\nYou encounter a Monster Wolf...\n")
-        combat_result = combat(player, monster_wolf)
+        combat_result = combat(player, monster_wolf, shop)
 
-        if combat_result in ['monster_defeated', 'escaped']:
-            if combat_result == 'monster_defeated':
-                print(f"The {monster_wolf.name} has been defeated!")
-                player.gain_experience(10)
-                post_combat_options(player, shop)
-                if player.choice == 'return_to_camp':
-                    break
-            elif combat_result == 'escaped':
-                print("You managed to escape from the Monster Wolf.\n")
-                player.choice = 'return_to_camp'
+        if combat_result == 'monster_defeated':
+            print(f"\nThe {monster_wolf.name} has been defeated!")
+            player.gain_experience(10)
+            post_combat_options(player, shop)
+            if player.choice == 'return_to_camp':
                 break
+        elif combat_result == 'escaped':
+            player.choice = 'return_to_camp'
+            break
+
         elif combat_result == 'player_defeated':
             player.handle_player_defeat(shop)
             break
 
     player.in_combat = False
-    input("Press Enter to continue...\n")  
+
+
+
+
+
 
 def post_combat_options(player, shop):
     while True:

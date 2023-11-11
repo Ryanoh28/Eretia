@@ -24,7 +24,7 @@ class Inventory:
 
     def add_item(self, item):
         self.items.append(item)
-        print(f"\nAdded {item.name} to inventory\n")
+        print(f"Added {item.name} to inventory\n")
 
         
     def show_inventory(self):
@@ -119,17 +119,18 @@ class Inventory:
     
     # Loot Items
 LOOT_ITEMS = {
-    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 15},
+    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 20},
     "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 10}
 }
 
 def get_loot_drop():
-    dropped_items = []
-    roll = random.randint(1, 100)
-    #print(f"Debug: Roll is {roll}")  # Debug print
-    for name, data in LOOT_ITEMS.items():
-        if roll <= data["chance"]:
-            dropped_items.append(Item(name, data["description"]))
-            #print(f"Debug: Added {name} to dropped items")  # Debug print
-    #print(f"Debug: Dropped items are {dropped_items}")  # Debug print
-    return dropped_items
+    # Randomly pick one item to roll for
+    chosen_item_name = random.choice(list(LOOT_ITEMS.keys()))
+    chosen_item_data = LOOT_ITEMS[chosen_item_name]
+
+    # Roll for the chosen item
+    if random.randint(1, 100) <= chosen_item_data["chance"]:
+        return [Item(chosen_item_name, chosen_item_data["description"])]
+    
+    return []
+

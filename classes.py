@@ -2,7 +2,7 @@
 import random
 from items import Inventory, Potion, Item
 from utilities import clear_console
-
+import time
 class Human:
     def __init__(self, name):
         self.name = name
@@ -10,13 +10,25 @@ class Human:
         self.inventory = Inventory()
         self.health = 100  # Default max health for all humans
 
-    def lose_health(self, damage):
-        self.health -= damage
+    def lose_health(self, damage, attacker_strength):
+        effective_damage = max(0, damage - (self.defense - attacker_strength))
+        self.health -= effective_damage
         self.health = round(self.health, 1)
-        if self.health <= 0:
-            self.defeated()  
+
+        if effective_damage > 0:
+            print(f"{self.name}'s defense negated some of the damage from the attack!")
         else:
-            print(f"{self.name} lost {damage} health and now has {self.health} health.\n")
+            print(f"{self.name} could not negate any damage from the attack.")
+
+        print(f"{self.name} lost {effective_damage} health and now has {self.health} health.")
+
+        if self.health <= 0:
+            self.defeated()
+            if self.health <= 0:
+                self.defeated()  # Handle the defeat of the player
+            else:
+                print(f"{self.name} lost {effective_damage} health and now has {self.health} health.\n")
+
 
     def defeated(self):
         self.alive = False
@@ -25,6 +37,8 @@ class Human:
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
+        self.last_training_time = 0
+        self.training_cooldown = 3600  # Cooldown in seconds (1 hour)
         self.strength = 5
         self.speed = 5
         self.defense = 5
@@ -37,8 +51,14 @@ class Warrior(Human):
         self.choice = None
 
     def training_strength(self):
-        self.strength += 2
-        print(f"{self.name}'s training increased strength by 2 points to {self.strength}.\n")
+        current_time = time.time()
+        if current_time - self.last_training_time >= self.training_cooldown:
+            self.strength += 2
+            print(f"{self.name}'s training increased strength by 2 points to {self.strength}.\n")
+            self.last_training_time = current_time
+        else:
+            remaining_time = self.training_cooldown - (current_time - self.last_training_time)
+            print(f"Cannot train yet. Please wait for {int(remaining_time)} seconds.\n")
     
     def special_attack(self, target):
         damage = self.strength * self.attack * 1  
@@ -46,12 +66,22 @@ class Warrior(Human):
         target.lose_health(damage)  
 
     def normal_attack(self, target):
-        damage_multiplier = random.uniform(0.7, 1.0)  # Random damage multiplier between 0.7 and 1.0
+    # Initial attack
+        damage = self.calculate_attack_damage()
+        target.lose_health(damage)
+        print(f"{self.name} used a normal attack and dealt {damage} damage.")
+
+    # Check for extra attack based on speed
+        if self.speed >= target.speed * 2:
+            extra_damage = self.calculate_attack_damage()
+            target.lose_health(extra_damage)
+            print(f"{self.name} uses their swift speed to attack again, dealing {extra_damage} damage.")
+    
+    def calculate_attack_damage(self):
+        # This method calculates the damage based on strength, attack stat, and random factor
+        damage_multiplier = random.uniform(0.7, 1.0)
         damage = self.strength * self.attack * damage_multiplier
-        rounded_damage = round(damage, 1)  
-        print(f"{self.name} used a normal attack and dealt {rounded_damage} damage.\n")
-        target.lose_health(rounded_damage)  
-        return rounded_damage  
+        return round(damage, 1)
 
     def regain_health(self, healing):
         self.health += healing
@@ -134,9 +164,9 @@ class Monster:
     def monster_attack(self, target):
         damage = self.strength * self.attack * 0.7
         rounded_damage = round(damage, 1)  
-        print(f"{self.name} used a normal attack and dealt {rounded_damage} damage to {target.name}.\n")
-        target.lose_health(rounded_damage)  
-        return rounded_damage  
+        print(f"{self.name} attacked and dealt {rounded_damage} damage to {target.name}.\n")
+        return rounded_damage  # Return the damage for further processing in the combat function
+
 
     def lose_health(self, damage):
         self.health -= damage
