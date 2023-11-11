@@ -68,11 +68,17 @@ def main_menu(player=None, shop=None):
             else:
                 print("No ongoing game to continue. Please start a new game.")
         elif choice == '3':
-            # Implement save game functionality here
-            pass
+            if player and shop:
+                save_game(player, shop)
+            else:
+                print("No game to save. Please start a new game.")
         elif choice == '4':
-            # Implement load game functionality here
-            pass
+            try:
+                player, shop = load_game()
+                print("Game loaded successfully. Returning to camp.")
+                return_to_camp(player, shop)
+            except FileNotFoundError:
+                print("No saved game found. Please start a new game.")
         elif choice == '5':
             show_instructions()
         elif choice == '6':
@@ -84,6 +90,7 @@ def main_menu(player=None, shop=None):
 
 if __name__ == "__main__":
     main_menu()
+
 
 
 
