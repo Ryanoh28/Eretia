@@ -66,7 +66,7 @@ def meet_camp_captain(player):
     
     health_potion = Potion("Health Potion", "A potion that restores 50 health.", 50)
     player.inventory.add_item(health_potion)
-    print(f"Camp Captain: 'Remember, use it wisely, and don't hesitate to return should you need more supplies or assistance.'\n")
+    print(f"\nCamp Captain: 'Remember, use it wisely, and don't hesitate to return should you need more supplies or assistance.'\n")
 
 
 
