@@ -1,7 +1,8 @@
 #classes.py
 import random
-from items import Inventory, Potion
+from items import Inventory, Potion, Item
 from utilities import clear_console
+
 class Human:
     def __init__(self, name):
         self.name = name
@@ -61,7 +62,7 @@ class Warrior(Human):
 
     def gain_experience(self, amount):
         self.experience += amount
-        print(f"{self.name} gained {amount} experience points.\n")
+        print(f"\n{self.name} gained {amount} experience points.\n")
         if self.experience >= 100:
             print(f"{self.name} has enough experience to level up. Speak to the camp captain!\n")
 
@@ -125,11 +126,10 @@ class Monster:
         self.alive = False
 
     def check_if_alive(self):
-        if self.health <= 0 and self.alive:  # Check if the monster is alive before declaring it dead
-            self.dead()
-            return False
-        else:
-            return True
+        alive_status = self.health > 0
+        #print(f"Debug: {self.name} is alive: {alive_status}")  # Debug print
+        return alive_status
+
 
     def monster_attack(self, target):
         damage = self.strength * self.attack * 0.7
@@ -140,14 +140,16 @@ class Monster:
 
     def lose_health(self, damage):
         self.health -= damage
-        self.health = round(self.health, 1)  
+        self.health = round(self.health, 1)
+        #print(f"Debug: {self.name}'s health is now {self.health}.")  # Debug print
         if self.health <= 0:
             self.dead()
+
 
 class Shop:
     def __init__(self):
         self.items_for_sale = {
-            'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)}
+            'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
         }
         self.item_value = {
             "Gilded Feather": 6, 
@@ -157,7 +159,7 @@ class Shop:
 
     def display_items_for_sale(self, player):
         clear_console()
-        print("\nItems for sale:")
+        print("Items for sale:\n")
         for item_name, item_info in self.items_for_sale.items():
             print(f"{item_name.title()}: {item_info['price']} gold")
         print("\nEnter the name of the item you would like to buy or press (Q) to go back.")
