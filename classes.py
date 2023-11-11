@@ -39,7 +39,7 @@ class Warrior(Human):
         super().__init__(name)
         #self.last_training_time = 0
         #self.training_cooldown = 3600  
-        self.strength = 100
+        self.strength = 2
         self.speed = 2
         self.defense = 2
         self.attack = 2
@@ -50,6 +50,11 @@ class Warrior(Human):
         self.gold = 0
         self.choice = None
         self.training_count = 0 # Replacing training time cooldown
+        self.search_count = 0
+
+    def reset_search_count(self):
+        self.search_count = 0
+        
 
     def training(self):
         if self.training_count < 2:
@@ -181,10 +186,11 @@ class Monster:
 
 
     def monster_attack(self, target):
-        damage = self.strength * self.attack * 0.7
-        rounded_damage = round(damage, 1)  
+        damage_multiplier = random.uniform(0.6, 0.9)  # Random factor for variability
+        damage = self.strength * self.attack * damage_multiplier
+        rounded_damage = round(damage, 1)
         print(f"{self.name} attacked and dealt {rounded_damage} damage to {target.name}.\n")
-        return rounded_damage  # Return the damage for further processing in the combat function
+        return rounded_damage
 
 
     def lose_health(self, damage):
