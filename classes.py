@@ -236,46 +236,60 @@ class Shop:
        
         }
 
+    class Shop:
+        def __init__(self):
+            self.items_for_sale = {
+                'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
+            }
+            self.item_value = {
+                "Gilded Feather": 6, 
+                "Enchanted Stone": 20,
+                "Health Potion": 5,
+                "Mystic Herb": 6,  
+                "Ancient Coin": 10,  
+                "Lost Necklace": 20  
+            }
+
     def display_items_for_sale(self, player):
-        clear_console()
-        print("Items for sale:\n")
-        for item_name, item_info in self.items_for_sale.items():
-            print(f"{item_name.title()}: {item_info['price']} gold")
-        print("\nEnter the name of the item you would like to buy or press (Q) to go back.")
-        item_choice = input().lower().strip()
-        if item_choice != 'q':
-            self.buy_item(player, item_choice)
+        while True:
+            clear_console()
+            print("Items for sale:\n")
+            item_list = list(self.items_for_sale.keys())
+            for index, item_name in enumerate(item_list, 1):
+                price = self.items_for_sale[item_name]['price']
+                print(f"{index}. {item_name.title()}: {price} gold")
 
-    def buy_item(self, player, partial_item_name):
-        if partial_item_name.lower() == 'q':
-            return
+            print("\nEnter the number of the item you would like to buy or press (Q) to go back.")
+            choice = input().lower().strip()
 
-        matching_items = self.find_item_by_partial_name(partial_item_name)
+            if choice == 'q':
+                break  
+            else:
+                try:
+                    choice_index = int(choice) - 1
+                    if choice_index < 0 or choice_index >= len(item_list):
+                        raise ValueError
+                    selected_item_name = item_list[choice_index]
+                    self.buy_item(player, selected_item_name)
+                except (ValueError, IndexError):
+                    print("Invalid choice. Please enter a valid number.")
 
-        if not matching_items:
-            print("\nItem not found.")
-        elif len(matching_items) == 1:
-            item_name, item_info = next(iter(matching_items.items()))
+    def buy_item(self, player, item_name):
+        item_info = self.items_for_sale.get(item_name, None)
+        if item_info:
             price = item_info['price']
             item = item_info['object']
             if player.gold >= price:
                 player.spend_gold(price)
                 player.inventory.add_item(item)
-                print(f"\n{item_name.title()} has been added to your inventory\n")
+                print(f"\n{item_name.title()} has been added to your inventory.\n")
             else:
-                print("\nYou do not have enough Gold to buy this item.")
+                print("\nYou do not have enough gold to buy this item.")
         else:
-            print("\nMultiple items found. Please be more specific:")
-            for item_name in matching_items:
-                print(f"- {item_name.title()}")
+            print("\nItem not found.")
 
         input("\nPress Enter to continue...")
         self.shop_menu(player)
-    
-    def find_item_by_partial_name(self, partial_name):
-        partial_name_lower = partial_name.lower()
-        matches = {name: item for name, item in self.items_for_sale.items() if partial_name_lower in name.lower()}
-        return matches
     
     def shop_menu(self, player):
         while True:
@@ -302,44 +316,56 @@ class Shop:
         while True:
             clear_console()
             print("Items you can sell:\n")
+            item_list = []
+            item_count = {}
             for item in player.inventory.items:
-                sale_price = self.item_value.get(item.name, 0)
-                print(f"- {item.name}: {sale_price} gold")
+                if item.name not in item_count:
+                    item_list.append(item.name)
+                item_count[item.name] = item_count.get(item.name, 0) + 1
+            
+            for index, item_name in enumerate(item_list, 1):
+                sale_price = self.item_value.get(item_name, 0)
+                print(f"{index}. {item_name} ({item_count[item_name]}) - {sale_price} gold each")
 
-            print("\nType the name of the item you want to sell or (B)ack to return.")
-            item_name_input = input("\nEnter item name: ").lower()
+            print("\nType the number of the item you want to sell or (B)ack to return.")
+            choice = input("\nEnter your choice: ").lower()
 
-            if item_name_input in ['b', 'back']:
-                clear_console()  
-                break  
+            if choice in ['b', 'back']:
+                clear_console()
+                break
             else:
-                self.sell_item(player, item_name_input)
+                try:
+                    choice_index = int(choice) - 1
+                    if choice_index < 0 or choice_index >= len(item_list):
+                        raise ValueError
+                    selected_item_name = item_list[choice_index]
+                    self.sell_item(player, selected_item_name, item_count[selected_item_name])
+                except (ValueError, IndexError):
+                    print("Invalid choice. Please enter a valid number.")
 
+    def sell_item(self, player, item_name, available_quantity):
+        print(f"\nHow many {item_name}s do you want to sell? (Available: {available_quantity})")
+        try:
+            quantity_to_sell = int(input("Enter quantity: "))
+            if quantity_to_sell < 1 or quantity_to_sell > available_quantity:
+                raise ValueError
+        except ValueError:
+            print("Invalid quantity. Please enter a valid number.")
+            input("Press Enter to continue...")
+            return
 
-    def sell_partial_match_item(self, player, partial_item_name):
-        matching_items = [item for item in player.inventory.items if partial_item_name in item.name.lower()]
-
-        if len(matching_items) == 0:
-            print("\nItem not found in inventory. Please try again.\n")
-        elif len(matching_items) == 1:
-            self.sell_item(player, matching_items[0].name)
-        else:
-            print("\nMultiple items found. Please be more specific:")
-            for item in matching_items:
-                print(f"- {item.name}")
+        sale_price = self.item_value.get(item_name, 0)
+        total_sale_price = sale_price * quantity_to_sell
+        player.gold += total_sale_price
+        for _ in range(quantity_to_sell):
+            item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
+            player.inventory.items.remove(item_to_remove)
+        clear_console()
+        print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
 
         input("Press Enter to continue...")
 
-    def sell_item(self, player, partial_item_name):
-        matching_items = [item for item in player.inventory.items if partial_item_name in item.name.lower()]
-        if not matching_items:
-            print("\nItem not found in inventory. Please try again.\n")
-        else:
-            item = matching_items[0]
-            sale_price = self.item_value.get(item.name, 0)
-            player.gold += sale_price
-            player.inventory.items.remove(item)
-            print(f"\nSold {item.name} for {sale_price} gold.\n")
 
-        input("Press Enter to continue...")
+    
 
+    
