@@ -24,7 +24,7 @@ class Inventory:
 
     def add_item(self, item):
         self.items.append(item)
-        print(f"Added {item.name} to inventory\n")
+        print(f"\nAdded {item.name} to inventory\n")
 
         
     def show_inventory(self):

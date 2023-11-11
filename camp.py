@@ -32,7 +32,7 @@ def return_to_camp(player, shop):
 def leave_camp(player, shop):
     while True:
         clear_console()
-        print("Where would you like to go?")
+        print("Where would you like to go?\n")
         choice = input("(D)ark Forest or (B)ack to camp: ").lower().strip()
 
         if choice == "d":

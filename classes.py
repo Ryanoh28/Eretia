@@ -202,10 +202,10 @@ class Shop:
         while True:
             clear_console()
             print("Welcome to the Camp Shop!\n")
-            print("Choose an option:")
+            print("Choose an option:\n")
             print("1. View items to buy")
             print("2. Sell items")
-            print("(B)ack")
+            print("\n(B)ack")
 
             choice = input("\nEnter your choice: ").lower()
 
