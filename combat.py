@@ -1,6 +1,7 @@
-from classes import Monster
+from classes import Monster, create_monster
 from utilities import clear_console
 from items import get_loot_drop
+
 
 
 def create_monster_wolf():
@@ -40,17 +41,18 @@ def combat(player, monster, shop):
         return 'player_defeated'
 
 
-def fight_monster(player, shop):
+def fight_monster(player, shop, location):
     clear_console()
     player.in_combat = True
 
     while player.in_combat:
-        monster_wolf = create_monster_wolf()
-        print("\nYou encounter a Monster Wolf...\n")
-        combat_result = combat(player, monster_wolf, shop)
+        # Create a monster appropriate for the current location
+        monster = create_monster(location)
+        print(f"\nYou encounter a {monster.name}...\n")
+        combat_result = combat(player, monster, shop)
 
         if combat_result == 'monster_defeated':
-            print(f"\nThe {monster_wolf.name} has been defeated!")
+            print(f"\nThe {monster.name} has been defeated!")
             player.gain_experience(10)
             post_combat_options(player, shop)
             if player.choice == 'return_to_camp':
