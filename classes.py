@@ -51,14 +51,19 @@ class Warrior(Human):
         self.choice = None
         self.training_count = 0 # Replacing training time cooldown
         self.search_count = 0
-
+        self.weapon = None
+    
+    def equip_weapon(self, weapon):
+        self.weapon = weapon
+        print(f"{self.name} equipped {weapon.name}.\n")
+        
     def reset_search_count(self):
         self.search_count = 0
         
 
     def training(self):
         if self.training_count < 2:
-            print(f"\nWhat would you like to train? (A) Strength, (B) Speed, (C) Defense)")
+            print(f"What would you like to train? (A) Strength, (B) Speed, (C) Defense\n")
             stat_choice = input().lower().strip()
 
             if stat_choice == "a":
@@ -101,11 +106,6 @@ class Warrior(Human):
             target.lose_health(extra_damage)
             print(f"{self.name} uses their swift speed to attack again, dealing {extra_damage} damage.")
 
-    # ... other methods ...
-
-
-
-
     def regain_health(self, healing):
         self.health += healing
         if self.health > self.max_health:
@@ -116,8 +116,9 @@ class Warrior(Human):
     def gain_experience(self, amount):
         self.experience += amount
         print(f"\n{self.name} gained {amount} experience points.\n")
-        if self.experience >= 100:
-            print(f"{self.name} has enough experience to level up. Speak to the camp captain!\n")
+
+        
+        self.check_level_up()
 
 
     def check_level_up(self):
@@ -128,13 +129,14 @@ class Warrior(Human):
             print(f"{self.name} has leveled up! You are now level {self.level}.\n")
             self.increase_stats()
 
+
     def increase_stats(self):
         
         self.strength += 1 
         self.speed += 1
         self.defense += 1
         self.attack += 1
-        self.max_health += 10
+        #self.max_health += 10
         self.health = self.max_health  
         print(f"{self.name}'s strength, speed, defense, and attack have increased!\n")
 
@@ -189,8 +191,12 @@ class Monster:
         damage_multiplier = random.uniform(0.6, 0.9)  # Random factor for variability
         damage = self.strength * self.attack * damage_multiplier
         rounded_damage = round(damage, 1)
+        if rounded_damage < 1:
+            rounded_damage = 1  # Ensure minimum damage is 1
         print(f"{self.name} attacked and dealt {rounded_damage} damage to {target.name}.\n")
+        target.lose_health(rounded_damage)
         return rounded_damage
+
 
 
     def lose_health(self, damage):
@@ -236,19 +242,7 @@ class Shop:
        
         }
 
-    class Shop:
-        def __init__(self):
-            self.items_for_sale = {
-                'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
-            }
-            self.item_value = {
-                "Gilded Feather": 6, 
-                "Enchanted Stone": 20,
-                "Health Potion": 5,
-                "Mystic Herb": 6,  
-                "Ancient Coin": 10,  
-                "Lost Necklace": 20  
-            }
+    
 
     def display_items_for_sale(self, player):
         while True:
@@ -289,7 +283,7 @@ class Shop:
             print("\nItem not found.")
 
         input("\nPress Enter to continue...")
-        self.shop_menu(player)
+
     
     def shop_menu(self, player):
         while True:
