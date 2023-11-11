@@ -129,8 +129,8 @@ class Inventory:
     
     # Loot Items
 LOOT_ITEMS = {
-    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 20},
-    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 10}
+    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 100},
+    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 100}
 }
 
 def get_loot_drop():
