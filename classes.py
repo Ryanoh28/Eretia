@@ -39,10 +39,10 @@ class Warrior(Human):
         super().__init__(name)
         self.last_training_time = 0
         self.training_cooldown = 3600  # Cooldown in seconds (1 hour)
-        self.strength = 5
-        self.speed = 5
-        self.defense = 5
-        self.attack = 5
+        self.strength = 2
+        self.speed = 2
+        self.defense = 2
+        self.attack = 2
         self.max_health = 100
         self.level = 1
         self.experience = 0
