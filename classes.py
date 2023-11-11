@@ -25,7 +25,7 @@ class Human:
         if self.health <= 0:
             self.defeated()
             if self.health <= 0:
-                self.defeated()  # Handle the defeat of the player
+                self.defeated()  
             else:
                 print(f"{self.name} lost {effective_damage} health and now has {self.health} health.\n")
 
@@ -37,8 +37,8 @@ class Human:
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
-        self.last_training_time = 0
-        self.training_cooldown = 3600  # Cooldown in seconds (1 hour)
+        #self.last_training_time = 0
+        #self.training_cooldown = 3600  
         self.strength = 2
         self.speed = 2
         self.defense = 2
@@ -49,6 +49,7 @@ class Warrior(Human):
         self.in_combat = False
         self.gold = 0
         self.choice = None
+        self.training_count = 0 # Replacing training time cooldown
 
     def training(self):
         if self.training_count < 2:
@@ -78,12 +79,12 @@ class Warrior(Human):
         target.lose_health(damage)  
 
     def normal_attack(self, target):
-    # Initial attack
+    
         damage = self.calculate_attack_damage()
         target.lose_health(damage)
         print(f"{self.name} used a normal attack and dealt {damage} damage.")
 
-    # Check for extra attack based on speed
+    
         if self.speed >= target.speed * 2:
             extra_damage = self.calculate_attack_damage()
             target.lose_health(extra_damage)
@@ -110,10 +111,10 @@ class Warrior(Human):
 
 
     def check_level_up(self):
-        while self.experience >= 100:  # Level up for every 100 experience points
+        while self.experience >= 100:  
             self.experience -= 100
             self.level += 1
-            self.training_count = 0  # Reset training count on level up
+            self.training_count = 0  
             print(f"{self.name} has leveled up! You are now level {self.level}.\n")
             self.increase_stats()
 
@@ -124,7 +125,7 @@ class Warrior(Human):
         self.defense += 1
         self.attack += 1
         self.max_health += 10
-        self.health = self.max_health  # Restore health to new max health
+        self.health = self.max_health  
         print(f"{self.name}'s strength, speed, defense, and attack have increased!\n")
 
     def spend_gold(self, amount):

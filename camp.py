@@ -10,7 +10,7 @@ def return_to_camp(player, shop):
 
         if choice == "t":
             #print("*You trained at camp with the recruits*")
-            player.training_strength()
+            player.training()
         elif choice == "l":
             leave_camp(player, shop)
             break
