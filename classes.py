@@ -1,8 +1,8 @@
 #classes.py
 import random
-from items import Inventory, Potion, Item
+from items import Inventory, Potion, Item, Weapon
 from utilities import clear_console
-import time
+
 class Human:
     def __init__(self, name):
         self.name = name
@@ -37,8 +37,8 @@ class Human:
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
-        #self.last_training_time = 0
-        #self.training_cooldown = 3600  
+        # Initial attributes
+        self.weapon = Weapon("Rusted Sword", 0, 0)  # Default weapon
         self.strength = 2
         self.speed = 2
         self.defense = 2
@@ -49,14 +49,14 @@ class Warrior(Human):
         self.in_combat = False
         self.gold = 0
         self.choice = None
-        self.training_count = 0 # Replacing training time cooldown
+        self.training_count = 0
         self.search_count = 0
-        self.weapon = None
+        
     
     def equip_weapon(self, weapon):
         self.weapon = weapon
         print(f"{self.name} equipped {weapon.name}.\n")
-        
+
     def reset_search_count(self):
         self.search_count = 0
         
@@ -86,25 +86,31 @@ class Warrior(Human):
    
 
     def critical_attack(self, target):
-        damage = round(self.strength * 2, 1)  
-        print(f"{self.name} used a critical attack and dealt {damage} damage.\n")
+        crit_damage_bonus = self.weapon.extra_damage if self.weapon else 0
+        damage = round((self.strength * 2) + crit_damage_bonus, 1)
+        weapon_name = self.weapon.name if self.weapon else "fists"
+        print(f"{self.name} used a critical attack with {weapon_name} and dealt {damage} damage.\n")
         target.lose_health(damage)
 
     def normal_attack(self, target):
-        # Check for critical hit
-        if random.randint(1, 100) <= 5:  # 5% chance for a critical hit
+        crit_chance = 5  # Base critical hit chance
+        if self.weapon:
+            crit_chance += self.weapon.crit_chance_bonus
+
+        if random.randint(1, 100) <= crit_chance:
             self.critical_attack(target)
         else:
-            # Normal attack damage calculation
-            damage = round(self.strength * random.uniform(1, 1.5), 1)  # Damage based only on strength and random factor, rounded to 1 decimal place
-            target.lose_health(damage)
-            print(f"{self.name} used a normal attack and dealt {damage} damage.")
+            base_damage = round(self.strength * random.uniform(1, 1.5), 1)
+            total_damage = base_damage + (self.weapon.extra_damage if self.weapon else 0)
+            weapon_name = self.weapon.name if self.weapon else "fists"
+            target.lose_health(total_damage)
+            print(f"{self.name} used a normal attack with {weapon_name} and dealt {total_damage} damage.")
 
-        # Check for extra attack based on speed
         if self.speed >= target.speed * 2:
-            extra_damage = round(self.strength * random.uniform(1, 1.5), 1)  # Same calculation for extra attack, rounded to 1 decimal place
+            extra_damage = round(self.strength * random.uniform(1, 1.5), 1)
+            extra_damage += self.weapon.extra_damage if self.weapon else 0
             target.lose_health(extra_damage)
-            print(f"{self.name} uses their swift speed to attack again, dealing {extra_damage} damage.")
+            print(f"{self.name} uses their swift speed to attack again with {weapon_name}, dealing {extra_damage} damage.")
 
     def regain_health(self, healing):
         self.health += healing
