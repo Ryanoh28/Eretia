@@ -24,7 +24,7 @@ class Inventory:
 
     def add_item(self, item):
         self.items.append(item)
-        print(f"Added {item.name} to inventory")
+        print(f"Added {item.name} to inventory\n")
 
         
     def show_inventory(self):
@@ -48,14 +48,14 @@ class Inventory:
 
             if inventory_choice in ['b', 'back']:
                 return
-            elif inventory_choice:  # Check for a valid choice
+            elif inventory_choice:  
                 item_used = self.use_item(inventory_choice, player)
                 if item_used:
                     pass
                 #print(f"\n{inventory_choice.title()} used successfully.\n")
                 else:
                     print("\nItem not found. Try again or type '(B)ack' to return.\n")
-                input("Press Enter to continue...")  # Allow the player to read the message
+                input("Press Enter to continue...")  
             else:
                 print("No item name entered. Please enter a valid item name.")
 
@@ -119,14 +119,17 @@ class Inventory:
     
     # Loot Items
 LOOT_ITEMS = {
-    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 100},
-    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 100}
+    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 15},
+    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 10}
 }
 
 def get_loot_drop():
     dropped_items = []
     roll = random.randint(1, 100)
+    #print(f"Debug: Roll is {roll}")  # Debug print
     for name, data in LOOT_ITEMS.items():
         if roll <= data["chance"]:
             dropped_items.append(Item(name, data["description"]))
+            #print(f"Debug: Added {name} to dropped items")  # Debug print
+    #print(f"Debug: Dropped items are {dropped_items}")  # Debug print
     return dropped_items
