@@ -18,7 +18,8 @@ def return_to_camp(player, shop):
             converse_with_camp_captain(player)
         elif choice == "r":
             player.regain_health(100)
-            print(f"\nYou have rested and regained health. Current health: {player.health}.\n")
+            player.reset_search_count() 
+            print(f"\nYou rested at camp. \nCurrent health: {player.health}\n")
         elif choice == "i":
             player.inventory.inventory_menu(player)
         elif choice == "s":
@@ -66,7 +67,7 @@ def meet_camp_captain(player):
     
     health_potion = Potion("Health Potion", "A potion that restores 50 health.", 50)
     player.inventory.add_item(health_potion)
-    print(f"\nCamp Captain: 'Remember, use it wisely, and don't hesitate to return should you need more supplies or assistance.'\n")
+    print(f"\nCamp Captain: 'Remember, use it wisely, and don't hesitate to return should you need more supplies.'\n")
 
 
 
