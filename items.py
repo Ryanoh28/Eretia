@@ -13,7 +13,7 @@ class Potion(Item):
     def use(self, target):
         if target.health < target.max_health:
             target.regain_health(self.healing_amount)
-            print(f"\n*{target.name} uses {self.name} and restores {self.healing_amount} health*")
+            #print(f"\n{target.name} uses {self.name} and restores {self.healing_amount} health")
             return True
         else:
             return False
@@ -41,14 +41,24 @@ class Inventory:
 
 
     def inventory_menu(self, player):
-        print(f"\nInventory: {player.health} Health | {player.gold} Gold\n")
         while True:
+            clear_console()
+            print(f"\nInventory: {player.health} Health | {player.gold} Gold\n")
+            print("=== Player Stats ===")
+            print(f"Level: {player.level}")
+            print(f"Experience: {player.experience}/100")
+            print(f"Strength: {player.strength}")
+            print(f"Speed: {player.speed}")
+            print(f"Defense: {player.defense}")
+            print("====================\n")
+            
             self.show_inventory()
             inventory_choice = input("\nEnter the name of the item you want to use or (B)ack: ").lower().strip()
 
             if inventory_choice in ['b', 'back']:
+                clear_console()  # Clear the console before returning
                 return
-            elif inventory_choice:  
+            elif inventory_choice:
                 item_used = self.use_item(inventory_choice, player)
                 if item_used:
                     pass
