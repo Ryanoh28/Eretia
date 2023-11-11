@@ -16,7 +16,7 @@ def combat(player, monster, shop):
             player.normal_attack(monster)
             if not monster.check_if_alive():
                 print(f"\nThe {monster.name} has been defeated!\n")
-                player.gain_experience(10)
+                player.gain_experience(100) # 100 for testing
 
                 loot = get_loot_drop()
                 for item in loot:
@@ -75,10 +75,6 @@ def fight_monster(player, shop, location):
     player.in_combat = False
 
 
-
-
-
-
 def post_combat_options(player, shop):
     while True:
         clear_console()
@@ -93,7 +89,7 @@ def post_combat_options(player, shop):
         elif leave_choice == "c":
             break
         else:
-            print("\nInvalid choice. Please enter 'C' to continue fighting, 'R' to return to camp, or 'I' to check inventory.\n")
+            print("\nInvalid choice. Please enter 'C' to continue fighting, 'R' to return, or 'I' to check inventory.\n")
 
 # def combat_phase(player, shop):
 #     while player.alive:
