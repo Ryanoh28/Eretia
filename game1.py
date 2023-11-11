@@ -15,10 +15,11 @@ def load_game(filename="savegame.pkl"):
 
 def welcome():
     clear_console()
-    print("\nWelcome to the land of Eretia.")
-    print("You are a warrior and you must defeat the monsters!\n")
-    name = input("What is your name?\n")
+    print("Welcome to the land of Eretia.\n")
+    print("Drawn by tales of untold challenges and uncharted frontiers, you have journeyed to Eretia's perilous edges. Here, where civilisation meets the wild, legends are born, and warriors are tested against the hordes of monsters that roam these ancient lands.\n")
+    name = input("Brave adventurer, what is your name?\n")
     return name
+
 
 def game_over():
     print("Game over.\n")
