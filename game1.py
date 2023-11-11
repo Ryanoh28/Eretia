@@ -47,6 +47,7 @@ def main_menu(player=None, shop=None):
         shop = Shop()
 
     while True:
+        clear_console()
         print("\n=== Main Menu ===")
         print("1. New Game")
         print("2. Continue Game")
