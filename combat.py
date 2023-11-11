@@ -48,7 +48,7 @@ def fight_monster(player, shop, location):
     while player.in_combat:
         # Create a monster appropriate for the current location
         monster = create_monster(location)
-        print(f"\nYou encounter a {monster.name}...\n")
+        print(f"You encounter a {monster.name}...\n")
         combat_result = combat(player, monster, shop)
 
         if combat_result == 'monster_defeated':
