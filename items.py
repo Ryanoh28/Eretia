@@ -5,6 +5,13 @@ class Item:
         self.name = name
         self.description = description
 
+class Weapon:
+    def __init__(self, name, extra_damage, crit_chance_bonus=0):
+        self.name = name
+        self.extra_damage = extra_damage
+        self.crit_chance_bonus = crit_chance_bonus
+
+
 class Potion(Item):
     def __init__(self, name, description, healing_amount):
         super().__init__(name, description)
