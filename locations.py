@@ -22,13 +22,24 @@ def enter_dark_forest(player, shop):
             print("\nInvalid choice. Please enter 'H' to hunt monsters or 'R' to return to camp.\n")
 
 def search_dark_forest(player):
-    print("\nSearching the Dark Forest...")
+    print("Searching the Dark Forest...\n")
     found_item = get_location_loot(DARK_FOREST_LOOT)
+
     if found_item:
         print(f"You found a {found_item.name}!")
         player.inventory.add_item(found_item)
+        
+        examine_choice = input("Do you want to examine it? (Y/N): ").lower().strip()
+        if examine_choice == 'y':
+            clear_console()
+            print(f"\n{found_item.name}: {found_item.description}")
+        
+        input("\nPress Enter to continue...")  # Return to the forest menu after pressing enter once.
     else:
         print("You searched the forest but found nothing of interest.")
+        input("Press Enter to continue...")
+
+
 
 def get_location_loot(loot_table):
     roll = random.randint(1, 100)
