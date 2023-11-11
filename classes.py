@@ -39,7 +39,7 @@ class Warrior(Human):
         super().__init__(name)
         #self.last_training_time = 0
         #self.training_cooldown = 3600  
-        self.strength = 2
+        self.strength = 100
         self.speed = 2
         self.defense = 2
         self.attack = 2
@@ -125,7 +125,7 @@ class Warrior(Human):
 
     def increase_stats(self):
         
-        self.strength += 1
+        self.strength += 1 
         self.speed += 1
         self.defense += 1
         self.attack += 1
@@ -295,7 +295,7 @@ class Shop:
     def sell_items_interface(self, player):
         while True:
             clear_console()
-            print("\nItems you can sell:")
+            print("Items you can sell:\n")
             for item in player.inventory.items:
                 sale_price = self.item_value.get(item.name, 0)
                 print(f"- {item.name}: {sale_price} gold")
