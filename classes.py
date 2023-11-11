@@ -50,17 +50,29 @@ class Warrior(Human):
         self.gold = 0
         self.choice = None
 
-    def training_strength(self):
-        current_time = time.time()
-        if current_time - self.last_training_time >= self.training_cooldown:
-            self.strength += 2
-            print(f"{self.name}'s training increased strength by 2 points to {self.strength}.\n")
-            self.last_training_time = current_time
+    def training(self):
+        if self.training_count < 2:
+            print(f"\nWhat would you like to train? (A. Strength, B. Speed, C. Defense)")
+            stat_choice = input().lower().strip()
+
+            if stat_choice == "a":
+                self.strength += 1
+                print(f"{self.name}'s strength increased to {self.strength}.\n")
+            elif stat_choice == "b":
+                self.speed += 1
+                print(f"{self.name}'s speed increased to {self.speed}.\n")
+            elif stat_choice == "c":
+                self.defense += 1
+                print(f"{self.name}'s defense increased to {self.defense}.\n")
+            else:
+                print("Invalid choice. Please choose a valid stat to train.\n")
+                return
+
+            self.training_count += 1
         else:
-            remaining_time = self.training_cooldown - (current_time - self.last_training_time)
-            print(f"Cannot train yet. Please wait for {int(remaining_time)} seconds.\n")
+            print("You have already trained twice at this level. Level up to train more.\n")
     
-    def special_attack(self, target):
+    def critical_attack(self, target):
         damage = self.strength * self.attack * 1  
         print(f"{self.name} used a strong attack and dealt {damage} damage.\n")
         target.lose_health(damage)  
@@ -101,6 +113,7 @@ class Warrior(Human):
         while self.experience >= 100:  # Level up for every 100 experience points
             self.experience -= 100
             self.level += 1
+            self.training_count = 0  # Reset training count on level up
             print(f"{self.name} has leveled up! You are now level {self.level}.\n")
             self.increase_stats()
 
