@@ -223,7 +223,11 @@ class Shop:
         self.item_value = {
             "Gilded Feather": 6, 
             "Enchanted Stone": 20,
-            "Health Potion": 5
+            "Health Potion": 5,
+            "Mystic Herb": 6,  
+            "Ancient Coin": 10,  
+            "Lost Necklace": 20  
+       
         }
 
     def display_items_for_sale(self, player):
