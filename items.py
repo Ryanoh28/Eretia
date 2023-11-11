@@ -26,7 +26,6 @@ class Inventory:
         self.items.append(item)
         print(f"Added {item.name} to inventory\n")
 
-        
     def show_inventory(self):
         if not self.items:
             print("\n*Your inventory is empty*\n")
@@ -36,9 +35,8 @@ class Inventory:
                 item_name = item.name
                 item_count[item_name] = item_count.get(item_name, 0) + 1
             
-            for item_name, count in item_count.items():
-                print(f"- {item_name} ({count})")
-
+            for index, (item_name, count) in enumerate(item_count.items(), 1):
+                print(f"{index}. {item_name} ({count})")
 
     def inventory_menu(self, player):
         while True:
@@ -53,38 +51,46 @@ class Inventory:
             print("====================\n")
             
             self.show_inventory()
-            inventory_choice = input("\nEnter the name of the item you want to use or (B)ack: ").lower().strip()
+            inventory_choice = input("\nEnter the number of the item you want to use or (B)ack: ").lower().strip()
 
             if inventory_choice in ['b', 'back']:
                 clear_console()  # Clear the console before returning
                 return
             elif inventory_choice:
-                item_used = self.use_item(inventory_choice, player)
-                if item_used:
-                    pass
-                #print(f"\n{inventory_choice.title()} used successfully.\n")
-                else:
-                    print("\nItem not found. Try again or type '(B)ack' to return.\n")
+                try:
+                    choice_index = int(inventory_choice) - 1
+                    self.use_item(choice_index, player)
+                except ValueError:
+                    print("Invalid choice. Please enter a valid number.")
+                except IndexError:
+                    print("Item not found. Try again or type '(B)ack' to return.")
                 input("Press Enter to continue...")  
             else:
-                print("No item name entered. Please enter a valid item name.")
+                print("No item number entered. Please enter a valid item number.")
 
             clear_console()
             print(f"\nInventory: {player.health} Health | {player.gold} Gold\n")
 
-
-
-    def use_item(self, item_name, target):
-        item_name = item_name.lower()
-        matching_items = [item for item in self.items if item_name in item.name.lower()]
-
-        if len(matching_items) == 0:
+    def use_item(self, index, target):
+        item_list = [item for item in self.items]
+        if index >= 0 and index < len(item_list):
+            item = item_list[index]
+            if isinstance(item, Potion):
+                if target.health < target.max_health:  
+                    item.use(target)
+                    self.items.remove(item)
+                    print(f"Used {item.name}.")
+                    return True
+                else:
+                    print(f"\n{target.name}'s health is already full. Cannot use {item.name}.")
+                    return False
+            else:
+                print(f"You can't use {item.name} in this way.")
+                return False
+        else:
             print("Item not found in inventory.")
             return False
-        else:
-            
-            item = matching_items[0]
-            return self.use_specific_item(item, target)
+
 
 
     def use_specific_item(self, item, target):
