@@ -17,7 +17,7 @@ def return_to_camp(player, shop):
         elif choice == "c":
             converse_with_camp_captain(player)
         elif choice == "r":
-            player.regain_health(20)
+            player.regain_health(100)
             print(f"\nYou have rested and regained health. Current health: {player.health}.\n")
         elif choice == "i":
             player.inventory.inventory_menu(player)
