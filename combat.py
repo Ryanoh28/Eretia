@@ -16,11 +16,18 @@ def combat(player, monster, shop):
             player.normal_attack(monster)
             if not monster.check_if_alive():
                 print(f"\nThe {monster.name} has been defeated!\n")
+                player.gain_experience(10)
+
                 loot = get_loot_drop()
                 for item in loot:
-                    print(f"\nYou found a {item.name}!")
+                    print(f"You found a {item.name}!")
                     player.inventory.add_item(item)
-                player.gain_experience(10)
+                    
+                    examine_choice = input("Do you want to examine it? (Y/N): ").lower().strip()
+                    if examine_choice == 'y':
+                        clear_console()
+                        print(f"\n{item.name}: {item.description}\n")
+
                 input("Press Enter to continue...")
                 return 'monster_defeated'
 
