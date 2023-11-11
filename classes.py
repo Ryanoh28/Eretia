@@ -53,7 +53,7 @@ class Warrior(Human):
 
     def training(self):
         if self.training_count < 2:
-            print(f"\nWhat would you like to train? (A. Strength, B. Speed, C. Defense)")
+            print(f"\nWhat would you like to train? (A) Strength, (B) Speed, (C) Defense)")
             stat_choice = input().lower().strip()
 
             if stat_choice == "a":
@@ -73,28 +73,33 @@ class Warrior(Human):
         else:
             print("You have already trained twice at this level. Level up to train more.\n")
     
+   
+
     def critical_attack(self, target):
-        damage = self.strength * self.attack * 1  
-        print(f"{self.name} used a strong attack and dealt {damage} damage.\n")
-        target.lose_health(damage)  
+        damage = round(self.strength * 2, 1)  
+        print(f"{self.name} used a critical attack and dealt {damage} damage.\n")
+        target.lose_health(damage)
 
     def normal_attack(self, target):
-    
-        damage = self.calculate_attack_damage()
-        target.lose_health(damage)
-        print(f"{self.name} used a normal attack and dealt {damage} damage.")
+        # Check for critical hit
+        if random.randint(1, 100) <= 5:  # 5% chance for a critical hit
+            self.critical_attack(target)
+        else:
+            # Normal attack damage calculation
+            damage = round(self.strength * random.uniform(1, 1.5), 1)  # Damage based only on strength and random factor, rounded to 1 decimal place
+            target.lose_health(damage)
+            print(f"{self.name} used a normal attack and dealt {damage} damage.")
 
-    
+        # Check for extra attack based on speed
         if self.speed >= target.speed * 2:
-            extra_damage = self.calculate_attack_damage()
+            extra_damage = round(self.strength * random.uniform(1, 1.5), 1)  # Same calculation for extra attack, rounded to 1 decimal place
             target.lose_health(extra_damage)
             print(f"{self.name} uses their swift speed to attack again, dealing {extra_damage} damage.")
-    
-    def calculate_attack_damage(self):
-        # This method calculates the damage based on strength, attack stat, and random factor
-        damage_multiplier = random.uniform(0.7, 1.0)
-        damage = self.strength * self.attack * damage_multiplier
-        return round(damage, 1)
+
+    # ... other methods ...
+
+
+
 
     def regain_health(self, healing):
         self.health += healing
@@ -157,14 +162,14 @@ class Warrior(Human):
 
 
 class Monster:
-    def __init__(self, name, health=60):
+    def __init__(self, name, health, strength_max, speed_max, defense_max, attack_max):
         self.alive = True
         self.name = name
         self.health = health
-        self.strength = random.randint(1, 8)
-        self.speed = random.randint(1, 8)
-        self.defense = random.randint(1, 8)
-        self.attack = random.randint(1, 8)
+        self.strength = random.randint(1, strength_max)
+        self.speed = random.randint(1, speed_max)
+        self.defense = random.randint(1, defense_max)
+        self.attack = random.randint(1, attack_max)
 
     def dead(self):
         self.alive = False
@@ -188,6 +193,26 @@ class Monster:
         #print(f"Debug: {self.name}'s health is now {self.health}.")  # Debug print
         if self.health <= 0:
             self.dead()
+
+import random
+
+def create_monster(location):
+    base_health = 60
+    stat_caps = {
+        "Dark Forest": 4,
+        "Damp Cave": 6,
+        # Add other locations as needed
+    }
+    monster_names = {
+        "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
+        "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
+        # Add more names for other locations
+    }
+
+    cap = stat_caps.get(location, 4)  # Default to 4 if location is not in stat_caps
+    name = random.choice(monster_names.get(location, ["Generic Monster"]))  # Default to "Generic Monster" if location not in monster_names
+    return Monster(name, base_health, cap, cap, cap, cap)
+
 
 
 class Shop:
