@@ -2,12 +2,27 @@ from items import Potion
 from utilities import clear_console
 from locations import enter_dark_forest
 from classes import Weapon
+from missions import speak_with_eldrin
+
+def view_quest_log(player):
+    clear_console()
+    if not player.quests or all(not quest["accepted"] for quest in player.quests.values()):
+        print("You currently have no active quests.")
+    else:
+        print("Your Quests:")
+        for quest_name, quest_info in player.quests.items():
+            if quest_info["accepted"] and not quest_info["completed"]:
+                print(f"- {quest_name.title()}: In Progress")
+            elif quest_info["completed"]:
+                print(f"- {quest_name.title()}: Completed")
+    
 
 def return_to_camp(player, shop):
     while True:
         clear_console()
         print("You are at the camp. What would you like to do?\n")
-        choice = input("(T)rain, (L)eave, Ta(V)ern, (R)est, (I)nventory, (S)hop, (M)enu: ").lower().strip()
+        print("(T)rain, (L)eave, Ta(V)ern, (R)est, (I)nventory, (S)hop, (Q)uests, (M)enu")
+        choice = input("\nEnter your choice: ").lower().strip()
 
         if choice == "t":
             player.training()
@@ -23,6 +38,8 @@ def return_to_camp(player, shop):
             player.inventory.inventory_menu(player)
         elif choice == "s":
             shop.shop_menu(player)
+        elif choice == "q":
+            view_quest_log(player)
         elif choice == "m":
             from game1 import main_menu
             main_menu(player, shop)
@@ -37,7 +54,8 @@ def visit_tavern(player):
         print("You enter the bustling tavern filled with adventurers and townsfolk.\n")
         print("1. Talk to the Camp Captain")
         print("2. Listen to rumors")
-        print("3. Leave the tavern")
+        print("3. Speak with Eldrin the Greenwarden")
+        print("4. Leave the tavern")
         tavern_choice = input("\nWhat would you like to do? ").lower().strip()
 
         if tavern_choice == '1':
@@ -45,6 +63,8 @@ def visit_tavern(player):
         elif tavern_choice == '2':
             listen_to_rumors(player)
         elif tavern_choice == '3':
+            speak_with_eldrin(player)
+        elif tavern_choice == '4':
             clear_console()
             print("You leave the tavern and head back to the camp center.")
             break  # Breaks out of the loop to return to the camp menu
@@ -52,11 +72,12 @@ def visit_tavern(player):
             print("\nInvalid choice. Please enter a valid option.")
         input("\nPress Enter to continue...")
 
+
 def listen_to_rumors(player):
     clear_console()
     # Placeholder for future rumor listening functionality
     print("#Not implemented yet, low priority#")
-    print("You overhear various adventurers sharing stories and rumors about the lands beyond the camp.")
+    print("You overhear various adventurers sharing stories and rumors about the lands beyond the camp. Apparently one named 'Crook' has been seen walking around with an extra sword in his pants...")
     
 
 def leave_camp(player, shop):
