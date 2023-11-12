@@ -134,7 +134,7 @@ def meet_camp_captain(player):
     clear_console()
     
     print(f"Camp Captain: 'And take this Rusted Sword as well. It's not much, but it's better than nothing.'")
-    rusted_sword = Weapon("Rusted Sword", 0, 0)
+    rusted_sword = Weapon("Rusted Sword", 0.5, 0.5)
     player.available_weapons.append(rusted_sword)
     print(f"\n{player.name} received a Rusted Sword.")  # Add this line to confirm the receipt
     input("\nPress Enter to continue...")

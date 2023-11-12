@@ -11,20 +11,14 @@ class Human:
         self.health = 100  # Default max health for all humans
 
     def lose_health(self, damage, attacker_strength):
-        #print(f"Debug: {self.name} is about to lose health")
-        effective_damage = max(0, damage - (self.defense - attacker_strength))
-        
-        # Handling minimum damage rule
-        effective_damage = max(1, effective_damage)
+        damage_reduction = max(0, self.defense - attacker_strength)
+        effective_damage = max(1, damage - damage_reduction)  # Ensure minimum damage of 1
 
-        # Adjusting for floating-point precision
-        effective_damage = round(effective_damage, 2)
-        
         self.health -= effective_damage
         self.health = round(self.health, 1)
 
         if effective_damage > 0:
-            print(f"{self.name}'s defense negated some of the damage from the attack!")
+            print(f"{self.name}'s defense negated {damage_reduction} points of damage from the attack!")
         else:
             print(f"{self.name} could not negate any damage from the attack.")
 
@@ -32,9 +26,6 @@ class Human:
 
         if self.health <= 0:
             self.defeated()
-
-
-
 
     def defeated(self):
         self.alive = False
@@ -188,14 +179,14 @@ class Warrior(Human):
     
     def handle_player_defeat(self, shop):
         clear_console()
-        print(f"{self.name} has been defeated.\n")  
+        print(f"\n{self.name} has been defeated.\n\n")  
         self.health = self.max_health * 0.5  # Regain 50% of max health
-        self.alive = True  # Reset the alive status to True
-        print(f"{self.name} stumbled back to camp after being defeated.")
-        print(f"{self.name} has regained 50% of their health.")  
+        self.alive = True
+        print(f"{self.name} stumbled back to camp after being defeated.\n")
+        print(f"{self.name} has regained 50% of their health.\n")  
+        input("Press Enter to return to camp...\n")  
         from camp import return_to_camp
-        return_to_camp(self, shop)  
-
+        return_to_camp(self, shop)
 
 class Monster:
     def __init__(self, name, health, strength_max, speed_max, defense_max, attack_max):
