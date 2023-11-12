@@ -53,6 +53,9 @@ class Warrior(Human):
         
     
     def equip_weapon_for_warrior(self, selected_weapon):
+        if self.weapon is not None:
+            print(f"\nYou already have {self.weapon.name} equipped. Unequip it first.")
+            return
         if selected_weapon in self.available_weapons:
             self.weapon = selected_weapon  
             self.available_weapons.remove(selected_weapon)  

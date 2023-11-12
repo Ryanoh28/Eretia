@@ -187,8 +187,11 @@ class Inventory:
                 try:
                     choice_index = int(choice) - 1
                     selected_weapon = player.available_weapons[choice_index]
-                    player.equip_weapon_for_warrior(selected_weapon)
-                    print(f"\nEquipped {selected_weapon.name}.")
+                    if player.weapon:
+                        print(f"You already have {player.weapon.name} equipped. Unequip it first.")
+                    else:
+                        player.equip_weapon_for_warrior(selected_weapon)
+                        print(f"\nEquipped {selected_weapon.name}.")
                 except (ValueError, IndexError):
                     print("Invalid choice. Please enter a valid number.")
                 except IndexError:
