@@ -49,12 +49,16 @@ def search_dark_forest(player):
 
 
 def get_location_loot(loot_table):
-    roll = random.randint(1, 100)
-    for name, info in loot_table.items():
-        if roll <= info["chance"]:
-            return Item(name, info["description"])
-    return None
+    total_chance = sum(info["chance"] for info in loot_table.values())
+    roll = random.randint(1, total_chance)
 
+    cumulative_chance = 0
+    for name, info in loot_table.items():
+        cumulative_chance += info["chance"]
+        if roll <= cumulative_chance:
+            return Item(name, info["description"])
+    
+    return None
 
 DARK_FOREST_LOOT = {
     "Mystic Herb": {"description": "A herb used in the concoction of various potions.", "chance": 20},
