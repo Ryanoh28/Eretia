@@ -28,42 +28,60 @@ class Potion(Item):
 class Inventory:
     def __init__(self):
         self.items = []
+        self.equipment = []
 
-    def view_equipment(self):
-            print("\n=== Equipment ===")
-            if self.equipped_weapon:
-                print(f"Equipped Weapon: {self.equipped_weapon.name}")
-            else:
-                print("No weapon equipped.")
-            print("=================\n")
-    
-    def equip_weapon(self, player, weapon_name):
-        matching_weapons = [item for item in self.items if isinstance(item, Weapon) and item.name == weapon_name]
+    def equip_weapon_from_inventory(self, player):
+        clear_console()
+        print("Available Weapons:")
+        # Display list of weapons in player's inventory
+        weapon_list = [item for item in player.inventory.items if isinstance(item, Weapon)]
+        for index, weapon in enumerate(weapon_list, 1):
+            print(f"{index}. {weapon.name}")
 
-        if matching_weapons:
-            weapon_to_equip = matching_weapons[0]
-            if self.equipped_weapon:
-                self.unequip_weapon(player)  
+        weapon_choice = input("\nEnter the number of the weapon to equip or (B)ack: ").lower().strip()
+        if weapon_choice in ['b', 'back']:
+            return
 
-            self.equipped_weapon = weapon_to_equip
-            player.equip_weapon(weapon_to_equip)
-            self.items.remove(weapon_to_equip)
-            print(f"\n{weapon_to_equip.name} has been equipped.\n")
-        else:
-            print("\nWeapon not found in inventory.\n")
+        try:
+            choice_index = int(weapon_choice) - 1
+            if choice_index < 0 or choice_index >= len(weapon_list):
+                raise ValueError
+            selected_weapon = weapon_list[choice_index]
+            player.weapon = selected_weapon
+            print(f"\n{player.name} equipped {selected_weapon.name}.\n")
+        except (ValueError, IndexError):
+            print("Invalid choice. Please enter a valid number.")
+        input("\nPress Enter to continue...")
 
     def unequip_weapon(self, player):
-        if self.equipped_weapon:
-            self.items.append(self.equipped_weapon)
-            print(f"\n{self.equipped_weapon.name} has been unequipped and added back to inventory.\n")
-            self.equipped_weapon = None
-            player.equip_weapon(None)  
+        clear_console()
+        if player.weapon:
+            print(f"Unequipping {player.weapon.name}.")
+            player.available_weapons.append(player.weapon)  # Add the unequipped weapon back to available weapons
+            player.weapon = None
+        else:
+            print("You have no weapon equipped.")
+        input("\nPress Enter to continue...")
+ 
 
+    def add_equipment(self, equipment):
+        self.equipment.append(equipment)
 
+    def remove_equipment(self, equipment):
+        if equipment in self.equipment:
+            self.equipment.remove(equipment)
+
+    
     def add_item(self, item):
         self.items.append(item)
         print(f"Added {item.name} to inventory\n")
 
+    def show_equipment(self):
+        print("=== Equipment ===")
+        for equipment in self.equipment:
+            print(f"- {equipment.name}")
+        print("=================\n")
+    
     def show_inventory(self):
         if not self.items:
             print("\n*Your inventory is empty*\n")
@@ -88,10 +106,13 @@ class Inventory:
             print(f"Defense: {player.defense}")
             print("====================\n")
 
+            print("==== Inventory ====")
             self.show_inventory()
-            print("\n=== Equipment ===")
+            print("====================\n")
+
+            print("==== Equipment ====")
             print("Equipped Weapon: " + (player.weapon.name if player.weapon else "None"))
-            print("=================\n")
+            print("====================\n")
 
             print("1. Use Item")
             print("2. View Equipment")
@@ -102,19 +123,11 @@ class Inventory:
             inventory_choice = input("\nWhat would you like to do? ").lower().strip()
 
             if inventory_choice == '1':
-                item_choice = input("\nEnter the number of the item you want to use: ").lower().strip()
-                try:
-                    choice_index = int(item_choice) - 1
-                    self.use_item(choice_index, player)
-                except ValueError:
-                    print("Invalid choice. Please enter a valid number.")
-                except IndexError:
-                    print("Item not found. Try again.")
+                self.use_item_interface(player)
             elif inventory_choice == '2':
-                self.view_equipment()
+                self.view_equipment(player)
             elif inventory_choice == '3':
-                weapon_name = input("\nEnter the name of the weapon to equip: ")
-                self.equip_weapon(player, weapon_name)
+                self.equip_weapon_interface(player)
             elif inventory_choice == '4':
                 self.unequip_weapon(player)
             elif inventory_choice in ['b', 'back']:
@@ -123,8 +136,76 @@ class Inventory:
             else:
                 print("Invalid choice. Please enter a valid option.")
 
-            input("\nPress Enter to continue...")
+    def use_item_interface(self, player):
+        while True:
             clear_console()
+            print("==== Inventory ====")
+            self.show_inventory()
+            print("====================\n")
+            
+            item_choice = input("\nEnter the number of the item you want to use or (B)ack: ").lower().strip()
+
+            if item_choice in ['b', 'back']:
+                break  # Break the inner loop to go back to the main inventory menu
+            else:
+                try:
+                    choice_index = int(item_choice) - 1
+                    self.use_item(choice_index, player)
+                    input("\nPress Enter to continue...")
+                except ValueError:
+                    print("Invalid choice. Please enter a valid number or 'B' to go back.")
+                except IndexError:
+                    print("Item not found. Try again or type 'B' to go back.")
+    
+    def equip_weapon_interface(self, player):
+        clear_console()
+        print("=== Available Weapons ===")
+        if player.available_weapons:
+            for index, weapon in enumerate(player.available_weapons, 1):
+                print(f"{index}. {weapon.name}")
+            choice = input("\nChoose a weapon to equip or (B)ack: ").lower().strip()
+            if choice in ['b', 'back']:
+                return
+            else:
+                try:
+                    choice_index = int(choice) - 1
+                    selected_weapon = player.available_weapons[choice_index]
+                    player.equip_weapon_for_warrior(selected_weapon)
+                    print(f"\nEquipped {selected_weapon.name}.")
+                except (ValueError, IndexError):
+                    print("Invalid choice. Please enter a valid number.")
+                except IndexError:
+                    print("Weapon not found. Try again.")
+        else:
+            print("No available weapons to equip.")
+        input("\nPress Enter to continue...")
+
+
+    def view_equipment(self, player):
+        clear_console()
+        print("\n=== Equipment ===")
+        
+        # Display the equipped weapon
+        if player.weapon:
+            print(f"Equipped Weapon: {player.weapon.name}")
+        else:
+            print("No weapon equipped.")
+
+        # Display unequipped weapons
+        print("\nAvailable Weapons:")
+        if player.available_weapons:
+            for index, weapon in enumerate(player.available_weapons, 1):
+                print(f"{index}. {weapon.name}")
+        else:
+            print("No additional weapons available.")
+
+        print("=================\n")
+        input("\nPress Enter to continue...")
+
+        
+
+        
+
 
 
     def use_item(self, index, target):
