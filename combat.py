@@ -16,7 +16,7 @@ def combat(player, monster, shop):
             player.normal_attack(monster)
             if not monster.check_if_alive():
                 print(f"\nThe {monster.name} has been defeated!\n")
-                player.gain_experience(100) # 100 for testing
+                player.gain_experience(100)  # 100 for testing
 
                 loot = get_loot_drop()
                 for item in loot:
@@ -31,10 +31,6 @@ def combat(player, monster, shop):
                 input("Press Enter to continue...")
                 return 'monster_defeated'
 
-            elif monster.alive:
-                damage_dealt = monster.monster_attack(player)
-                player.lose_health(damage_dealt, monster.strength)
-
         elif choice == "r":
             clear_console()
             print("You managed to escape from the Monster safely.\n")
@@ -42,10 +38,13 @@ def combat(player, monster, shop):
             player.choice = 'return_to_camp'
             return 'escaped'
 
-    if player.alive and not monster.alive:
-        return 'monster_defeated'
-    elif not player.alive:
+        if monster.alive:
+            monster.monster_attack(player)  # Monster attacks the player
+
+    if not player.alive:
         return 'player_defeated'
+    return 'end_of_combat'
+
 
 
 def fight_monster(player, shop, location):
@@ -89,33 +88,4 @@ def post_combat_options(player, shop):
         elif leave_choice == "c":
             break
         else:
-            print("\nInvalid choice. Please enter 'C' to continue fighting, 'R' to return, or 'I' to check inventory.\n")
-
-# def combat_phase(player, shop):
-#     while player.alive:
-#         print("\nWhat would you like to do at the camp?\n")
-        
-#         choice = input("(T)rain, (F)ight, (C)onverse with the captain, (R)est, check (I)nventory, or visit the (S)hop: ").lower()
-#         clear_console()
-
-#         if choice == "f":
-#             player.in_combat = True
-#             fight_monster(player, shop)
-#         elif choice == "t":
-#             player.training_strength()
-#         elif choice == "c":
-#             from camp import converse_with_camp_captain
-#             converse_with_camp_captain(player)
-#         elif choice == "r":
-#             player.regain_health(20)
-#             print(f"\nYou have rested and regained health. Current health: {player.health}.\n")
-#         elif choice == "i":
-#             from camp import manage_inventory
-#             manage_inventory(player)
-#         elif choice == "s": 
-#             shop.display_items(player)
-#         elif choice == 'm':
-#             from game1 import main_menu
-#             main_menu(player, shop)
-#         else:
-#             print("\nInvalid choice. Please enter 'T' to train, 'F' to fight, 'C' to converse, 'R' to rest, 'I' to check inventory, or 'S' to visit the shop.\n")            
+            print("\nInvalid choice. Please enter 'C' to continue fighting, 'R' to return, or 'I' to check inventory.\n")         
