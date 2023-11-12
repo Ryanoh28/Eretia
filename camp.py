@@ -1,4 +1,4 @@
-from items import Potion
+from items import Potion, Item
 from utilities import clear_console
 from locations import enter_dark_forest
 from classes import Weapon
@@ -132,7 +132,7 @@ def meet_camp_captain(player):
     player.inventory.add_item(health_potion)
     input("\nPress Enter to continue...")
     clear_console()
-
+    
     print(f"Camp Captain: 'And take this Rusted Sword as well. It's not much, but it's better than nothing.'")
     rusted_sword = Weapon("Rusted Sword", 0, 0)
     player.available_weapons.append(rusted_sword)

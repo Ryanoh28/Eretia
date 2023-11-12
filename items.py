@@ -30,6 +30,16 @@ class Inventory:
         self.items = []
         self.equipment = []
 
+    def count_item(self, item_name):
+        return sum(1 for item in self.items if item.name == item_name)
+    
+    def remove_items(self, item_name, count):
+        removed_count = 0
+        for item in reversed(self.items):
+            if item.name == item_name and removed_count < count:
+                self.items.remove(item)
+                removed_count += 1
+    
     def equip_weapon_from_inventory(self, player):
         clear_console()
         print("Available Weapons:")
@@ -111,7 +121,13 @@ class Inventory:
             print("====================\n")
 
             print("==== Equipment ====")
-            print("Equipped Weapon: " + (player.weapon.name if player.weapon else "None"))
+            if player.weapon:
+                weapon = player.weapon
+                print(f"Equipped Weapon: {weapon.name}")
+                print(f"  - Extra Damage: {weapon.extra_damage}")
+                print(f"  - Critical Chance Bonus: {weapon.crit_chance_bonus}")
+            else:
+                print("No weapon equipped.")
             print("====================\n")
 
             print("1. Use Item")
@@ -135,6 +151,7 @@ class Inventory:
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
+
 
     def use_item_interface(self, player):
         while True:
@@ -183,29 +200,30 @@ class Inventory:
 
     def view_equipment(self, player):
         clear_console()
-        print("\n=== Equipment ===")
-        
+        print("==== Equipment ====")
+
         # Display the equipped weapon
         if player.weapon:
-            print(f"Equipped Weapon: {player.weapon.name}")
+            weapon = player.weapon
+            print(f"Equipped Weapon: {weapon.name}")
+            print(f"  - Extra Damage: {weapon.extra_damage}")
+            print(f"  - Critical Chance Bonus: {weapon.crit_chance_bonus}")
         else:
             print("No weapon equipped.")
 
         # Display unequipped weapons
         print("\nAvailable Weapons:")
         if player.available_weapons:
-            for index, weapon in enumerate(player.available_weapons, 1):
-                print(f"{index}. {weapon.name}")
+            for weapon in player.available_weapons:
+                print(f"- {weapon.name} (Damage: {weapon.extra_damage}, Crit: {weapon.crit_chance_bonus})")
         else:
             print("No additional weapons available.")
 
+        # Armours etc later
+        
+
         print("=================\n")
         input("\nPress Enter to continue...")
-
-        
-
-        
-
 
 
     def use_item(self, index, target):
