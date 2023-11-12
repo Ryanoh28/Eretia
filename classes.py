@@ -258,13 +258,16 @@ class Shop:
         }
         self.item_value = {
             "Gilded Feather": 6, 
-            "Enchanted Stone": 20,
+            "Enchanted Stone": 10,
             "Health Potion": 5,
             "Mystic Herb": 3,  
             "Ancient Coin": 5,  
             "Lost Necklace": 10,  
             "Rusted Sword": 5,
-            "Blade of Verdant Greens": 15
+            "Blade of Verdant Greens": 15,
+            "Tangled Vine": 1,
+            "Mossy Pebble": 1,
+            "Cracked Pottery Shard": 2
         }
 
     

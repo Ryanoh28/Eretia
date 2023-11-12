@@ -49,7 +49,7 @@ def search_dark_forest(player):
 
 
 def get_location_loot(loot_table):
-    total_chance = sum(info["chance"] for info in loot_table.values())
+    total_chance = 100  
     roll = random.randint(1, total_chance)
 
     cumulative_chance = 0
@@ -60,9 +60,12 @@ def get_location_loot(loot_table):
     
     return None
 
+
 DARK_FOREST_LOOT = {
-    "Mystic Herb": {"description": "A herb used in the concoction of various potions.", "chance": 20},
+    "Mystic Herb": {"description": "A herb used in the concoction of various potions.", "chance": 35},
     "Ancient Coin": {"description": "An old coin from a forgotten era.", "chance": 10},
     "Lost Necklace": {"description": "A beautiful necklace, lost in time.", "chance": 5},
-    # Add other items as needed
+    "Tangled Vine": {"description": "A common vine, often found entangled in trees.", "chance": 35},
+    "Mossy Pebble": {"description": "A small stone covered in soft moss.", "chance": 35},
+    "Cracked Pottery Shard": {"description": "A fragment of an ancient clay pot.", "chance": 30}
 }
