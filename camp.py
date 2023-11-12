@@ -1,6 +1,7 @@
 from items import Potion
 from utilities import clear_console
 from locations import enter_dark_forest
+from classes import Weapon
 
 def return_to_camp(player, shop):
     while True:
@@ -111,8 +112,13 @@ def meet_camp_captain(player):
     input("\nPress Enter to continue...")
     clear_console()
 
-    print(f"Camp Captain: 'Remember, use it wisely, and don't hesitate to return should you need more supplies.'")
+    print(f"Camp Captain: 'And take this Rusted Sword as well. It's not much, but it's better than nothing.'")
+    rusted_sword = Weapon("Rusted Sword", 0, 0)
+    player.available_weapons.append(rusted_sword)
+    print(f"\n{player.name} received a Rusted Sword.")  # Add this line to confirm the receipt
     input("\nPress Enter to continue...")
+
+
     clear_console()
 
 
