@@ -46,6 +46,7 @@ class Warrior(Human):
         # Initial attributes
         self.weapon = None
         self.available_weapons = []
+        self.quests = {}
         self.strength = 2
         self.speed = 2
         self.defense = 2
@@ -62,8 +63,8 @@ class Warrior(Human):
     
     def equip_weapon_for_warrior(self, selected_weapon):
         if selected_weapon in self.available_weapons:
-            self.weapon = selected_weapon  # Equip the selected weapon
-            self.available_weapons.remove(selected_weapon)  # Remove it from available weapons
+            self.weapon = selected_weapon  
+            self.available_weapons.remove(selected_weapon)  
             #print(f"\n{self.name} equipped {selected_weapon.name}.")
         else:
             print("This weapon is not available to equip.")
@@ -83,6 +84,7 @@ class Warrior(Human):
 
     def training(self):
         if self.training_count < 2:
+            clear_console()
             print(f"What would you like to train? (A) Strength, (B) Speed, (C) Defense\n")
             stat_choice = input().lower().strip()
 
@@ -101,6 +103,7 @@ class Warrior(Human):
 
             self.training_count += 1
         else:
+            clear_console()
             print("You have already trained twice at this level. Level up to train more.\n")
     
    
