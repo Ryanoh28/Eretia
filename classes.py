@@ -11,7 +11,15 @@ class Human:
         self.health = 100  # Default max health for all humans
 
     def lose_health(self, damage, attacker_strength):
+        #print(f"Debug: {self.name} is about to lose health")
         effective_damage = max(0, damage - (self.defense - attacker_strength))
+        
+        # Handling minimum damage rule
+        effective_damage = max(1, effective_damage)
+
+        # Adjusting for floating-point precision
+        effective_damage = round(effective_damage, 2)
+        
         self.health -= effective_damage
         self.health = round(self.health, 1)
 
@@ -24,10 +32,8 @@ class Human:
 
         if self.health <= 0:
             self.defeated()
-            if self.health <= 0:
-                self.defeated()  
-            else:
-                print(f"{self.name} lost {effective_damage} health and now has {self.health} health.\n")
+
+
 
 
     def defeated(self):
@@ -38,7 +44,8 @@ class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
         # Initial attributes
-        self.weapon = Weapon("Rusted Sword", 0, 0)  # Default weapon
+        self.weapon = None
+        self.available_weapons = []
         self.strength = 2
         self.speed = 2
         self.defense = 2
@@ -53,9 +60,22 @@ class Warrior(Human):
         self.search_count = 0
         
     
-    def equip_weapon(self, weapon):
-        self.weapon = weapon
-        print(f"{self.name} equipped {weapon.name}.\n")
+    def equip_weapon_for_warrior(self, selected_weapon):
+        if selected_weapon in self.available_weapons:
+            self.weapon = selected_weapon  # Equip the selected weapon
+            self.available_weapons.remove(selected_weapon)  # Remove it from available weapons
+            #print(f"\n{self.name} equipped {selected_weapon.name}.")
+        else:
+            print("This weapon is not available to equip.")
+
+
+    def unequip_weapon(self, player):
+        if player.weapon:
+            player.unequip_weapon()
+            print(f"Unequipped {player.weapon.name}.")
+        else:
+            print("You have no weapon equipped.")
+
 
     def reset_search_count(self):
         self.search_count = 0
@@ -90,7 +110,7 @@ class Warrior(Human):
         damage = round((self.strength * 2) + crit_damage_bonus, 1)
         weapon_name = self.weapon.name if self.weapon else "fists"
         print(f"{self.name} used a critical attack with {weapon_name} and dealt {damage} damage.\n")
-        target.lose_health(damage)
+        target.monster_lose_health(damage)
 
     def normal_attack(self, target):
         crit_chance = 5  # Base critical hit chance
@@ -103,13 +123,13 @@ class Warrior(Human):
             base_damage = round(self.strength * random.uniform(1, 1.5), 1)
             total_damage = base_damage + (self.weapon.extra_damage if self.weapon else 0)
             weapon_name = self.weapon.name if self.weapon else "fists"
-            target.lose_health(total_damage)
+            target.monster_lose_health(total_damage)
             print(f"{self.name} used a normal attack with {weapon_name} and dealt {total_damage} damage.")
 
         if self.speed >= target.speed * 2:
             extra_damage = round(self.strength * random.uniform(1, 1.5), 1)
             extra_damage += self.weapon.extra_damage if self.weapon else 0
-            target.lose_health(extra_damage)
+            target.monster_lose_health(extra_damage)
             print(f"{self.name} uses their swift speed to attack again with {weapon_name}, dealing {extra_damage} damage.")
 
     def regain_health(self, healing):
@@ -191,21 +211,23 @@ class Monster:
         alive_status = self.health > 0
         #print(f"Debug: {self.name} is alive: {alive_status}")  # Debug print
         return alive_status
-
-
+    
     def monster_attack(self, target):
         damage_multiplier = random.uniform(0.6, 0.9)  # Random factor for variability
         damage = self.strength * self.attack * damage_multiplier
         rounded_damage = round(damage, 1)
         if rounded_damage < 1:
             rounded_damage = 1  # Ensure minimum damage is 1
+
         print(f"{self.name} attacked and dealt {rounded_damage} damage to {target.name}.\n")
-        target.lose_health(rounded_damage)
+
+        
+        target.lose_health(rounded_damage, self.strength)
+
         return rounded_damage
+    
 
-
-
-    def lose_health(self, damage):
+    def monster_lose_health(self, damage):
         self.health -= damage
         self.health = round(self.health, 1)
         #print(f"Debug: {self.name}'s health is now {self.health}.")  # Debug print
