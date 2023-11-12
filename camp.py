@@ -110,21 +110,33 @@ def converse_with_camp_captain(player):
     elif choice == '2':
         clear_console()
         # dialogue based on Eldrin's quest status
-        if "mystic_herb_quest" in player.quests:
-            if player.quests["mystic_herb_quest"]["completed"]:
-                print(f"Camp Captain: 'I've heard about your success with Eldrin's task. Impressive work, {player.name}. The Blade of Verdant Greens is a fine reward for such dedication.'")
-            elif player.quests["mystic_herb_quest"]["accepted"]:
-                print(f"Camp Captain: 'Heard you're running around for that old man Eldrin. Be careful in the Dark Forest, {player.name}. It's a dangerous place.'")
+        if "monster_loot_quest" in player.quests:
+            if player.quests["monster_loot_quest"]["completed"]:
+                print(f"Camp Captain: 'I've heard you've been quite successful in the Dark Forest, {player.name}. It's no small feat to take on those creatures.'")
+            elif player.quests["monster_loot_quest"]["accepted"]:
+                print(f"Camp Captain: 'So, Eldrin has you hunting for treasures in the forest? Keep your guard up, {player.name}, and remember, our shop has potions if you need them.'")
             else:
-                print(f"Camp Captain: 'Eldrin the Greenwarden often has tasks for willing adventurers. Have you spoken with him in the tavern, {player.name}?'")
+                check_mystic_herb_quest_status(player)
         else:
-            print(f"Camp Captain: \"There are whispers of strange happenings in the forest. Stay alert and trust your instincts.\"")
+            check_mystic_herb_quest_status(player)
     elif choice == '3':
         clear_console()
         print(f"Camp Captain: \"Very well, {player.name}. Stay safe out there.\"")
     else:
         clear_console()
         print("Camp Captain: \"I'm not sure what you mean. Could you please clarify?\"")
+
+def check_mystic_herb_quest_status(player):
+    if "mystic_herb_quest" in player.quests:
+        if player.quests["mystic_herb_quest"]["completed"]:
+            print(f"Camp Captain: 'Impressive work with Eldrin's herbs, {player.name}. The Blade of Verdant Greens is a fine reward for your efforts.'")
+        elif player.quests["mystic_herb_quest"]["accepted"]:
+            print(f"Camp Captain: 'Heard you're running around for Eldrin. Be careful in the Dark Forest, {player.name}. It's a dangerous place.'")
+        else:
+            print(f"Camp Captain: 'Eldrin the Greenwarden often has tasks for willing adventurers. Have you spoken with him in the tavern, {player.name}?'")
+    else:
+        print(f"Camp Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
+
 
 
     

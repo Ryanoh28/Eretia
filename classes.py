@@ -267,7 +267,9 @@ class Shop:
             "Blade of Verdant Greens": 15,
             "Tangled Vine": 1,
             "Mossy Pebble": 1,
-            "Cracked Pottery Shard": 2
+            "Cracked Pottery Shard": 2,
+            "Twilight Shard": 40
+        
         }
 
     
