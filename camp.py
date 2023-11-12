@@ -97,10 +97,9 @@ def leave_camp(player, shop):
 
 def converse_with_camp_captain(player):
     clear_console()
-    # Basic dialogue with the camp captain
-    print(f"Camp Captain: \"Greetings, {player.name}. How can I assist you today?\"\n")
+    print("Camp Captain: 'Greetings, warrior. What brings you to me today?'\n")
     print("1. Ask for advice")
-    print("2. Discuss recent events")
+    print("2. Talk with the Captain")
     print("3. Leave the conversation")
 
     choice = input("\nWhat would you like to do? ").lower().strip()
@@ -110,13 +109,23 @@ def converse_with_camp_captain(player):
         print(f"Camp Captain: \"Remember, use your strengths wisely and learn from each battle. Every challenge is an opportunity to grow stronger.\"")
     elif choice == '2':
         clear_console()
-        print(f"Camp Captain: \"There are whispers of strange happenings in the forest. Stay alert and trust your instincts.\"")
+        # dialogue based on Eldrin's quest status
+        if "mystic_herb_quest" in player.quests:
+            if player.quests["mystic_herb_quest"]["completed"]:
+                print(f"Camp Captain: 'I've heard about your success with Eldrin's task. Impressive work, {player.name}. The Blade of Verdant Greens is a fine reward for such dedication.'")
+            elif player.quests["mystic_herb_quest"]["accepted"]:
+                print(f"Camp Captain: 'Heard you're running around for that old man Eldrin. Be careful in the Dark Forest, {player.name}. It's a dangerous place.'")
+            else:
+                print(f"Camp Captain: 'Eldrin the Greenwarden often has tasks for willing adventurers. Have you spoken with him in the tavern, {player.name}?'")
+        else:
+            print(f"Camp Captain: \"There are whispers of strange happenings in the forest. Stay alert and trust your instincts.\"")
     elif choice == '3':
         clear_console()
         print(f"Camp Captain: \"Very well, {player.name}. Stay safe out there.\"")
     else:
         clear_console()
         print("Camp Captain: \"I'm not sure what you mean. Could you please clarify?\"")
+
 
     
     
