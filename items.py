@@ -82,9 +82,10 @@ class Inventory:
             self.equipment.remove(equipment)
 
     
-    def add_item(self, item):
+    def add_item(self, item, print_confirmation=True):
         self.items.append(item)
-        print(f"Added {item.name} to inventory\n")
+        if print_confirmation:
+            print(f"Added {item.name} to inventory\n")
 
     def show_equipment(self):
         print("=== Equipment ===")

@@ -298,15 +298,25 @@ class Shop:
         if item_info:
             price = item_info['price']
             item = item_info['object']
-            if player.gold >= price:
-                player.spend_gold(price)
-                player.inventory.add_item(item)
-                print(f"\n{item_name.title()} has been added to your inventory.\n")
+            try:
+                quantity = int(input(f"How many {item_name}s would you like to buy? Enter quantity: "))
+                if quantity < 1:
+                    raise ValueError
+            except ValueError:
+                print("Invalid quantity. Please enter a valid number.")
+                return
+
+            total_cost = price * quantity
+            if player.gold >= total_cost:
+                player.spend_gold(total_cost)
+                for _ in range(quantity):
+                    player.inventory.add_item(item, print_confirmation=False)
+                print(f"\n{quantity} {item_name.title()}(s) have been added to your inventory.\n")
             else:
-                print("\nYou do not have enough gold to buy this item.")
+                print("\nYou do not have enough gold to buy this quantity.")
         else:
             print("\nItem not found.")
-
+        
         input("\nPress Enter to continue...")
 
     
