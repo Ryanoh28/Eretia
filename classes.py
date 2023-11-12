@@ -260,10 +260,11 @@ class Shop:
             "Gilded Feather": 6, 
             "Enchanted Stone": 20,
             "Health Potion": 5,
-            "Mystic Herb": 6,  
-            "Ancient Coin": 10,  
-            "Lost Necklace": 20  
-       
+            "Mystic Herb": 3,  
+            "Ancient Coin": 5,  
+            "Lost Necklace": 10,  
+            "Rusted Sword": 5,
+            "Blade of Verdant Greens": 15
         }
 
     
@@ -333,14 +334,23 @@ class Shop:
     def sell_items_interface(self, player):
         while True:
             clear_console()
-            print("Items you can sell:\n")
+            print("Items and Weapons you can sell:\n")
             item_list = []
             item_count = {}
+            
+            
             for item in player.inventory.items:
                 if item.name not in item_count:
                     item_list.append(item.name)
                 item_count[item.name] = item_count.get(item.name, 0) + 1
+
             
+            for weapon in player.available_weapons:
+                if weapon.name not in item_count:
+                    item_list.append(weapon.name)
+                item_count[weapon.name] = item_count.get(weapon.name, 0) + 1
+
+            # Display items and weapons with their sale price
             for index, item_name in enumerate(item_list, 1):
                 sale_price = self.item_value.get(item_name, 0)
                 print(f"{index}. {item_name} ({item_count[item_name]}) - {sale_price} gold each")
@@ -367,20 +377,26 @@ class Shop:
             quantity_to_sell = int(input("Enter quantity: "))
             if quantity_to_sell < 1 or quantity_to_sell > available_quantity:
                 raise ValueError
+
+            sale_price = self.item_value.get(item_name, 0)
+            total_sale_price = sale_price * quantity_to_sell
+
+            
+            if item_name in [weapon.name for weapon in player.available_weapons]:
+                for _ in range(quantity_to_sell):
+                    weapon_to_remove = next(weapon for weapon in player.available_weapons if weapon.name == item_name)
+                    player.available_weapons.remove(weapon_to_remove)
+            else:
+                for _ in range(quantity_to_sell):
+                    item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
+                    player.inventory.items.remove(item_to_remove)
+
+            
+            player.gold += total_sale_price
+            clear_console()
+            print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
         except ValueError:
             print("Invalid quantity. Please enter a valid number.")
-            input("Press Enter to continue...")
-            return
-
-        sale_price = self.item_value.get(item_name, 0)
-        total_sale_price = sale_price * quantity_to_sell
-        player.gold += total_sale_price
-        for _ in range(quantity_to_sell):
-            item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
-            player.inventory.items.remove(item_to_remove)
-        clear_console()
-        print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
-
         input("Press Enter to continue...")
 
 
