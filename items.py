@@ -125,7 +125,7 @@ class Inventory:
                 weapon = player.weapon
                 print(f"Equipped Weapon: {weapon.name}")
                 print(f"  - Extra Damage: {weapon.extra_damage}")
-                print(f"  - Critical Chance Bonus: {weapon.crit_chance_bonus}")
+                print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
             else:
                 print("No weapon equipped.")
             print("====================\n")
@@ -207,7 +207,7 @@ class Inventory:
             weapon = player.weapon
             print(f"Equipped Weapon: {weapon.name}")
             print(f"  - Extra Damage: {weapon.extra_damage}")
-            print(f"  - Critical Chance Bonus: {weapon.crit_chance_bonus}")
+            print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
         else:
             print("No weapon equipped.")
 
