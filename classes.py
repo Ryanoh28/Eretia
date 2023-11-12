@@ -107,6 +107,8 @@ class Warrior(Human):
         target.monster_lose_health(damage)
 
     def normal_attack(self, target):
+        weapon_name = self.weapon.name if self.weapon else "fists"  
+
         crit_chance = 5  # Base critical hit chance
         if self.weapon:
             crit_chance += self.weapon.crit_chance_bonus
@@ -116,7 +118,6 @@ class Warrior(Human):
         else:
             base_damage = round(self.strength * random.uniform(1, 1.5), 1)
             total_damage = base_damage + (self.weapon.extra_damage if self.weapon else 0)
-            weapon_name = self.weapon.name if self.weapon else "fists"
             target.monster_lose_health(total_damage)
             print(f"{self.name} used a normal attack with {weapon_name} and dealt {total_damage} damage.")
 
@@ -227,8 +228,6 @@ class Monster:
         #print(f"Debug: {self.name}'s health is now {self.health}.")  # Debug print
         if self.health <= 0:
             self.dead()
-
-import random
 
 def create_monster(location):
     base_health = 60
