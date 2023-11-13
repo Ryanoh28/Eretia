@@ -62,7 +62,7 @@ def get_location_loot(loot_table):
 
 
 DARK_FOREST_LOOT = {
-    "Mystic Herb": {"description": "A herb used in the concoction of various potions.", "chance": 35},
+    "Mystic Herb": {"description": "A herb used in the concoction of various potions.", "chance": 100},###testing reset to 35
     "Ancient Coin": {"description": "An old coin from a forgotten era.", "chance": 10},
     "Lost Necklace": {"description": "A beautiful necklace, lost in time.", "chance": 5},
     "Tangled Vine": {"description": "A common vine, often found entangled in trees.", "chance": 35},

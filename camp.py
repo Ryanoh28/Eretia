@@ -151,6 +151,16 @@ def meet_camp_captain(player):
     print(f"Camp Captain: 'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     health_potion = Potion("Health Potion", "A potion that restores 50 health.", 50)
     player.inventory.add_item(health_potion)
+
+    # Add 8 Mystic Herbs to the inventory
+    for _ in range(8):
+        mystic_herb = Item("Mystic Herb", "A herb used in the concoction of various potions.")
+        player.inventory.add_item(mystic_herb)
+
+    # Add 1 Gilded Feather to the inventory
+    gilded_feather = Item("Gilded Feather", "A shiny feather with mystical properties.")
+    player.inventory.add_item(gilded_feather)
+
     input("\nPress Enter to continue...")
     clear_console()
     
