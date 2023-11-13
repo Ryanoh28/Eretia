@@ -5,47 +5,62 @@ from items import Weapon, LOOT_ITEMS
 def speak_with_eldrin(player):
     clear_console()
 
-    # Check if Mystic Herb quest is completed
     if "mystic_herb_quest" in player.quests:
-        if player.quests["mystic_herb_quest"]["completed"]:
-            if not player.quests["mystic_herb_quest"].get("reward_given"):
+        mystic_herb_quest = player.quests["mystic_herb_quest"]
+        if mystic_herb_quest["completed"]:
+            if not mystic_herb_quest.get("reward_given"):
                 print("Eldrin: 'Amazing work! Here is your Blade of Verdant Greens, as promised.'")
-                player.quests["mystic_herb_quest"]["reward_given"] = True
+                mystic_herb_quest["reward_given"] = True
+                input("\nPress Enter to continue...")
+                clear_console()
             else:
-                print("Eldrin: 'The Blade of Verdant Greens serves you well.'")
-            # Offer Monster Loot quest immediately after giving reward for Mystic Herb quest
-            offer_monster_loot_quest(player)
+                if "monster_loot_quest" not in player.quests or not player.quests["monster_loot_quest"]["completed"]:
+                    offer_monster_loot_quest(player)
+                return
             return
+
         elif player.inventory.count_item("Mystic Herb") >= 8:
             complete_mystic_herb_quest(player)
-            # Offer Monster Loot quest immediately after completing Mystic Herb quest
-            offer_monster_loot_quest(player)
             return
+
         else:
-            print(f"Eldrin reminds you, 'Don't forget, {player.name}, I need 8 Mystic Herbs. You can find them in the Dark Forest.'")
+            print(f"Eldrin reminds you, '{player.name}, I need 8 Mystic Herbs. You can find them in the Dark Forest.'")
             input("\nPress Enter to continue...")
             clear_console()
             return
+
     else:
-        # Offer Mystic Herb quest if not started
         offer_mystic_herb_quest(player)
+
+    
+    if "mystic_herb_quest" not in player.quests and "monster_loot_quest" not in player.quests:
+        check_back_later_message()
+
 
 def offer_monster_loot_quest(player):
     clear_console()
-    if "monster_loot_quest" in player.quests and player.quests["monster_loot_quest"]["completed"]:
-        if not player.quests["monster_loot_quest"].get("reward_given"):
-            print("Eldrin: 'Thank you for bringing me the item from the forest. Here's your reward, as promised.'")
-            player.quests["monster_loot_quest"]["reward_given"] = True
-        else:
-            print("Eldrin: 'I might have more tasks for you soon. Be sure to check back.'")
-        input("\nPress Enter to continue...")
-        clear_console()
-    else:
-        print(f"Eldrin the Greenwarden greets you warmly.\n")
-        print(f"'Greetings again, {player.name}. I need an item that can only be found by defeating the creatures of the Dark Forest. Bring me any loot item from these monsters, and I'll pay you more than its value.'\n")
-        print("(A)ccept the quest")
-        print("(D)ecline the quest")
-        accept_decline_monster_loot_quest(player)
+    if "monster_loot_quest" in player.quests:
+        if player.quests["monster_loot_quest"]["completed"]:
+            if not player.quests["monster_loot_quest"].get("reward_given"):
+                print("Eldrin: 'Thank you for bringing me the item from the forest. Here's your reward, as promised.'")
+                player.quests["monster_loot_quest"]["reward_given"] = True
+                input("\nPress Enter to continue...")
+                clear_console()
+            else:
+                print("Eldrin: 'I might have more tasks for you soon. Be sure to check back.'")
+                input("\nPress Enter to continue...")
+                clear_console()
+            return
+        elif player.quests["monster_loot_quest"]["accepted"]:
+            handle_monster_loot_quest(player)
+            return
+
+    # Offer the Monster Loot quest if not started
+    print(f"Eldrin the Greenwarden greets you warmly.\n")
+    print(f"'Greetings again, {player.name}. I need an item that can only be found by defeating the creatures of the Dark Forest. Bring me any loot item from these monsters, and I'll pay you more than its value.'\n")
+    print("(A)ccept the quest")
+    print("(D)ecline the quest")
+    accept_decline_monster_loot_quest(player)
 
 
 
@@ -63,6 +78,8 @@ def complete_mystic_herb_quest(player):
     verdant_blade = Weapon("Blade of Verdant Greens", 1, 2)
     player.available_weapons.append(verdant_blade)
     print(f"Eldrin: 'Amazing work, {player.name}! Here is your Blade of Verdant Greens, as promised.'")
+    # Set a flag to indicate that the reward has been given and the second quest can be offered
+    player.quests["mystic_herb_quest"]["reward_given"] = True
 
 def handle_monster_loot_quest(player):
     loot_found = False
@@ -74,9 +91,21 @@ def handle_monster_loot_quest(player):
             player.gold += reward
             player.quests["monster_loot_quest"]["completed"] = True
             print(f"Eldrin: 'This is exactly what I was looking for! Here is your reward of {reward} gold for your troubles.'")
-            break
+            #input("\nPress Enter to continue...")
+            #clear_console()
+            return  
     if not loot_found:
         print("Eldrin: 'It seems you haven't found what I'm looking for yet. Keep searching in the forest.'")
+        input("\nPress Enter to continue...")
+        clear_console()
+        return  
+
+
+
+def check_back_later_message():
+    print("Eldrin: 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment. Check back later, and I might have new challenges for you.'")
+    input("\nPress Enter to continue...")
+    clear_console()
 
 def accept_decline_monster_loot_quest(player):
     choice = input("\nWhat will you do? ").lower().strip()
