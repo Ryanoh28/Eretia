@@ -48,6 +48,15 @@ def give_mystic_herb_quest_reward(player):
     input("\nYou received 'The Blade of Verdant Greens' from Eldrin. \n \nPress Enter to continue...")
     clear_console()
 
+def complete_mystic_herb_quest(player):
+    player.inventory.remove_items("Mystic Herb", 8)
+    player.quests["mystic_herb_quest"]["completed"] = True
+    verdant_blade = Weapon("Blade of Verdant Greens", 1, 2)
+    player.available_weapons.append(verdant_blade)
+    print(f"Eldrin: 'Amazing work, {player.name}! Here is your Blade of Verdant Greens, as promised.'")
+    # Set a flag to indicate that the reward has been given and the second quest can be offered
+    player.quests["mystic_herb_quest"]["reward_given"] = True
+
 def offer_monster_loot_quest(player):
     clear_console()
     if "monster_loot_quest" in player.quests:
@@ -83,14 +92,7 @@ def offer_mystic_herb_quest(player):
     print("(D)ecline the quest")
     accept_decline_mystic_herb_quest(player)
 
-def complete_mystic_herb_quest(player):
-    player.inventory.remove_items("Mystic Herb", 8)
-    player.quests["mystic_herb_quest"]["completed"] = True
-    verdant_blade = Weapon("Blade of Verdant Greens", 1, 2)
-    player.available_weapons.append(verdant_blade)
-    print(f"Eldrin: 'Amazing work, {player.name}! Here is your Blade of Verdant Greens, as promised.'")
-    # Set a flag to indicate that the reward has been given and the second quest can be offered
-    player.quests["mystic_herb_quest"]["reward_given"] = True
+
 
 def handle_monster_loot_quest(player):
     loot_found = False
