@@ -156,11 +156,11 @@ def meet_camp_captain(player):
     player.inventory.add_item(health_potion)
 
     # Add 8 Mystic Herbs and 1 Gilded Feather to the inventory for testing
-    for _ in range(8):
-        mystic_herb = Item("Mystic Herb", "A herb used in the concoction of various potions.")
-        player.inventory.add_item(mystic_herb)
-    gilded_feather = Item("Gilded Feather", "A shiny feather with mystical properties.")
-    player.inventory.add_item(gilded_feather)
+    # for _ in range(8):
+    #     mystic_herb = Item("Mystic Herb", "A herb used in the concoction of various potions.")
+    #     player.inventory.add_item(mystic_herb)
+    # gilded_feather = Item("Gilded Feather", "A shiny feather with mystical properties.")
+    # player.inventory.add_item(gilded_feather)
 
     input("\nPress Enter to continue...")
     clear_console()

@@ -193,14 +193,62 @@ class Warrior(Human):
         return_to_camp(self, shop)
 
 class Monster:
-    def __init__(self, name, health, strength_max, speed_max, defense_max, attack_max):
+    def __init__(self, name, health, strength_max, speed_max, defense_max, attack_max, level=1):
         self.alive = True
         self.name = name
+        self.level = level
         self.health = health
-        self.strength = random.randint(1, strength_max)
-        self.speed = random.randint(1, speed_max)
-        self.defense = random.randint(1, defense_max)
+
+        # Base stats for the monster's level
+        self.strength = 2
+        self.speed = 2
+        self.defense = 2
+
+        # Simulate training by randomly distributing extra stat points
+        for _ in range(level * 2):  # 2 training points per level
+            self.add_random_stat_point()
+
+        # Monster's attack is determined separately
         self.attack = random.randint(1, attack_max)
+     
+    def add_random_stat_point(self):
+        stat_choice = random.choice(['strength', 'speed', 'defense'])
+        if stat_choice == 'strength':
+            self.strength += 1
+        elif stat_choice == 'speed':
+            self.speed += 1
+        elif stat_choice == 'defense':
+            self.defense += 1
+
+
+
+    # def create_monster(location):
+    #     base_health = 60
+    #     stat_caps = {
+    #         "Dark Forest": 4,  # Cap for Dark Forest
+    #         "Damp Cave": 6,    # Cap for Damp Cave
+    #         # Add other locations as needed
+    #     }
+    #     monster_names = {
+    #         "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
+    #         "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
+    #         # Add more names for other locations
+    #     }
+
+    #     # Determine the level based on location
+    #     location_levels = {
+    #         "Dark Forest": 3,  # Level cap for Dark Forest
+    #         "Damp Cave": 2,    # Example level for Damp Cave
+    #         # Add other location-level mappings as needed
+    #     }
+
+    #     level = location_levels.get(location, 1)  # Default level is 1 if not specified
+    #     cap = stat_caps.get(location, 4)          # Default cap is 4 if not specified
+
+    #     name = random.choice(monster_names.get(location, ["Generic Monster"]))
+    #     return Monster(name, base_health, cap, cap, cap, cap, level)
+    
+    
 
     def dead(self):
         self.alive = False
@@ -234,21 +282,23 @@ class Monster:
 
 def create_monster(location):
     base_health = 60
-    stat_caps = {
-        "Dark Forest": 4,
-        "Damp Cave": 6,
-        # Add other locations as needed
+    location_levels = {
+        "Dark Forest": 3,  
+        "Damp Cave": 6,    
+        # Add other location-level mappings as needed
     }
+
+    level = location_levels.get(location, 1) 
+    cap = level 
+
     monster_names = {
         "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
         "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
         # Add more names for other locations
     }
 
-    cap = stat_caps.get(location, 4)  # Default to 4 if location is not in stat_caps
-    name = random.choice(monster_names.get(location, ["Generic Monster"]))  # Default to "Generic Monster" if location not in monster_names
-    return Monster(name, base_health, cap, cap, cap, cap)
-
+    name = random.choice(monster_names.get(location, ["Generic Monster"]))
+    return Monster(name, base_health, cap, cap, cap, cap, level)
 
 
 class Shop:

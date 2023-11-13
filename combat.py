@@ -1,7 +1,7 @@
 from classes import Monster, create_monster
 from utilities import clear_console
 from items import get_loot_drop
-
+import random
 
 
 def create_monster_wolf():
@@ -46,15 +46,15 @@ def combat(player, monster, shop):
     return 'end_of_combat'
 
 
-
 def fight_monster(player, shop, location):
     clear_console()
     player.in_combat = True
 
     while player.in_combat:
         # Create a monster appropriate for the current location
+        
         monster = create_monster(location)
-        print(f"You encounter a {monster.name}...\n")
+        print(f"You encounter a Level {monster.level} {monster.name}...\n")  # Updated message
         combat_result = combat(player, monster, shop)
 
         if combat_result == 'monster_defeated':
@@ -72,6 +72,59 @@ def fight_monster(player, shop, location):
             break
 
     player.in_combat = False
+
+def create_monster(location):
+    base_health = 60
+    
+    location_level_ranges = {
+        "Dark Forest": (1, 3),  
+        "Damp Cave": (3, 6),    
+        # Add other locations and level ranges as needed
+    }
+    
+    min_level, max_level = location_level_ranges.get(location, (1, 1))  
+    
+    level = random.randint(min_level, max_level)
+    
+    cap = level 
+
+    monster_names = {
+        "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
+        "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
+        # Add more names for other locations
+    }
+
+    #print(f"Debug: Location: {location}, min_level: {min_level}, max_level: {max_level}, level: {level}")  # Debug print
+
+    name = random.choice(monster_names.get(location, ["Generic Monster"]))
+    return Monster(name, base_health, cap, cap, cap, cap, level)
+
+
+# def fight_monster(player, shop, location):
+#     clear_console()
+#     player.in_combat = True
+
+#     while player.in_combat:
+#         # Create a monster appropriate for the current location
+#         monster = create_monster(location)
+#         print(f"You encounter a {monster.name}...\n")
+#         combat_result = combat(player, monster, shop)
+
+#         if combat_result == 'monster_defeated':
+#             print(f"\nThe {monster.name} has been defeated!")
+#             player.gain_experience(10)
+#             post_combat_options(player, shop)
+#             if player.choice == 'return_to_camp':
+#                 break
+#         elif combat_result == 'escaped':
+#             player.choice = 'return_to_camp'
+#             break
+
+#         elif combat_result == 'player_defeated':
+#             player.handle_player_defeat(shop)
+#             break
+
+#     player.in_combat = False
 
 
 def post_combat_options(player, shop):

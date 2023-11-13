@@ -295,19 +295,17 @@ class Inventory:
     # Loot Items
 LOOT_ITEMS = {
     "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 20},
-    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 100},  ###testing
+    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 10},  
     "Twilight Shard": {"description": "A small crystal that glows with the light of the setting sun.", "chance": 5}
 
 }
 
 def get_loot_drop():
-    # Randomly pick one item to roll for
-    chosen_item_name = random.choice(list(LOOT_ITEMS.keys()))
-    chosen_item_data = LOOT_ITEMS[chosen_item_name]
-
-    # Roll for the chosen item
-    if random.randint(1, 100) <= chosen_item_data["chance"]:
-        return [Item(chosen_item_name, chosen_item_data["description"])]
-    
-    return []
-
+    if random.randint(1, 100) <= 30:  # 30% chance for any loot to drop
+        cumulative_chance = 0
+        roll = random.randint(1, 100)
+        for item_name, item_info in LOOT_ITEMS.items():
+            cumulative_chance += item_info["chance"]
+            if roll <= cumulative_chance:
+                return [Item(item_name, item_info["description"])]
+    return []  # No loot drops

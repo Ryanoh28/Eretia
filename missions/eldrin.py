@@ -1,6 +1,6 @@
 from utilities import clear_console
 from items import Weapon, LOOT_ITEMS
-
+import time
 
 def speak_with_eldrin(player):
     # Handle Mystic Herb Quest
@@ -23,7 +23,7 @@ def speak_with_eldrin(player):
             return
         else:
             print(f"Eldrin reminds you, '{player.name}, I need 8 Mystic Herbs. You can find them in the Dark Forest.'")
-            input("\nPress Enter to continue...")
+            time.sleep(3)  # Pause for 3 seconds 
             clear_console()
             return
 
@@ -45,7 +45,7 @@ def give_mystic_herb_quest_reward(player):
     player.quests["mystic_herb_quest"]["reward_given"] = True
     clear_console()
     print("Eldrin: 'Amazing work! Here is your Blade of Verdant Greens, as promised.'")
-    input("\nYou received 'The Blade of Verdant Greens' from Eldrin. \n \nPress Enter to continue...")
+    input("\nPress Enter to continue...")
     clear_console()
 
 def complete_mystic_herb_quest(player):
@@ -53,7 +53,8 @@ def complete_mystic_herb_quest(player):
     player.quests["mystic_herb_quest"]["completed"] = True
     verdant_blade = Weapon("Blade of Verdant Greens", 1, 2)
     player.available_weapons.append(verdant_blade)
-    print(f"Eldrin: 'Amazing work, {player.name}! Here is your Blade of Verdant Greens, as promised.'")
+    print(f"Eldrin: 'Amazing work, {player.name}! Here is your Blade of Verdant Greens, as promised.\n'")
+    print("You received 'The Blade of Verdant Greens' from Eldrin. ")
     # Set a flag to indicate that the reward has been given and the second quest can be offered
     player.quests["mystic_herb_quest"]["reward_given"] = True
 
