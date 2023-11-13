@@ -28,32 +28,34 @@ def enter_damp_cave(player, shop):
 
 def mine_in_cave(player, shop):
     clear_console()
-    
     print("You start mining...")
+
+    mining_successful = random.randint(1, 10) <= player.mining_level
+    exp_gain = {"Copper Ore": 2, "Tin Ore": 2, "Iron Ore": 3}
+
+    if mining_successful:
+        ore = random.choices(
+            ["Copper Ore", "Tin Ore", "Iron Ore"],
+            weights=(60, 30, 10) if player.mining_level < 5 else (30, 40, 30),
+            k=1
+        )[0]
+
+        print(f"You have successfully mined {ore}!")
+
+        mined_ore = Item(ore, f"A piece of {ore} mined from the Damp Cave.")
+        player.inventory.add_item(mined_ore)
+
+        # Gain mining experience
+        player.gain_mining_experience(exp_gain[ore])
+
+        if random.randint(1, 4) == 1:
+            print("\nAs you mine, a monster emerges from the depths of the cave!")
+            fight_monster(player, shop, "Damp Cave")
+    else:
+        print("Your mining attempt was unsuccessful. Better luck next time!")
+
     input("\nPress Enter to continue...")
 
-    # Mining logic
-    if player.mining_level < 5:
-        ore = random.choices(
-            ["Copper Ore", "Tin Ore", "Iron Ore"],
-            weights=(60, 30, 10),  
-            k=1
-        )[0]
-    else:
-        ore = random.choices(
-            ["Copper Ore", "Tin Ore", "Iron Ore"],
-            weights=(30, 40, 30),  
-            k=1
-        )[0]
-
-    print(f"You have mined {ore}!")
-
-    mined_ore = Item(ore, f"A piece of {ore} mined from the Damp Cave.")
-    player.inventory.add_item(mined_ore)
-
-    if random.randint(1, 4) == 1:
-        print("\nAs you mine, a monster emerges from the depths of the cave!")
-        fight_monster(player, shop, "Damp Cave")
 
 
 

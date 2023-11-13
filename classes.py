@@ -50,9 +50,18 @@ class Warrior(Human):
         self.choice = None
         self.training_count = 0
         self.search_count = 0
+        self.mining_experience = 0
         self.mining_level = 1
         
-    
+    def gain_mining_experience(self, exp):
+        self.mining_experience += exp
+        print(f"Gained {exp} mining experience.")
+
+        while self.mining_experience >= 100:
+            self.mining_experience -= 100
+            self.mining_level += 1
+            print(f"Congratulations! Your mining level is now {self.mining_level}.")
+            
     def equip_weapon_for_warrior(self, selected_weapon):
         if self.weapon is not None:
             print(f"\nYou already have {self.weapon.name} equipped. Unequip it first.")
