@@ -2,7 +2,7 @@ from items import Potion, Item
 from utilities import clear_console
 from locations import enter_dark_forest
 from classes import Weapon
-from missions import speak_with_eldrin
+from missions.eldrin import speak_with_eldrin
 
 def view_quest_log(player):
     clear_console()
@@ -152,26 +152,26 @@ def meet_camp_captain(player):
     health_potion = Potion("Health Potion", "A potion that restores 50 health.", 50)
     player.inventory.add_item(health_potion)
 
-    # Add 8 Mystic Herbs to the inventory
+    # Add 8 Mystic Herbs and 1 Gilded Feather to the inventory for testing
     for _ in range(8):
         mystic_herb = Item("Mystic Herb", "A herb used in the concoction of various potions.")
         player.inventory.add_item(mystic_herb)
-
-    # Add 1 Gilded Feather to the inventory
     gilded_feather = Item("Gilded Feather", "A shiny feather with mystical properties.")
     player.inventory.add_item(gilded_feather)
 
     input("\nPress Enter to continue...")
     clear_console()
-    
+
     print(f"Camp Captain: 'And take this Rusted Sword as well. It's not much, but it's better than nothing.'")
     rusted_sword = Weapon("Rusted Sword", 0.5, 0.5)
     player.available_weapons.append(rusted_sword)
-    print(f"\n{player.name} received a Rusted Sword.")  
+    print(f"\n{player.name} received a Rusted Sword.")
     input("\nEnter your inventory to equip weapons and armour. Press Enter to continue...")
 
-
     clear_console()
+
+
+    
 
 
 
