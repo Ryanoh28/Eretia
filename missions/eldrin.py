@@ -29,11 +29,21 @@ def speak_with_eldrin(player):
             clear_console()
             return
 
-    else:
-        offer_mystic_herb_quest(player)
+    if "monster_loot_quest" in player.quests:
+        monster_loot_quest = player.quests["monster_loot_quest"]
+        if monster_loot_quest["completed"]:
+            if not monster_loot_quest.get("reward_given"):
+                print("Eldrin: 'Thank you for bringing me the item from the forest. Here's your reward, as promised.'")
+                monster_loot_quest["reward_given"] = True
+                input("\nPress Enter to continue...")
+                clear_console()
+            else:
+                check_back_later_message()
+            return
 
-    
-    if "mystic_herb_quest" not in player.quests and "monster_loot_quest" not in player.quests:
+    if "monster_loot_quest" not in player.quests or not player.quests["monster_loot_quest"]["completed"]:
+        offer_monster_loot_quest(player)
+    elif "mystic_herb_quest" not in player.quests:
         check_back_later_message()
 
 
