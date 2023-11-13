@@ -50,6 +50,7 @@ class Warrior(Human):
         self.choice = None
         self.training_count = 0
         self.search_count = 0
+        self.mining_level = 1
         
     
     def equip_weapon_for_warrior(self, selected_weapon):
@@ -193,24 +194,21 @@ class Warrior(Human):
         return_to_camp(self, shop)
 
 class Monster:
-    def __init__(self, name, health, strength_max, speed_max, defense_max, attack_max, level=1):
+    def __init__(self, name, health, strength_max, speed_max, defense_max, level=1):
         self.alive = True
         self.name = name
         self.level = level
         self.health = health
 
         # Base stats for the monster's level
-        self.strength = 2
-        self.speed = 2
-        self.defense = 2
+        self.strength = 2 + (level - 1)
+        self.speed = 2 + (level - 1)
+        self.defense = 2 + (level - 1)
 
         # Simulate training by randomly distributing extra stat points
         for _ in range(level * 2):  # 2 training points per level
             self.add_random_stat_point()
-
-        # Monster's attack is determined separately
-        self.attack = random.randint(1, attack_max)
-     
+    
     def add_random_stat_point(self):
         stat_choice = random.choice(['strength', 'speed', 'defense'])
         if stat_choice == 'strength':
@@ -221,33 +219,6 @@ class Monster:
             self.defense += 1
 
 
-
-    # def create_monster(location):
-    #     base_health = 60
-    #     stat_caps = {
-    #         "Dark Forest": 4,  # Cap for Dark Forest
-    #         "Damp Cave": 6,    # Cap for Damp Cave
-    #         # Add other locations as needed
-    #     }
-    #     monster_names = {
-    #         "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
-    #         "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
-    #         # Add more names for other locations
-    #     }
-
-    #     # Determine the level based on location
-    #     location_levels = {
-    #         "Dark Forest": 3,  # Level cap for Dark Forest
-    #         "Damp Cave": 2,    # Example level for Damp Cave
-    #         # Add other location-level mappings as needed
-    #     }
-
-    #     level = location_levels.get(location, 1)  # Default level is 1 if not specified
-    #     cap = stat_caps.get(location, 4)          # Default cap is 4 if not specified
-
-    #     name = random.choice(monster_names.get(location, ["Generic Monster"]))
-    #     return Monster(name, base_health, cap, cap, cap, cap, level)
-    
     
 
     def dead(self):
@@ -259,15 +230,13 @@ class Monster:
         return alive_status
     
     def monster_attack(self, target):
-        damage_multiplier = random.uniform(0.6, 0.9)  # Random factor for variability
-        damage = self.strength * self.attack * damage_multiplier
+        damage_multiplier = random.uniform(0.8, 1.3)  # Random factor for variability
+        damage = self.strength * damage_multiplier  # Calculate damage based on strength and multiplier
         rounded_damage = round(damage, 1)
         if rounded_damage < 1:
             rounded_damage = 1  # Ensure minimum damage is 1
 
         print(f"{self.name} attacked and dealt {rounded_damage} damage to {target.name}.\n")
-
-        
         target.lose_health(rounded_damage, self.strength)
 
         return rounded_damage
@@ -280,25 +249,7 @@ class Monster:
         if self.health <= 0:
             self.dead()
 
-def create_monster(location):
-    base_health = 60
-    location_levels = {
-        "Dark Forest": 3,  
-        "Damp Cave": 6,    
-        # Add other location-level mappings as needed
-    }
 
-    level = location_levels.get(location, 1) 
-    cap = level 
-
-    monster_names = {
-        "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
-        "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
-        # Add more names for other locations
-    }
-
-    name = random.choice(monster_names.get(location, ["Generic Monster"]))
-    return Monster(name, base_health, cap, cap, cap, cap, level)
 
 
 class Shop:
@@ -318,7 +269,10 @@ class Shop:
             "Tangled Vine": 1,
             "Mossy Pebble": 1,
             "Cracked Pottery Shard": 2,
-            "Twilight Shard": 40
+            "Twilight Shard": 40,
+            "Copper Ore": 5,  
+            "Tin Ore": 8,
+            "Iron Ore": 12,
         
         }
 
