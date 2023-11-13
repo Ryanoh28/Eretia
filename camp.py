@@ -1,6 +1,7 @@
 from items import Potion, Item
 from utilities import clear_console
-from locations import enter_dark_forest
+from locations.darkforest import enter_dark_forest
+from locations.dampcave import enter_damp_cave
 from classes import Weapon
 from missions.eldrin import speak_with_eldrin
 
@@ -87,16 +88,25 @@ def leave_camp(player, shop):
     while True:
         clear_console()
         print("Where would you like to go?\n")
-        choice = input("(D)ark Forest or (B)ack to camp: ").lower().strip()
+        print("1. Dark Forest")
+        print("2. Damp Cave")
+        print("3. Back to camp")
+        choice = input("Enter your choice (1-3): ").strip()
 
-        if choice == "d":
+        if choice == "1":
             enter_dark_forest(player, shop)
             break
-        elif choice == "b":
+        elif choice == "2":
+            # Assuming enter_damp_cave function exists in dampcave.py
+            from locations.dampcave import enter_damp_cave
+            enter_damp_cave(player, shop)
+            break
+        elif choice == "3":
             print("\nYou decide to stay in the camp for now.")
             break
         else:
-            print("\nInvalid choice. Please enter 'D' to go to the Dark Forest or 'B' to go back to camp.")
+            print("\nInvalid choice. Please enter a number between 1 and 3.")
+
 
 def converse_with_camp_captain(player):
     clear_console()
