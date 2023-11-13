@@ -59,10 +59,13 @@ def visit_tavern(player):
         tavern_choice = input("\nWhat would you like to do? ").lower().strip()
 
         if tavern_choice == '1':
+            clear_console()
             converse_with_camp_captain(player)
         elif tavern_choice == '2':
+            clear_console()
             listen_to_rumors(player)
         elif tavern_choice == '3':
+            clear_console()
             speak_with_eldrin(player)
         elif tavern_choice == '4':
             clear_console()
