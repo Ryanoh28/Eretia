@@ -1,6 +1,7 @@
 from utilities import clear_console
 import random
 from items import Item
+from combat import fight_monster, create_monster
 
 def enter_damp_cave(player, shop):
     while True:
@@ -19,16 +20,19 @@ def enter_damp_cave(player, shop):
             # Logic for searching for items
             pass
         elif choice == "3":
-            mine_in_cave(player)
+            mine_in_cave(player, shop)
         elif choice == "4":
             break  # Exit the function, returning the player to the previous menu or location
         else:
             print("\nInvalid choice. Please enter a number between 1 and 4.")
 
-def mine_in_cave(player):
+def mine_in_cave(player, shop):
     clear_console()
-    print("You start mining...")
     
+    print("You start mining...")
+    input("\nPress Enter to continue...")
+
+    # Mining logic
     if player.mining_level < 5:
         ore = random.choices(
             ["Copper Ore", "Tin Ore", "Iron Ore"],
@@ -45,8 +49,12 @@ def mine_in_cave(player):
     print(f"You have mined {ore}!")
 
     mined_ore = Item(ore, f"A piece of {ore} mined from the Damp Cave.")
-
     player.inventory.add_item(mined_ore)
+
+    if random.randint(1, 4) == 1:
+        print("\nAs you mine, a monster emerges from the depths of the cave!")
+        fight_monster(player, shop, "Damp Cave")
+
 
 
 
