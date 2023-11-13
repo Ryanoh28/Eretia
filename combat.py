@@ -1,4 +1,4 @@
-from classes import Monster, create_monster
+from classes import Monster
 from utilities import clear_console
 from items import get_loot_drop
 import random
@@ -83,10 +83,7 @@ def create_monster(location):
     }
     
     min_level, max_level = location_level_ranges.get(location, (1, 1))  
-    
     level = random.randint(min_level, max_level)
-    
-    cap = level 
 
     monster_names = {
         "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
@@ -94,10 +91,13 @@ def create_monster(location):
         # Add more names for other locations
     }
 
-    #print(f"Debug: Location: {location}, min_level: {min_level}, max_level: {max_level}, level: {level}")  # Debug print
-
     name = random.choice(monster_names.get(location, ["Generic Monster"]))
-    return Monster(name, base_health, cap, cap, cap, cap, level)
+    
+    return Monster(name, base_health, level, level, level, level)
+
+
+
+
 
 
 # def fight_monster(player, shop, location):
