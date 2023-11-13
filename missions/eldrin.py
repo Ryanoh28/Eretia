@@ -3,49 +3,50 @@ from items import Weapon, LOOT_ITEMS
 
 
 def speak_with_eldrin(player):
-    clear_console()
-
+    # Handle Mystic Herb Quest
     if "mystic_herb_quest" in player.quests:
         mystic_herb_quest = player.quests["mystic_herb_quest"]
         if mystic_herb_quest["completed"]:
             if not mystic_herb_quest.get("reward_given"):
-                print("Eldrin: 'Amazing work! Here is your Blade of Verdant Greens, as promised.'")
-                mystic_herb_quest["reward_given"] = True
-                input("\nPress Enter to continue...")
-                clear_console()
+                clear_console()  # Clear the console before displaying Eldrin's dialogue
+                give_mystic_herb_quest_reward(player)
             else:
+                # Here, check if the Monster Loot Quest is available or completed
                 if "monster_loot_quest" not in player.quests or not player.quests["monster_loot_quest"]["completed"]:
                     offer_monster_loot_quest(player)
-                return
+                else:
+                    check_back_later_message()
             return
-
         elif player.inventory.count_item("Mystic Herb") >= 8:
+            clear_console()
             complete_mystic_herb_quest(player)
             return
-
         else:
             print(f"Eldrin reminds you, '{player.name}, I need 8 Mystic Herbs. You can find them in the Dark Forest.'")
             input("\nPress Enter to continue...")
             clear_console()
             return
 
-    if "monster_loot_quest" in player.quests:
-        monster_loot_quest = player.quests["monster_loot_quest"]
-        if monster_loot_quest["completed"]:
-            if not monster_loot_quest.get("reward_given"):
-                print("Eldrin: 'Thank you for bringing me the item from the forest. Here's your reward, as promised.'")
-                monster_loot_quest["reward_given"] = True
-                input("\nPress Enter to continue...")
-                clear_console()
-            else:
-                check_back_later_message()
-            return
+    # If Mystic Herb Quest is not started, offer it
+    if "mystic_herb_quest" not in player.quests:
+        offer_mystic_herb_quest(player)
+        return
 
-    if "monster_loot_quest" not in player.quests or not player.quests["monster_loot_quest"]["completed"]:
-        offer_monster_loot_quest(player)
-    elif "mystic_herb_quest" not in player.quests:
+    # Handle Monster Loot Quest
+    if "monster_loot_quest" in player.quests:
+        handle_monster_loot_quest(player)
+    else:
         check_back_later_message()
 
+
+def give_mystic_herb_quest_reward(player):
+    verdant_blade = Weapon("Blade of Verdant Greens", 1, 2)
+    player.available_weapons.append(verdant_blade)
+    player.quests["mystic_herb_quest"]["reward_given"] = True
+    clear_console()
+    print("Eldrin: 'Amazing work! Here is your Blade of Verdant Greens, as promised.'")
+    input("\nYou received 'The Blade of Verdant Greens' from Eldrin. \n \nPress Enter to continue...")
+    clear_console()
 
 def offer_monster_loot_quest(player):
     clear_console()
@@ -58,7 +59,7 @@ def offer_monster_loot_quest(player):
                 clear_console()
             else:
                 print("Eldrin: 'I might have more tasks for you soon. Be sure to check back.'")
-                input("\nPress Enter to continue...")
+                input("\nYou turn around...")
                 clear_console()
             return
         elif player.quests["monster_loot_quest"]["accepted"]:
@@ -100,6 +101,7 @@ def handle_monster_loot_quest(player):
             reward = 50
             player.gold += reward
             player.quests["monster_loot_quest"]["completed"] = True
+            print("You walked up to Eldrin after completing the mission...\n")
             print(f"Eldrin: 'This is exactly what I was looking for! Here is your reward of {reward} gold for your troubles.'")
             #input("\nPress Enter to continue...")
             #clear_console()
@@ -113,9 +115,10 @@ def handle_monster_loot_quest(player):
 
 
 def check_back_later_message():
-    print("Eldrin: 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment. Check back later, and I might have new challenges for you.'")
-    input("\nPress Enter to continue...")
     clear_console()
+    print("Eldrin: 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment. Check back later, and I might have new challenges for you.'")
+    # No need for an additional input if it's just to continue without decision-making or significant acknowledgment.
+
 
 def accept_decline_monster_loot_quest(player):
     choice = input("\nWhat will you do? ").lower().strip()
