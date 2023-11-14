@@ -1,60 +1,72 @@
 from utilities import clear_console
+from skills.mining import mine_in_damp_cave
+from items import get_location_loot
 import random
-from items import Item
-from combat import fight_monster, create_monster
 
 def enter_damp_cave(player, shop):
     while True:
         clear_console()
         print("You are in the Damp Cave. What would you like to do?\n")
-        print("1. Explore")
-        print("2. Search for items")
+        print("1. Explore the Passages")
+        print("2. Search Damp Cave")
         print("3. Mine")
         print("4. Return to Camp")
-        choice = input("Enter your choice (1-4): ").strip()
+        choice = input("\nEnter your choice (1-4): ").strip()
 
         if choice == "1":
             # Logic for exploring the cave
             pass
         elif choice == "2":
-            # Logic for searching for items
+            search_damp_cave(player)
             pass
         elif choice == "3":
-            mine_in_cave(player, shop)
+            mine_in_damp_cave(player, shop)
         elif choice == "4":
             break  # Exit the function, returning the player to the previous menu or location
         else:
             print("\nInvalid choice. Please enter a number between 1 and 4.")
 
-def mine_in_cave(player, shop):
-    clear_console()
-    print("You start mining...")
+DAMP_CAVE_LOOT = {
+    "Damp Moss": {"description": "Common moss with basic alchemical properties.", "chance": 40},
+    "Flickering Crystal Shard": {"description": "A dimly glowing crystal shard.", "chance": 30},
+    "Cave Pearl": {"description": "A rare and beautiful pearl formed in cave pools.", "chance": 15},
+    "Ancient Bone Fragment": {"description": "A fragment of bone from an ancient creature.", "chance": 10},
+    "Glowing Mushroom": {"description": "A rare mushroom that emits a soft light.", "chance": 4},
+    "Ethereal Stone": {"description": "A stone shimmering with otherworldly energy.", "chance": 1}
+}
 
-    mining_successful = random.randint(1, 10) <= player.mining_level
-    exp_gain = {"Copper Ore": 2, "Tin Ore": 2, "Iron Ore": 3}
+def search_damp_cave(player):
+    clear_console()  
+    energy_cost_per_search = 10  
 
-    if mining_successful:
-        ore = random.choices(
-            ["Copper Ore", "Tin Ore", "Iron Ore"],
-            weights=(60, 30, 10) if player.mining_level < 5 else (30, 40, 30),
-            k=1
-        )[0]
+    if player.energy >= energy_cost_per_search:
+        print("Searching the Damp Cave...\n")
+        player.consume_energy(energy_cost_per_search)  
 
-        print(f"You have successfully mined {ore}!")
+        
+        if random.randint(1, 2) == 1:
+            found_item = get_location_loot(DAMP_CAVE_LOOT)
 
-        mined_ore = Item(ore, f"A piece of {ore} mined from the Damp Cave.")
-        player.inventory.add_item(mined_ore)
+            if found_item:
+                print(f"You found a {found_item.name}!")
+                player.inventory.add_item(found_item)
+                
+                examine_choice = input("Do you want to examine it? (Y/N): ").lower().strip()
+                if examine_choice == 'y':
+                    clear_console()
+                    print(f"{found_item.name}: {found_item.description}")
+            else:
+                print("You searched the cave but found nothing of interest.")
+        else:
+            print("You searched the cave but found nothing this time.")
 
-        # Gain mining experience
-        player.gain_mining_experience(exp_gain[ore])
-
-        if random.randint(1, 4) == 1:
-            print("\nAs you mine, a monster emerges from the depths of the cave!")
-            fight_monster(player, shop, "Damp Cave")
     else:
-        print("Your mining attempt was unsuccessful. Better luck next time!")
+        print("You don't have enough energy to search. Rest to regain energy.")
 
-    input("\nPress Enter to continue...")
+    input("\nPress Enter to continue...")  
+
+
+
 
 
 

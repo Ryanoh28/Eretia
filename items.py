@@ -87,15 +87,20 @@ class Inventory:
         if print_confirmation:
             print(f"Added {item.name} to inventory\n")
 
-    def show_equipment(self):
-        print("=== Equipment ===")
-        for equipment in self.equipment:
-            print(f"- {equipment.name}")
-        print("=================\n")
+    def show_equipment(self, player):
+        
+        if player.weapon:
+            weapon = player.weapon
+            print(f"Equipped Weapon: {weapon.name}")
+            print(f"  - Extra Damage: {weapon.extra_damage}")
+            print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
+        else:
+            print("No weapon equipped.")
+        
     
     def show_inventory(self):
         if not self.items:
-            print("\n*Your inventory is empty*\n")
+            print("\nYour inventory is empty\n")
         else:
             item_count = {}
             for item in self.items:
@@ -105,39 +110,44 @@ class Inventory:
             for index, (item_name, count) in enumerate(item_count.items(), 1):
                 print(f"{index}. {item_name} ({count})")
 
+    def show_skill_stats(self, player):
+        clear_console()
+        print("=== Combat Stats ===")
+        print(f"Strength: {player.strength}")
+        print(f"Speed: {player.speed}")
+        print(f"Defense: {player.defense}")
+        print("====================\n")
+
+        print("=== Skill Stats ===")
+        print(f"Mining Level: {player.mining_level} (Exp: {player.mining_experience}/100)")
+        # Add other skills here as needed
+        print("====================\n")
+
+        input("\nPress Enter to return...")
+    
+    
+
     def inventory_menu(self, player):
         while True:
             clear_console()
-            print(f"\nInventory: {player.health} Health | {player.gold} Gold\n")
-            print("=== Player Stats ===")
-            print(f"Level: {player.level}")
-            print(f"Experience: {player.experience}/100")
-            print(f"Strength: {player.strength}")
-            print(f"Speed: {player.speed}")
-            print(f"Defense: {player.defense}")
-            print("====================\n")
+            print(f"\nInventory: {player.health} Health | {player.gold} Gold | {player.energy} Energy\n")
 
             print("==== Inventory ====")
             self.show_inventory()
             print("====================\n")
 
             print("==== Equipment ====")
-            if player.weapon:
-                weapon = player.weapon
-                print(f"Equipped Weapon: {weapon.name}")
-                print(f"  - Extra Damage: {weapon.extra_damage}")
-                print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
-            else:
-                print("No weapon equipped.")
+            self.show_equipment(player)
             print("====================\n")
 
             print("1. Use Item")
             print("2. View Equipment")
             print("3. Equip Weapon")
             print("4. Unequip Weapon")
+            print("5. View Stats and Skills")
             print("(B)ack")
 
-            inventory_choice = input("\nWhat would you like to do? ").lower().strip()
+            inventory_choice = input("\nWhat would you like to do? ").strip()
 
             if inventory_choice == '1':
                 self.use_item_interface(player)
@@ -147,11 +157,14 @@ class Inventory:
                 self.equip_weapon_interface(player)
             elif inventory_choice == '4':
                 self.unequip_weapon(player)
+            elif inventory_choice == '5':
+                self.show_skill_stats(player)
             elif inventory_choice in ['b', 'back']:
                 clear_console()
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
+
 
 
     def use_item_interface(self, player):
@@ -309,3 +322,15 @@ def get_loot_drop():
             if roll <= cumulative_chance:
                 return [Item(item_name, item_info["description"])]
     return []  # No loot drops
+
+def get_location_loot(loot_table):
+    total_chance = 100  
+    roll = random.randint(1, total_chance)
+
+    cumulative_chance = 0
+    for name, info in loot_table.items():
+        cumulative_chance += info["chance"]
+        if roll <= cumulative_chance:
+            return Item(name, info["description"])
+    
+    return None

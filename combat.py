@@ -4,8 +4,8 @@ from items import get_loot_drop
 import random
 
 
-def create_monster_wolf():
-    return Monster("Monster Wolf", 60)
+# def create_monster_wolf():
+#     return Monster("Monster Wolf", 60)
 
 def combat(player, monster, shop):
     while player.alive and monster.alive:

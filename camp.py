@@ -1,9 +1,17 @@
 from items import Potion, Item
 from utilities import clear_console
 from locations.darkforest import enter_dark_forest
-from locations.dampcave import enter_damp_cave
 from classes import Weapon
 from missions.eldrin import speak_with_eldrin
+
+def rest(player):
+    clear_console()
+    player.regain_health(100)  
+    player.regenerate_energy() 
+    print("Your energy and health have recovered after resting. \n\nPress Enter to continue...")
+
+    input()  
+
 
 def view_quest_log(player):
     clear_console()
@@ -22,32 +30,36 @@ def return_to_camp(player, shop):
     while True:
         clear_console()
         print("You are at the camp. What would you like to do?\n")
-        print("(T)rain, (L)eave, Ta(V)ern, (R)est, (I)nventory, (S)hop, (Q)uests, (M)enu")
-        choice = input("\nEnter your choice: ").lower().strip()
+        print("1. Train")
+        print("2. Leave Camp")
+        print("3. Visit Tavern")
+        print("4. Rest")
+        print("5. Inventory")
+        print("6. Shop")
+        print("7. Quests")
+        print("8. Exit to Main Menu")
+        choice = input("\nEnter your choice (1-8): ").strip()
 
-        if choice == "t":
+        if choice == "1":
             player.training()
-        elif choice == "l":
+        elif choice == "2":
             leave_camp(player, shop)
-        elif choice == "v":
+        elif choice == "3":
             visit_tavern(player)
-        elif choice == "r":
-            player.regain_health(100)
-            player.reset_search_count()
-            print(f"\nYou rested at camp. \nCurrent health: {player.health}\n")
-        elif choice == "i":
+        elif choice == "4":
+            rest(player)
+        elif choice == "5":
             player.inventory.inventory_menu(player)
-        elif choice == "s":
+        elif choice == "6":
             shop.shop_menu(player)
-        elif choice == "q":
+        elif choice == "7":
             view_quest_log(player)
-        elif choice == "m":
+        elif choice == "8":
             from game1 import main_menu
             main_menu(player, shop)
         else:
-            print("\nInvalid choice. Please enter a valid command.\n")
+            print("\nInvalid choice. Please enter a number between 1 and 8.\n")
 
-        input("\nPress Enter to continue...") 
 
 def visit_tavern(player):
     while True:
@@ -91,7 +103,7 @@ def leave_camp(player, shop):
         print("1. Dark Forest")
         print("2. Damp Cave")
         print("3. Back to camp")
-        choice = input("Enter your choice (1-3): ").strip()
+        choice = input("\nEnter your choice (1-3): ").strip()
 
         if choice == "1":
             enter_dark_forest(player, shop)
@@ -149,11 +161,6 @@ def check_mystic_herb_quest_status(player):
             print(f"Camp Captain: 'Eldrin the Greenwarden often has tasks for willing adventurers. Have you spoken with him in the tavern, {player.name}?'")
     else:
         print(f"Camp Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
-
-
-
-    
-    
 
 def meet_camp_captain(player):
     clear_console()

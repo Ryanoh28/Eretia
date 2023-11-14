@@ -35,6 +35,7 @@ class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
         # Initial attributes
+        self.energy = 100
         self.weapon = None
         self.available_weapons = []
         self.quests = {}
@@ -52,7 +53,20 @@ class Warrior(Human):
         self.search_count = 0
         self.mining_experience = 0
         self.mining_level = 1
+
+    def consume_energy(self, amount):
+        if self.energy >= amount:
+            self.energy -= amount
+            print(f"Used {amount} energy. Remaining energy: {self.energy}")
+            return True
+        else:
+            print("Not enough energy!")
+            return False
+
+    def regenerate_energy(self, amount=100):  # Can be called with a specific amount or to fully regenerate
+        self.energy = min(self.energy + amount, 100)
         
+
     def gain_mining_experience(self, exp):
         self.mining_experience += exp
         print(f"Gained {exp} mining experience.")
@@ -282,7 +296,12 @@ class Shop:
             "Copper Ore": 5,  
             "Tin Ore": 8,
             "Iron Ore": 12,
-        
+            "Damp Moss": 2,
+            "Flickering Crystal Shard": 4,
+            "Cave Pearl": 14,
+            "Ancient Bone Fragment": 18,
+            "Glowing Mushroom": 30,
+            "Ethereal Stone": 100
         }
 
     
