@@ -41,9 +41,8 @@ def search_damp_cave(player):
 
     if player.energy >= energy_cost_per_search:
         print("Searching the Damp Cave...\n")
-        player.consume_energy(energy_cost_per_search)  
+        player.consume_energy(energy_cost_per_search)
 
-        
         if random.randint(1, 2) == 1:
             found_item = get_location_loot(DAMP_CAVE_LOOT)
 
@@ -59,8 +58,8 @@ def search_damp_cave(player):
                 print("You searched the cave but found nothing of interest.")
         else:
             print("You searched the cave but found nothing this time.")
-
     else:
+        clear_console()  
         print("You don't have enough energy to search. Rest to regain energy.")
 
     input("\nPress Enter to continue...")  
