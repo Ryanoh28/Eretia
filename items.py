@@ -5,6 +5,19 @@ class Item:
         self.name = name
         self.description = description
 
+class GenericItem(Item):
+    def __init__(self, name, description, use_function=None):
+        super().__init__(name, description)
+        self.use_function = use_function
+
+    def use(self, target):
+        if self.use_function:
+            return self.use_function(target)
+        else:
+            print(f"{self.name} cannot be used this way.")
+            return False
+
+
 class Weapon:
     def __init__(self, name, extra_damage, crit_chance_bonus):
         self.name = name
@@ -25,11 +38,28 @@ class Potion(Item):
         else:
             return False
 
+class Bedroll(Item):
+    def __init__(self, name, description):
+        super().__init__(name, description)
+
+    def use_bedroll(self, target):
+        health_regain = 75
+        energy_regain = 75
+        target.regain_health(health_regain)
+        target.regain_energy(energy_regain)
+        print(f"{target.name} uses the {self.name}, regaining {health_regain} health and {energy_regain} energy.")
+        input("\nPress enter to continue...")
+        return True
+
+
 class Inventory:
     def __init__(self):
         self.items = []
         self.equipment = []
 
+    def has_item(self, item_name):
+        return any(item.name == item_name for item in self.items)
+    
     def count_item(self, item_name):
         return sum(1 for item in self.items if item.name == item_name)
     
@@ -145,7 +175,7 @@ class Inventory:
             print("3. Equip Weapon")
             print("4. Unequip Weapon")
             print("5. View Stats and Skills")
-            print("(B)ack")
+            print("6. Back")
 
             inventory_choice = input("\nWhat would you like to do? ").strip()
 
@@ -159,7 +189,7 @@ class Inventory:
                 self.unequip_weapon(player)
             elif inventory_choice == '5':
                 self.show_skill_stats(player)
-            elif inventory_choice in ['b', 'back']:
+            elif inventory_choice == '6':
                 clear_console()
                 break
             else:

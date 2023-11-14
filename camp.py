@@ -24,6 +24,9 @@ def view_quest_log(player):
                 print(f"- {quest_name.title()}: In Progress")
             elif quest_info["completed"]:
                 print(f"- {quest_name.title()}: Completed")
+
+    input("\nPress Enter to continue...")  
+
     
 
 def return_to_camp(player, shop):
@@ -38,6 +41,7 @@ def return_to_camp(player, shop):
         print("6. Shop")
         print("7. Quests")
         print("8. Exit to Main Menu")
+
         choice = input("\nEnter your choice (1-8): ").strip()
 
         if choice == "1":
@@ -49,7 +53,7 @@ def return_to_camp(player, shop):
         elif choice == "4":
             rest(player)
         elif choice == "5":
-            player.inventory.inventory_menu(player)
+            player.inventory.inventory_menu(player)  
         elif choice == "6":
             shop.shop_menu(player)
         elif choice == "7":
@@ -59,6 +63,7 @@ def return_to_camp(player, shop):
             main_menu(player, shop)
         else:
             print("\nInvalid choice. Please enter a number between 1 and 8.\n")
+
 
 
 def visit_tavern(player):

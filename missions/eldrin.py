@@ -8,10 +8,10 @@ def speak_with_eldrin(player):
         mystic_herb_quest = player.quests["mystic_herb_quest"]
         if mystic_herb_quest["completed"]:
             if not mystic_herb_quest.get("reward_given"):
-                clear_console()  # Clear the console before displaying Eldrin's dialogue
+                clear_console()  
                 give_mystic_herb_quest_reward(player)
             else:
-                # Here, check if the Monster Loot Quest is available or completed
+                
                 if "monster_loot_quest" not in player.quests or not player.quests["monster_loot_quest"]["completed"]:
                     offer_monster_loot_quest(player)
                 else:
@@ -27,12 +27,12 @@ def speak_with_eldrin(player):
             clear_console()
             return
 
-    # If Mystic Herb Quest is not started, offer it
+    
     if "mystic_herb_quest" not in player.quests:
         offer_mystic_herb_quest(player)
         return
 
-    # Handle Monster Loot Quest
+    
     if "monster_loot_quest" in player.quests:
         handle_monster_loot_quest(player)
     else:

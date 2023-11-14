@@ -1,7 +1,8 @@
 #classes.py
 import random
-from items import Inventory, Potion, Item, Weapon
+from items import Inventory, Potion, Item, Weapon, GenericItem, Bedroll
 from utilities import clear_console
+
 
 class Human:
     def __init__(self, name):
@@ -53,6 +54,14 @@ class Warrior(Human):
         self.search_count = 0
         self.mining_experience = 0
         self.mining_level = 1
+    
+    def regain_energy(self, amount):
+        self.energy += amount
+        if self.energy > 100:
+            self.energy = 100
+    
+    def can_rest(self):
+        return self.health < 100 or self.energy < 100
 
     def consume_energy(self, amount):
         if self.energy >= amount:
@@ -279,7 +288,11 @@ class Shop:
     def __init__(self):
         self.items_for_sale = {
             'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
+            'cauldron': {'price': 100, 'object': GenericItem("Cauldron", "An iron cauldron for brewing potions.")},
+            'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
         }
+
+        
         self.item_value = {
             "Gilded Feather": 6, 
             "Enchanted Stone": 10,
@@ -301,7 +314,8 @@ class Shop:
             "Cave Pearl": 14,
             "Ancient Bone Fragment": 18,
             "Glowing Mushroom": 30,
-            "Ethereal Stone": 100
+            "Ethereal Stone": 100,
+            
         }
 
     
