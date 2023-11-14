@@ -1,4 +1,4 @@
-from classes import Monster
+from classes import Monster, return_to_location
 from utilities import clear_console
 from items import get_loot_drop
 import random
@@ -16,13 +16,13 @@ def combat(player, monster, shop):
             player.normal_attack(monster)
             if not monster.check_if_alive():
                 print(f"\nThe {monster.name} has been defeated!\n")
-                player.gain_experience(10)  
+                player.gain_experience(10)
 
                 loot = get_loot_drop()
                 for item in loot:
                     print(f"You found a {item.name}!")
                     player.inventory.add_item(item)
-                    
+
                     examine_choice = input("Do you want to examine it? (Y/N): ").lower().strip()
                     if examine_choice == 'y':
                         clear_console()
@@ -35,15 +35,16 @@ def combat(player, monster, shop):
             clear_console()
             print("You managed to escape from the Monster safely.\n")
             input("Press Enter to continue...")
-            player.choice = 'return_to_camp'
             return 'escaped'
 
         if monster.alive:
-            monster.monster_attack(player)  # Monster attacks the player
+            monster.monster_attack(player)
 
     if not player.alive:
         return 'player_defeated'
+
     return 'end_of_combat'
+
 
 
 def fight_monster(player, shop, location):
@@ -52,9 +53,8 @@ def fight_monster(player, shop, location):
 
     while player.in_combat:
         # Create a monster appropriate for the current location
-        
         monster = create_monster(location)
-        print(f"You encounter a Level {monster.level} {monster.name}...\n")  # Updated message
+        print(f"You encounter a Level {monster.level} {monster.name}...\n")
         combat_result = combat(player, monster, shop)
 
         if combat_result == 'monster_defeated':
@@ -62,16 +62,17 @@ def fight_monster(player, shop, location):
             player.gain_experience(10)
             post_combat_options(player, shop)
             if player.choice == 'return_to_camp':
+                return_to_location(player, shop)  # Use return_to_location instead of breaking
                 break
         elif combat_result == 'escaped':
-            player.choice = 'return_to_camp'
+            return_to_location(player, shop)  # Use return_to_location for escaped scenario
             break
-
         elif combat_result == 'player_defeated':
             player.handle_player_defeat(shop)
             break
 
     player.in_combat = False
+
 
 def create_monster(location):
     base_health = 60

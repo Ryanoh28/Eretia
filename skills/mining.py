@@ -6,14 +6,16 @@ from items import Item
 ORE_EXPERIENCE_POINTS = {
     "Copper Ore": 5,
     "Tin Ore": 8,
-    "Iron Ore": 12
+    "Iron Ore": 12,
+    "Stone": 1  
 }
+
 
 def gain_mining_experience(player, ore):
     
     exp = ORE_EXPERIENCE_POINTS.get(ore, 0)
     player.mining_experience += exp
-    print(f"Gained {exp} mining experience.")
+    #print(f"Gained {exp} mining experience.")
 
     if player.mining_experience >= 100:
         player.mining_experience -= 100
@@ -23,7 +25,7 @@ def gain_mining_experience(player, ore):
 
 def mine_in_damp_cave(player, shop):
     clear_console()
-    print("You start mining...")
+    print("You start mining...\n")
     energy_cost_per_mine = 10  
 
     if player.energy >= energy_cost_per_mine:
@@ -47,12 +49,21 @@ def mine_in_damp_cave(player, shop):
 
             if random.randint(1, 4) == 1:
                 print("\nAs you mine, a monster emerges from the depths of the cave!")
+                input("\nPress enter to continue...")
                 fight_monster(player, shop, "Damp Cave")
         else:
-            print("Your mining attempt was unsuccessful. All you see is stone!")
+            print("\nYour mining attempt was unsuccessful. All you see is stone!")
+            gain_mining_experience(player, "Stone")  
+
+            
+            stone_item = Item("Stone", "A common stone, not worth much but can be sold.")
+            player.inventory.add_item(stone_item)
+
     else:
         print("You don't have enough energy to mine. Rest to regain energy.")
 
     input("\nPress Enter to continue...")
+
+
 
 ######/\/\/\/\/\/\/\####DAMP CAVE MINING#########/\/\/\/\/\/\/\#################

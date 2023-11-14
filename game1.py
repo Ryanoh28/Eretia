@@ -28,7 +28,7 @@ def game_over():
 def start_game(shop):
     player_name = welcome()
     player = Warrior(player_name)
-    player.gold = 500 #Testing
+    player.gold = 50 #Testing
     meet_camp_captain(player)
     return_to_camp(player, shop)
     return player

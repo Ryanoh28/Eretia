@@ -160,7 +160,9 @@ class Inventory:
     def inventory_menu(self, player):
         while True:
             clear_console()
-            print(f"\nInventory: {player.health} Health | {player.gold} Gold | {player.energy} Energy\n")
+            print(f"\nStats: {player.health} Health | {player.energy} Energy | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/100\n")
+
+        
 
             print("==== Inventory ====")
             self.show_inventory()
@@ -190,10 +192,10 @@ class Inventory:
             elif inventory_choice == '5':
                 self.show_skill_stats(player)
             elif inventory_choice == '6':
-                clear_console()
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
+
 
 
 

@@ -6,6 +6,7 @@ from locations.locationfunctions import rest_in_location
 from locations.locationfunctions import rest_in_location
 
 def enter_dark_forest(player, shop):
+    player.current_location = 'dark_forest'
     while True:
         clear_console()
         print("You are in the Dark Forest. What would you like to do?\n")

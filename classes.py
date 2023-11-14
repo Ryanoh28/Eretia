@@ -2,7 +2,7 @@
 import random
 from items import Inventory, Potion, Item, Weapon, GenericItem, Bedroll
 from utilities import clear_console
-
+from locations.darkforest import enter_dark_forest, enter_damp_cave
 
 class Human:
     def __init__(self, name):
@@ -32,10 +32,17 @@ class Human:
         self.alive = False
         
 
+def return_to_location(player, shop):
+    if player.current_location == 'dark_forest':
+        enter_dark_forest(player, shop)
+    elif player.current_location == 'damp_cave':
+        enter_damp_cave(player, shop)
+
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
         # Initial attributes
+        self.current_location = None
         self.energy = 100
         self.weapon = None
         self.available_weapons = []
@@ -112,26 +119,38 @@ class Warrior(Human):
     def training(self):
         if self.training_count < 2:
             clear_console()
-            print(f"What would you like to train? (A) Strength, (B) Speed, (C) Defense\n")
-            stat_choice = input().lower().strip()
+            print("What would you like to train?\n")
+            print("1. Strength")
+            print("2. Speed")
+            print("3. Defense\n")
+            
+            stat_choice = input("Enter your choice (1-3): ").strip()
 
-            if stat_choice == "a":
+            if stat_choice == "1":
                 self.strength += 1
-                print(f"{self.name}'s strength increased to {self.strength}.\n")
-            elif stat_choice == "b":
+                clear_console()
+                print(f"{self.name}'s strength increased to {self.strength}.")
+            elif stat_choice == "2":
                 self.speed += 1
-                print(f"{self.name}'s speed increased to {self.speed}.\n")
-            elif stat_choice == "c":
+                clear_console()
+                print(f"{self.name}'s speed increased to {self.speed}.")
+            elif stat_choice == "3":
                 self.defense += 1
-                print(f"{self.name}'s defense increased to {self.defense}.\n")
+                clear_console()
+                print(f"{self.name}'s defense increased to {self.defense}.")
             else:
-                print("Invalid choice. Please choose a valid stat to train.\n")
-                return
-
+                clear_console()
+                print("Invalid choice. Please enter a number between 1 and 3 to choose a stat to train.")
+            
+            input("\nPress Enter to continue...") 
             self.training_count += 1
         else:
             clear_console()
-            print("You have already trained twice at this level. Level up to train more.\n")
+            print("You have already trained twice at this level. Level up to train more.")
+            input("\nPress Enter to continue...")  
+
+
+
     
    
 
@@ -289,7 +308,7 @@ class Shop:
         self.items_for_sale = {
             'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
             'cauldron': {'price': 100, 'object': GenericItem("Cauldron", "An iron cauldron for brewing potions.")},
-            'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
+            'bedroll': {'price': 100, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
         }
 
         
@@ -315,6 +334,7 @@ class Shop:
             "Ancient Bone Fragment": 18,
             "Glowing Mushroom": 30,
             "Ethereal Stone": 100,
+            "Stone": 1
             
         }
 
@@ -329,6 +349,7 @@ class Shop:
                 price = self.items_for_sale[item_name]['price']
                 print(f"{index}. {item_name.title()}: {price} gold")
 
+            
             print("\nEnter the number of the item you would like to buy or press (Q) to go back.")
             choice = input().lower().strip()
 
@@ -378,7 +399,7 @@ class Shop:
             print("Choose an option:\n")
             print("1. View items to buy")
             print("2. Sell items")
-            print("\n(B)ack")
+            print("3. Back")
 
             choice = input("\nEnter your choice: ").lower()
 
@@ -386,7 +407,7 @@ class Shop:
                 self.display_items_for_sale(player)
             elif choice in ['2', 'sell']:
                 self.sell_items_interface(player)
-            elif choice in ['b', 'back']:
+            elif choice in ['3', 'b']:
                 clear_console()  
                 break  
             else:
