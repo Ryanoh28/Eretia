@@ -339,6 +339,7 @@ class Shop:
     def display_items_for_sale(self, player):
         while True:
             clear_console()
+            print(f"You have {player.gold} gold.\n")
             print("Items for sale:\n")
             item_list = list(self.items_for_sale.keys())
             for index, item_name in enumerate(item_list, 1):
@@ -451,32 +452,68 @@ class Shop:
                     print("Invalid choice. Please enter a valid number.")
 
     def sell_item(self, player, item_name, available_quantity):
-        print(f"\nHow many {item_name}s do you want to sell? (Available: {available_quantity})")
-        try:
-            quantity_to_sell = int(input("Enter quantity: "))
-            if quantity_to_sell < 1 or quantity_to_sell > available_quantity:
-                raise ValueError
+        if available_quantity == 1:
+            quantity_to_sell = 1
+        else:
+            print(f"\nHow many {item_name}s do you want to sell? (Available: {available_quantity}, 'A' for all)")
+            choice = input("Enter quantity or 'A': ").lower()
 
-            sale_price = self.item_value.get(item_name, 0)
-            total_sale_price = sale_price * quantity_to_sell
-
-            
-            if item_name in [weapon.name for weapon in player.available_weapons]:
-                for _ in range(quantity_to_sell):
-                    weapon_to_remove = next(weapon for weapon in player.available_weapons if weapon.name == item_name)
-                    player.available_weapons.remove(weapon_to_remove)
+            if choice in ['a', 'all']:
+                quantity_to_sell = available_quantity
             else:
-                for _ in range(quantity_to_sell):
-                    item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
-                    player.inventory.items.remove(item_to_remove)
+                try:
+                    quantity_to_sell = int(choice)
+                    if quantity_to_sell < 1 or quantity_to_sell > available_quantity:
+                        raise ValueError
+                except ValueError:
+                    print("Invalid quantity. Please enter a valid number.")
+                    return
+
+        sale_price = self.item_value.get(item_name, 0)
+        total_sale_price = sale_price * quantity_to_sell
+        
+        if item_name in [weapon.name for weapon in player.available_weapons]:
+            for _ in range(quantity_to_sell):
+                weapon_to_remove = next(weapon for weapon in player.available_weapons if weapon.name == item_name)
+                player.available_weapons.remove(weapon_to_remove)
+        else:
+            for _ in range(quantity_to_sell):
+                item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
+                player.inventory.items.remove(item_to_remove)
+
+        player.gold += total_sale_price
+        clear_console()
+        print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
+        input("Press Enter to continue...")
+
+    
+    # def sell_item(self, player, item_name, available_quantity):
+    #     print(f"\nHow many {item_name}s do you want to sell? (Available: {available_quantity})")
+    #     try:
+    #         quantity_to_sell = int(input("Enter quantity: "))
+    #         if quantity_to_sell < 1 or quantity_to_sell > available_quantity:
+    #             raise ValueError
+
+    #         sale_price = self.item_value.get(item_name, 0)
+    #         total_sale_price = sale_price * quantity_to_sell
 
             
-            player.gold += total_sale_price
-            clear_console()
-            print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
-        except ValueError:
-            print("Invalid quantity. Please enter a valid number.")
-        input("Press Enter to continue...")
+    #         if item_name in [weapon.name for weapon in player.available_weapons]:
+    #             for _ in range(quantity_to_sell):
+    #                 weapon_to_remove = next(weapon for weapon in player.available_weapons if weapon.name == item_name)
+    #                 player.available_weapons.remove(weapon_to_remove)
+    #         else:
+    #             for _ in range(quantity_to_sell):
+    #                 item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
+    #                 player.inventory.items.remove(item_to_remove)
+
+            
+    #         player.gold += total_sale_price
+    #         clear_console()
+    #         print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
+    #     except ValueError:
+    #         print("Invalid quantity. Please enter a valid number.")
+    #     input("Press Enter to continue...")
 
 
     
