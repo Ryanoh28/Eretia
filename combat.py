@@ -52,6 +52,7 @@ def combat(player, monster, shop):
 
 def fight_monster(player, shop, location):
     clear_console()
+    
     player.in_combat = True
 
     while player.in_combat:

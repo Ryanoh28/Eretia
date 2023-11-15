@@ -11,14 +11,14 @@ class Human:
         self.health = 100  # Default max health for all humans
 
     def lose_health(self, damage, attacker_strength):
-        damage_reduction = max(0, self.defense - attacker_strength)
+        damage_reduction = max(0, self.defence - attacker_strength)
         effective_damage = max(1, damage - damage_reduction)  # Ensure minimum damage of 1
 
         self.health -= effective_damage
         self.health = round(self.health, 1)
 
         if effective_damage > 0:
-            print(f"{self.name}'s defense negated {damage_reduction} points of damage from the attack!")
+            print(f"{self.name}'s defence negated {damage_reduction} points of damage from the attack!")
         else:
             print(f"{self.name} could not negate any damage from the attack.")
 
@@ -44,7 +44,7 @@ class Warrior(Human):
         self.quests = {}
         self.strength = 2
         self.speed = 2
-        self.defense = 2
+        self.defence = 2
         self.attack = 2
         self.max_health = 100
         self.level = 1
@@ -68,7 +68,7 @@ class Warrior(Human):
     def consume_energy(self, amount):
         if self.energy >= amount:
             self.energy -= amount
-            print(f"Used {amount} energy.")
+            #print(f"Used {amount} energy.")
             return True
         else:
             print("Not enough energy!")
@@ -117,7 +117,7 @@ class Warrior(Human):
             print("What would you like to train?\n")
             print("1. Strength")
             print("2. Speed")
-            print("3. Defense\n")
+            print("3. Defence\n")
             
             stat_choice = input("Enter your choice (1-3): ").strip()
 
@@ -130,9 +130,9 @@ class Warrior(Human):
                 clear_console()
                 print(f"{self.name}'s speed increased to {self.speed}.")
             elif stat_choice == "3":
-                self.defense += 1
+                self.defence += 1
                 clear_console()
-                print(f"{self.name}'s defense increased to {self.defense}.")
+                print(f"{self.name}'s defence increased to {self.defence}.")
             else:
                 clear_console()
                 print("Invalid choice. Please enter a number between 1 and 3 to choose a stat to train.")
@@ -205,11 +205,11 @@ class Warrior(Human):
         
         self.strength += 1 
         self.speed += 1
-        self.defense += 1
+        self.defence += 1
         self.attack += 1
         #self.max_health += 10
         self.health = self.max_health  
-        print(f"{self.name}'s strength, speed, defense, and attack have increased!\n")
+        print(f"{self.name}'s strength, speed, defence, and attack have increased!\n")
 
     def spend_gold(self, amount):
         if self.gold >= amount:
@@ -240,7 +240,7 @@ class Warrior(Human):
         return_to_border_town(self, shop)
 
 class Monster:
-    def __init__(self, name, health, strength_max, speed_max, defense_max, level=1):
+    def __init__(self, name, health, strength_max, speed_max, defence_max, level=1):
         self.alive = True
         self.name = name
         self.level = level
@@ -249,20 +249,20 @@ class Monster:
         # Base stats for the monster's level
         self.strength = 2 + (level - 1)
         self.speed = 2 + (level - 1)
-        self.defense = 2 + (level - 1)
+        self.defence = 2 + (level - 1)
 
         # Simulate training by randomly distributing extra stat points
         for _ in range(level * 2):  # 2 training points per level
             self.add_random_stat_point()
     
     def add_random_stat_point(self):
-        stat_choice = random.choice(['strength', 'speed', 'defense'])
+        stat_choice = random.choice(['strength', 'speed', 'defence'])
         if stat_choice == 'strength':
             self.strength += 1
         elif stat_choice == 'speed':
             self.speed += 1
-        elif stat_choice == 'defense':
-            self.defense += 1
+        elif stat_choice == 'defence':
+            self.defence += 1
 
 
     
@@ -330,7 +330,8 @@ class Shop:
             "Ancient Bone Fragment": 18,
             "Glowing Mushroom": 30,
             "Ethereal Stone": 100,
-            "Stone": 1
+            "Stone": 1,
+            "Fossilised Bone": 15
             
         }
 

@@ -1,6 +1,6 @@
 import pickle
 from classes import Warrior, Shop
-from camp import meet_camp_captain, return_to_camp
+from bordertown import meet_guard_captain, return_to_border_town
 from utilities import clear_console
 
 def save_game(player, shop, filename="savegame.pkl"):
@@ -29,8 +29,8 @@ def start_game(shop):
     player_name = welcome()
     player = Warrior(player_name)
     player.gold = 50 #Testing
-    meet_camp_captain(player)
-    return_to_camp(player, shop)
+    meet_guard_captain(player)
+    return_to_border_town(player, shop)
     return player
 
 def show_instructions():
@@ -49,7 +49,7 @@ def main_menu(player=None, shop=None):
 
     while True:
         clear_console()
-        print("\n=== Main Menu ===")
+        print("=== Main Menu ===")
         print("1. New Game")
         print("2. Continue Game")
         print("3. Save Game")
@@ -63,10 +63,10 @@ def main_menu(player=None, shop=None):
                 player = start_game(shop)
             else:
                 print("Game already started. Returning to camp.")
-                return_to_camp(player, shop)
+                return_to_border_town(player, shop)
         elif choice == '2':
             if player and shop:
-                return_to_camp(player, shop)
+                return_to_border_town(player, shop)
             else:
                 print("No ongoing game to continue. Please start a new game.")
         elif choice == '3':
@@ -78,7 +78,7 @@ def main_menu(player=None, shop=None):
             try:
                 player, shop = load_game()
                 print("Game loaded successfully. Returning to camp.")
-                return_to_camp(player, shop)
+                return_to_border_town(player, shop)
             except FileNotFoundError:
                 print("No saved game found. Please start a new game.")
         elif choice == '5':
