@@ -9,10 +9,13 @@ import random
 def combat(player, monster, shop):
     
     while player.alive and monster.alive:
-        choice = input("\nDo you want to (A)ttack or (R)un? ").lower()
+        print("\nChoose your action:")
+        print("\n1. Attack")
+        print("2. Run")
+        choice = input("\nEnter your choice (1-2): ").strip()
         clear_console()
 
-        if choice == "a":
+        if choice == "1":
             player.normal_attack(monster)
             if not monster.check_if_alive():
                 print(f"\nThe {monster.name} has been defeated!\n")
@@ -31,10 +34,10 @@ def combat(player, monster, shop):
                 input("Press Enter to continue...")
                 return 'monster_defeated'
 
-        elif choice == "r":
+        elif choice == "2":
             clear_console()
             print("You managed to escape from the Monster safely.\n")
-            input("Press Enter to continue...")
+            #input("Press Enter to continue...")
             return 'escaped'
 
         if monster.alive:
@@ -48,33 +51,35 @@ def combat(player, monster, shop):
 
 
 def fight_monster(player, shop, location):
-    
     clear_console()
     player.in_combat = True
 
     while player.in_combat:
-        # Create a monster appropriate for the current location
         monster = create_monster(location)
-        print(f"You encounter a Level {monster.level} {monster.name}...\n")
+        print(f"You encounter a Level {monster.level} {monster.name}...")
         combat_result = combat(player, monster, shop)
 
         if combat_result == 'monster_defeated':
             print(f"\nThe {monster.name} has been defeated!")
             player.gain_experience(10)
-            post_combat_options(player, shop)
-            if player.choice == 'return_to_camp':
-                from locations.locationfunctions import return_to_location
-                return_to_location(player, shop)  # Use return_to_location instead of breaking
-                break
+            
+            from locations.locationfunctions import return_to_location
+            return_to_location(player, shop)
+            break
+
         elif combat_result == 'escaped':
             from locations.locationfunctions import return_to_location
-            return_to_location(player, shop)  # Use return_to_location for escaped scenario
+            return_to_location(player, shop)
             break
+
         elif combat_result == 'player_defeated':
             player.handle_player_defeat(shop)
+            from locations.locationfunctions import return_to_location
+            return_to_location(player, shop)
             break
 
     player.in_combat = False
+
 
 
 def create_monster(location):
@@ -83,7 +88,7 @@ def create_monster(location):
     
     location_level_ranges = {
         "Dark Forest": (1, 3),  
-        "Damp Cave": (3, 6),    
+        "Damp Cave": (4, 8),    
         # Add other locations and level ranges as needed
     }
     
@@ -102,48 +107,3 @@ def create_monster(location):
 
 
 
-
-
-
-# def fight_monster(player, shop, location):
-#     clear_console()
-#     player.in_combat = True
-
-#     while player.in_combat:
-#         # Create a monster appropriate for the current location
-#         monster = create_monster(location)
-#         print(f"You encounter a {monster.name}...\n")
-#         combat_result = combat(player, monster, shop)
-
-#         if combat_result == 'monster_defeated':
-#             print(f"\nThe {monster.name} has been defeated!")
-#             player.gain_experience(10)
-#             post_combat_options(player, shop)
-#             if player.choice == 'return_to_camp':
-#                 break
-#         elif combat_result == 'escaped':
-#             player.choice = 'return_to_camp'
-#             break
-
-#         elif combat_result == 'player_defeated':
-#             player.handle_player_defeat(shop)
-#             break
-
-#     player.in_combat = False
-
-
-def post_combat_options(player, shop):
-    while True:
-        clear_console()
-        leave_choice = input("Would you like to (C)ontinue fighting, (R)eturn or check (I)nventory? ").lower()
-
-        if leave_choice == "r":
-            player.choice = 'return_to_camp'
-            break
-        elif leave_choice == "i":
-            player.inventory.inventory_menu(player)
-            clear_console()
-        elif leave_choice == "c":
-            break
-        else:
-            print("\nInvalid choice. Please enter 'C' to continue fighting, 'R' to return, or 'I' to check inventory.\n")         

@@ -23,15 +23,28 @@ def gain_mining_experience(player, ore):
         print(f"Congratulations! Your mining level is now {player.mining_level}.")
 
 
+
 def mine_in_damp_cave(player, shop):
     clear_console()
-    print("You start mining...\n")
+
+    # Check for Iron Pickaxe in the player's inventory
+    has_iron_pickaxe = player.inventory.has_item("Iron Pickaxe")
+
+    # Adjust the print statement and success chance based on the presence of an Iron Pickaxe
+    if has_iron_pickaxe:
+        print("You start mining with your Iron Pickaxe...\n")
+        success_chance = player.mining_level + 1  # Boosted mining probability
+    else:
+        print("You start mining...\n")
+        success_chance = player.mining_level
+
     energy_cost_per_mine = 10  
 
     if player.energy >= energy_cost_per_mine:
         player.consume_energy(energy_cost_per_mine)  
 
-        mining_successful = random.randint(1, 10) <= player.mining_level
+        # Adjust the mining success probability
+        mining_successful = random.randint(1, 10) <= success_chance
 
         if mining_successful:
             ore = random.choices(
@@ -55,7 +68,6 @@ def mine_in_damp_cave(player, shop):
             print("\nYour mining attempt was unsuccessful. All you see is stone!")
             gain_mining_experience(player, "Stone")  
 
-            
             stone_item = Item("Stone", "A common stone, not worth much but can be sold.")
             player.inventory.add_item(stone_item)
 

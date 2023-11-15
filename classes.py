@@ -1,6 +1,6 @@
 #classes.py
 import random
-from items import Inventory, Potion, GenericItem, Bedroll
+from items import Inventory, Potion, GenericItem, Bedroll, Pickaxe
 from utilities import clear_console
 
 class Human:
@@ -68,13 +68,13 @@ class Warrior(Human):
     def consume_energy(self, amount):
         if self.energy >= amount:
             self.energy -= amount
-            print(f"Used {amount} energy. Remaining energy: {self.energy}")
+            print(f"Used {amount} energy.")
             return True
         else:
             print("Not enough energy!")
             return False
 
-    def regenerate_energy(self, amount=100):  # Can be called with a specific amount or to fully regenerate
+    def regenerate_energy(self, amount=100):  
         self.energy = min(self.energy + amount, 100)
         
 
@@ -303,7 +303,8 @@ class Shop:
         self.items_for_sale = {
             'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
             'cauldron': {'price': 100, 'object': GenericItem("Cauldron", "An iron cauldron for brewing potions.")},
-            'bedroll': {'price': 100, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
+            'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
+            'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 10)},
         }
 
         
@@ -366,6 +367,7 @@ class Shop:
             price = item_info['price']
             item = item_info['object']
             try:
+                clear_console()
                 quantity = int(input(f"How many {item_name}s would you like to buy? Enter quantity: "))
                 if quantity < 1:
                     raise ValueError

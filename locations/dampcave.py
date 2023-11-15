@@ -14,9 +14,10 @@ def enter_damp_cave(player, shop):
         print("2. Search Damp Cave")
         print("3. Mine")
         print("4. Rest")
-        print("5. Return to Camp")
+        print("5. Inventory")
+        print("6. Return to Camp")
 
-        choice = input("\nEnter your choice (1-5): ").strip()
+        choice = input("\nEnter your choice (1-6): ").strip()
 
         if choice == "1":
             # Logic for exploring the cave
@@ -29,9 +30,12 @@ def enter_damp_cave(player, shop):
             clear_console()
             rest_in_location(player)
         elif choice == "5":
-            break  # Exit the function, returning the player to the previous menu or location
+            player.inventory.inventory_menu(player)
+        elif choice == "6":
+            break  
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 5.")
+            print("\nInvalid choice. Please enter a number between 1 and 6.")
+
 
 
 DAMP_CAVE_LOOT = {

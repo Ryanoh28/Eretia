@@ -24,6 +24,10 @@ class Weapon:
         self.extra_damage = extra_damage
         self.crit_chance_bonus = crit_chance_bonus
 
+class Pickaxe(Item):
+    def __init__(self, name, description, boost):
+        super().__init__(name, description)
+        self.boost = boost
 
 class Potion(Item):
     def __init__(self, name, description, healing_amount):
@@ -160,7 +164,7 @@ class Inventory:
     def inventory_menu(self, player):
         while True:
             clear_console()
-            print(f"\nStats: {player.health} Health | {player.energy} Energy | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/100\n")
+            print(f"\nStatus: {player.health} Health | {player.energy} Energy | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/100\n")
 
         
 
@@ -366,3 +370,4 @@ def get_location_loot(loot_table):
             return Item(name, info["description"])
     
     return None
+
