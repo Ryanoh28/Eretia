@@ -4,9 +4,10 @@ from items import get_location_loot
 from locations.locationfunctions import rest_in_location
 import random
 
-from locations.locationfunctions import rest_in_location
+
 
 def enter_damp_cave(player, shop):
+    player.current_location = 'damp_cave'
     while True:
         clear_console()
         print("You are in the Damp Cave. What would you like to do?\n")
@@ -32,6 +33,7 @@ def enter_damp_cave(player, shop):
         elif choice == "5":
             player.inventory.inventory_menu(player)
         elif choice == "6":
+            player.current_location = None
             break  
         else:
             print("\nInvalid choice. Please enter a number between 1 and 6.")

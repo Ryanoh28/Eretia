@@ -233,11 +233,11 @@ class Warrior(Human):
         print(f"\n{self.name} has been defeated.\n\n")  
         self.health = self.max_health * 0.5  # Regain 50% of max health
         self.alive = True
-        print(f"{self.name} stumbled back to camp after being defeated.\n")
+        print(f"{self.name} stumbled back to town after being defeated.\n")
         print(f"{self.name} has regained 50% of their health.\n")  
-        input("Press Enter to return to camp...\n")  
-        from camp import return_to_camp
-        return_to_camp(self, shop)
+        input("Press Enter to return to town...\n")  
+        from bordertown import return_to_border_town
+        return_to_border_town(self, shop)
 
 class Monster:
     def __init__(self, name, health, strength_max, speed_max, defense_max, level=1):
@@ -393,7 +393,7 @@ class Shop:
     def shop_menu(self, player):
         while True:
             clear_console()
-            print("Welcome to the Camp Shop!\n")
+            print("Welcome to Border General!\n")
             print("Choose an option:\n")
             print("1. View items to buy")
             print("2. Sell items")

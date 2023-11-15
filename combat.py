@@ -63,22 +63,20 @@ def fight_monster(player, shop, location):
             print(f"\nThe {monster.name} has been defeated!")
             player.gain_experience(10)
             
-            from locations.locationfunctions import return_to_location
-            return_to_location(player, shop)
-            break
 
         elif combat_result == 'escaped':
-            from locations.locationfunctions import return_to_location
-            return_to_location(player, shop)
-            break
+            print("You successfully escaped from the monster.")
 
         elif combat_result == 'player_defeated':
             player.handle_player_defeat(shop)
-            from locations.locationfunctions import return_to_location
-            return_to_location(player, shop)
-            break
+            
 
+        break
+
+    from locations.locationfunctions import return_to_location
+    return_to_location(player, shop)
     player.in_combat = False
+
 
 
 
@@ -88,7 +86,7 @@ def create_monster(location):
     
     location_level_ranges = {
         "Dark Forest": (1, 3),  
-        "Damp Cave": (4, 8),    
+        "Damp Cave": (4, 7),    
         # Add other locations and level ranges as needed
     }
     

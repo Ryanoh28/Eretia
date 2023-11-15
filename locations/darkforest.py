@@ -3,7 +3,7 @@ from utilities import clear_console
 from items import get_location_loot
 from locations.locationfunctions import rest_in_location
 
-from locations.locationfunctions import rest_in_location
+
 
 def enter_dark_forest(player, shop):
     player.current_location = 'dark_forest'
@@ -14,7 +14,7 @@ def enter_dark_forest(player, shop):
         print("2. Search Dark Forest")
         print("3. Inventory")
         print("4. Rest")
-        print("5. Return to Camp")
+        print("5. Return to Border Town")
 
         choice = input("\nEnter your choice (1-5): ").strip()
 
@@ -28,14 +28,16 @@ def enter_dark_forest(player, shop):
             clear_console()
             rest_in_location(player)
         elif choice == "5":
-            from camp import return_to_camp
-            return_to_camp(player, shop)
+            from bordertown import return_to_border_town
+            player.current_location = None
+            return_to_border_town(player, shop)
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")
 
 
 def search_dark_forest(player):
+    player.current_location = 'dark_forest'
     clear_console()
     energy_cost_per_search = 10  
 
