@@ -149,7 +149,7 @@ class Inventory:
         print("=== Combat Stats ===")
         print(f"Strength: {player.strength}")
         print(f"Speed: {player.speed}")
-        print(f"Defense: {player.defense}")
+        print(f"Defence: {player.defence}")
         print("====================\n")
 
         print("=== Skill Stats ===")

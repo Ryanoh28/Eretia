@@ -57,7 +57,7 @@ def explore_passages(player, shop):
         if choice == "1":
             explore_left_tunnel(player, shop)
         elif choice == "2":
-            #explore_right_tunnel(player, shop)
+            explore_right_tunnel(player, shop)
             pass
         elif choice == "3":
             #explore_straight_ahead(player, shop)
@@ -68,6 +68,39 @@ def explore_passages(player, shop):
             print("\nInvalid choice. Please enter a number between 1 and 4.")
 
     enter_damp_cave(player, shop)
+
+def explore_right_tunnel(player, shop, section=1):
+    clear_console()
+    
+    if section == 1:
+        print("As you venture deeper into the right tunnel, a hidden chamber is revealed.")
+        print("The chamber is dimly lit by an eerie, luminescent glow, revealing walls adorned with ancient carvings and scriptures.")
+        next_action = input("\nDo you wish to continue walking or return? (C)ontinue/(R)eturn: ").lower().strip()
+
+    elif section == 2:
+        print("The carvings depict the early days of the Beast Tide, showing monstrous creatures overwhelming settlements.")
+        next_action = input("\nDo you wish to delve deeper into the story or return? (D)eepen/(R)eturn: ").lower().strip()
+    elif section == 3:
+        print("Further down, the story transitions to the formation of Border Town, a symbol of hope and defiance.")
+        next_action = input("\nDo you wish to continue uncovering the history or head back? (C)ontinue/(B)ack: ").lower().strip()
+    elif section == 4:
+        print("The narrative honors the heroes and sacrifices made during the Beast Tide, ending with a significant turning point.")
+        next_action = input("\nDo you wish to reflect on the stories or leave? (R)eflect/(L)eave: ").lower().strip()
+
+    if next_action in ['c', 'continue', 'deepen', 'reflect']:
+        if section < 4:
+            explore_right_tunnel(player, shop, section + 1)
+        else:
+            print("\nYou've reached the end of the carvings, filled with a sense of awe at the history before you.")
+            input("Press Enter to return to the cave entrance...")
+            explore_passages(player, shop)
+    elif next_action in ['e', 'examine']:
+        # Optional lore exposition or interaction
+        print("\nYou take a moment to closely examine the intricate details of the carvings.")
+        input("Press Enter to continue exploring...")
+        explore_right_tunnel(player, shop, section)
+    else:
+        explore_passages(player, shop)
 
 def explore_left_tunnel(player, shop, first_time=True):
     clear_console()
