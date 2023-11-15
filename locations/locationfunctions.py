@@ -1,4 +1,6 @@
 
+
+
 def rest_in_location(player):
     if player.inventory.has_item("Bedroll"):
        
@@ -8,3 +10,11 @@ def rest_in_location(player):
         print("\nYou need a Bedroll to rest here.")
         input("Press Enter to continue...")
 
+def return_to_location(player, shop):
+    
+    if player.current_location == 'dark_forest':
+        from locations.darkforest import enter_dark_forest
+        enter_dark_forest(player, shop)
+    elif player.current_location == 'damp_cave':
+        from locations.dampcave import enter_damp_cave
+        enter_damp_cave(player, shop)

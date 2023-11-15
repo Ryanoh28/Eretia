@@ -1,7 +1,7 @@
-from items import Potion, Item
+from items import Potion
 from utilities import clear_console
 from locations.darkforest import enter_dark_forest
-from classes import Weapon
+
 from missions.eldrin import speak_with_eldrin
 
 def rest(player):
@@ -168,6 +168,7 @@ def check_mystic_herb_quest_status(player):
         print(f"Camp Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
 
 def meet_camp_captain(player):
+    from items import Weapon
     clear_console()
     print("As you enter the camp, the captain approaches you with a stern look.")
     input("\nPress Enter to continue...")
@@ -188,6 +189,7 @@ def meet_camp_captain(player):
     clear_console()
 
     print(f"Camp Captain: 'And take this Rusted Sword as well. It's not much, but it's better than nothing.'")
+    
     rusted_sword = Weapon("Rusted Sword", 0.5, 0.5)
     player.available_weapons.append(rusted_sword)
     print(f"\n{player.name} received a Rusted Sword.")

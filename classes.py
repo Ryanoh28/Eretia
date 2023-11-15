@@ -1,8 +1,7 @@
 #classes.py
 import random
-from items import Inventory, Potion, Item, Weapon, GenericItem, Bedroll
+from items import Inventory, Potion, GenericItem, Bedroll
 from utilities import clear_console
-from locations.darkforest import enter_dark_forest, enter_damp_cave
 
 class Human:
     def __init__(self, name):
@@ -32,11 +31,7 @@ class Human:
         self.alive = False
         
 
-def return_to_location(player, shop):
-    if player.current_location == 'dark_forest':
-        enter_dark_forest(player, shop)
-    elif player.current_location == 'damp_cave':
-        enter_damp_cave(player, shop)
+
 
 class Warrior(Human):
     def __init__(self, name):

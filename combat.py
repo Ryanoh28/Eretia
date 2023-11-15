@@ -1,4 +1,3 @@
-from classes import Monster, return_to_location
 from utilities import clear_console
 from items import get_loot_drop
 import random
@@ -8,6 +7,7 @@ import random
 #     return Monster("Monster Wolf", 60)
 
 def combat(player, monster, shop):
+    
     while player.alive and monster.alive:
         choice = input("\nDo you want to (A)ttack or (R)un? ").lower()
         clear_console()
@@ -48,6 +48,7 @@ def combat(player, monster, shop):
 
 
 def fight_monster(player, shop, location):
+    
     clear_console()
     player.in_combat = True
 
@@ -62,9 +63,11 @@ def fight_monster(player, shop, location):
             player.gain_experience(10)
             post_combat_options(player, shop)
             if player.choice == 'return_to_camp':
+                from locations.locationfunctions import return_to_location
                 return_to_location(player, shop)  # Use return_to_location instead of breaking
                 break
         elif combat_result == 'escaped':
+            from locations.locationfunctions import return_to_location
             return_to_location(player, shop)  # Use return_to_location for escaped scenario
             break
         elif combat_result == 'player_defeated':
@@ -75,6 +78,7 @@ def fight_monster(player, shop, location):
 
 
 def create_monster(location):
+    from classes import Monster
     base_health = 60
     
     location_level_ranges = {
