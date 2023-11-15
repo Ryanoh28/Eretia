@@ -327,11 +327,12 @@ class Shop:
             "Damp Moss": 2,
             "Flickering Crystal Shard": 4,
             "Cave Pearl": 14,
-            "Ancient Bone Fragment": 18,
+            "Ancient Bone Fragment": 10,
             "Glowing Mushroom": 30,
             "Ethereal Stone": 100,
             "Stone": 1,
-            "Fossilised Bone": 15
+            "Fossilised Bone": 10,
+            "Iron Pickaxe": 30
             
         }
 
