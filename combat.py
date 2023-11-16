@@ -6,7 +6,7 @@ import random
 # def create_monster_wolf():
 #     return Monster("Monster Wolf", 60)
 
-def combat(player, monster, shop):
+def combat(player, monster):
     
     while player.alive and monster.alive:
         print("\nChoose your action:")
@@ -26,7 +26,7 @@ def combat(player, monster, shop):
                     print(f"You found a {item.name}!")
                     player.inventory.add_item(item)
 
-                    examine_choice = input("Do you want to examine it? (Y/N): ").lower().strip()
+                    examine_choice = input("Do you want to examine it? (Y/N):\n ").lower().strip()
                     if examine_choice == 'y':
                         clear_console()
                         print(f"\n{item.name}: {item.description}\n")
@@ -50,7 +50,7 @@ def combat(player, monster, shop):
 
 
 
-def fight_monster(player, shop, location):
+def fight_monster(player, location):
     clear_console()
     
     player.in_combat = True
@@ -58,7 +58,7 @@ def fight_monster(player, shop, location):
     while player.in_combat:
         monster = create_monster(location)
         print(f"You encounter a Level {monster.level} {monster.name}...")
-        combat_result = combat(player, monster, shop)
+        combat_result = combat(player, monster)
 
         if combat_result == 'monster_defeated':
             print(f"\nThe {monster.name} has been defeated!")
@@ -69,13 +69,13 @@ def fight_monster(player, shop, location):
             print("You successfully escaped from the monster.")
 
         elif combat_result == 'player_defeated':
-            player.handle_player_defeat(shop)
+            player.handle_player_defeat()
             
 
         break
 
     from locations.locationfunctions import return_to_location
-    return_to_location(player, shop)
+    return_to_location(player)
     player.in_combat = False
 
 

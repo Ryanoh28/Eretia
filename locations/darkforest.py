@@ -5,7 +5,7 @@ from locations.locationfunctions import rest_in_location
 
 
 
-def enter_dark_forest(player, shop):
+def enter_dark_forest(player):
     player.current_location = 'dark_forest'
     while True:
         clear_console()
@@ -19,7 +19,7 @@ def enter_dark_forest(player, shop):
         choice = input("\nEnter your choice (1-5): ").strip()
 
         if choice == "1":
-            fight_monster(player, shop, "Dark Forest")
+            fight_monster(player, "Dark Forest")
         elif choice == "2":
             search_dark_forest(player)
         elif choice == "3":
@@ -30,7 +30,7 @@ def enter_dark_forest(player, shop):
         elif choice == "5":
             from bordertown import return_to_border_town
             player.current_location = None
-            return_to_border_town(player, shop)
+            return_to_border_town(player)
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")

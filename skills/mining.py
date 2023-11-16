@@ -24,7 +24,7 @@ def gain_mining_experience(player, ore):
 
 
 
-def mine_in_damp_cave(player, shop):
+def mine_in_damp_cave(player):
     player.current_location = 'damp_cave'
     while True:
         clear_console()
@@ -59,7 +59,7 @@ def mine_in_damp_cave(player, shop):
                 if random.randint(1, 4) == 1:
                     print("\nAs you mine, a monster emerges from the depths of the cave!")
                     input("\nPress enter to continue...")
-                    fight_monster(player, shop, "Damp Cave")
+                    fight_monster(player, "Damp Cave")
 
             else:
                 print("\nYour mining attempt was unsuccessful. All you see is stone!")

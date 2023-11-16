@@ -1,6 +1,6 @@
 #classes.py
 import random
-from items import Inventory, Potion, GenericItem, Bedroll, Pickaxe
+from items import Inventory, Potion, Cauldron, Bedroll, Pickaxe
 from utilities import clear_console
 
 class Human:
@@ -56,6 +56,9 @@ class Warrior(Human):
         self.search_count = 0
         self.mining_experience = 0
         self.mining_level = 1
+        self.echo_cavern_completed = False
+        self.flags = set()
+       
     
     def regain_energy(self, amount):
         self.energy += amount
@@ -122,7 +125,7 @@ class Warrior(Human):
             stat_choice = input("Enter your choice (1-3): ").strip()
 
             if stat_choice == "1":
-                self.strength += 1
+                self.strength += 100 ####testing
                 clear_console()
                 print(f"{self.name}'s strength increased to {self.strength}.")
             elif stat_choice == "2":
@@ -186,7 +189,7 @@ class Warrior(Human):
 
     def gain_experience(self, amount):
         self.experience += amount
-        print(f"\n{self.name} gained {amount} experience points.\n")
+        print(f"{self.name} gained {amount} experience points.\n")
 
         
         self.check_level_up()
@@ -228,7 +231,7 @@ class Warrior(Human):
         else:
             return True
     
-    def handle_player_defeat(self, shop):
+    def handle_player_defeat(self):
         clear_console()
         print(f"\n{self.name} has been defeated.\n\n")  
         self.health = self.max_health * 0.5  # Regain 50% of max health
@@ -237,7 +240,7 @@ class Warrior(Human):
         print(f"{self.name} has regained 50% of their health.\n")  
         input("Press Enter to return to town...\n")  
         from bordertown import return_to_border_town
-        return_to_border_town(self, shop)
+        return_to_border_town(self)
 
 class Monster:
     def __init__(self, name, health, strength_max, speed_max, defence_max, level=1):
@@ -302,10 +305,11 @@ class Shop:
     def __init__(self):
         self.items_for_sale = {
             'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
-            'cauldron': {'price': 100, 'object': GenericItem("Cauldron", "An iron cauldron for brewing potions.")},
+            'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
             'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 10)},
         }
+
 
         
         self.item_value = {
@@ -420,22 +424,16 @@ class Shop:
             item_list = []
             item_count = {}
             
-            
-            for item in player.inventory.items:
-                if item.name not in item_count:
-                    item_list.append(item.name)
-                item_count[item.name] = item_count.get(item.name, 0) + 1
+            # Gather item names and their quantities from the inventory
+            for item_name, item_info in player.inventory.items.items():
+                item_count[item_name] = item_info['quantity']
+                item_list.append(item_name)
 
-            
-            for weapon in player.available_weapons:
-                if weapon.name not in item_count:
-                    item_list.append(weapon.name)
-                item_count[weapon.name] = item_count.get(weapon.name, 0) + 1
-
-            # Display items and weapons with their sale price
+            # Display items with their sale price
             for index, item_name in enumerate(item_list, 1):
                 sale_price = self.item_value.get(item_name, 0)
-                print(f"{index}. {item_name} ({item_count[item_name]}) - {sale_price} gold each")
+                quantity = item_count[item_name]
+                print(f"{index}. {item_name} ({quantity}) - {sale_price} gold each")
 
             print("\nType the number of the item you want to sell or (B)ack to return.")
             choice = input("\nEnter your choice: ").lower()
@@ -474,50 +472,26 @@ class Shop:
         sale_price = self.item_value.get(item_name, 0)
         total_sale_price = sale_price * quantity_to_sell
         
+        # Check if the item is a weapon or a regular item
         if item_name in [weapon.name for weapon in player.available_weapons]:
+            # Remove the weapon from available weapons
             for _ in range(quantity_to_sell):
                 weapon_to_remove = next(weapon for weapon in player.available_weapons if weapon.name == item_name)
                 player.available_weapons.remove(weapon_to_remove)
         else:
-            for _ in range(quantity_to_sell):
-                item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
-                player.inventory.items.remove(item_to_remove)
+            # Decrease the quantity of the item in the inventory
+            player.inventory.items[item_name]['quantity'] -= quantity_to_sell
+            if player.inventory.items[item_name]['quantity'] <= 0:
+                del player.inventory.items[item_name]
 
         player.gold += total_sale_price
         clear_console()
         print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
         input("Press Enter to continue...")
 
+
     
-    # def sell_item(self, player, item_name, available_quantity):
-    #     print(f"\nHow many {item_name}s do you want to sell? (Available: {available_quantity})")
-    #     try:
-    #         quantity_to_sell = int(input("Enter quantity: "))
-    #         if quantity_to_sell < 1 or quantity_to_sell > available_quantity:
-    #             raise ValueError
-
-    #         sale_price = self.item_value.get(item_name, 0)
-    #         total_sale_price = sale_price * quantity_to_sell
-
-            
-    #         if item_name in [weapon.name for weapon in player.available_weapons]:
-    #             for _ in range(quantity_to_sell):
-    #                 weapon_to_remove = next(weapon for weapon in player.available_weapons if weapon.name == item_name)
-    #                 player.available_weapons.remove(weapon_to_remove)
-    #         else:
-    #             for _ in range(quantity_to_sell):
-    #                 item_to_remove = next(item for item in player.inventory.items if item.name == item_name)
-    #                 player.inventory.items.remove(item_to_remove)
-
-            
-    #         player.gold += total_sale_price
-    #         clear_console()
-    #         print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
-    #     except ValueError:
-    #         print("Invalid quantity. Please enter a valid number.")
-    #     input("Press Enter to continue...")
-
-
+  
     
 
     

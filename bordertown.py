@@ -1,8 +1,9 @@
 from items import Potion
+from classes import Shop
 from utilities import clear_console
 from locations.darkforest import enter_dark_forest
-
 from missions.eldrin import speak_with_eldrin
+
 
 def rest(player):
     clear_console()
@@ -29,7 +30,8 @@ def view_quest_log(player):
 
     
 
-def return_to_border_town(player, shop):
+def return_to_border_town(player):
+    shop = Shop()
     while True:
         clear_console()
         print("You are in Border Town. What would you like to do?\n")
@@ -47,7 +49,7 @@ def return_to_border_town(player, shop):
         if choice == "1":
             player.training()
         elif choice == "2":
-            leave_town(player, shop)
+            leave_town(player)
         elif choice == "3":
             visit_tavern(player)
         elif choice == "4":
@@ -60,7 +62,7 @@ def return_to_border_town(player, shop):
             view_quest_log(player)
         elif choice == "8":
             from game1 import main_menu
-            main_menu(player, shop)
+            main_menu(player)
         else:
             print("\nInvalid choice. Please enter a number between 1 and 8.\n")
 
@@ -101,7 +103,7 @@ def listen_to_rumors(player):
     print("You overhear various adventurers sharing stories and rumors about the lands beyond the town. Apparently one named 'Crook' has been seen walking around with an extra sword in his pants...")
     
 
-def leave_town(player, shop):
+def leave_town(player):
     while True:
         clear_console()
         print("Where would you like to go?\n")
@@ -111,14 +113,14 @@ def leave_town(player, shop):
         choice = input("\nEnter your choice (1-3): ").strip()
 
         if choice == "1":
-            enter_dark_forest(player, shop)
+            enter_dark_forest(player)
             player.current_location = 'dark_forest'
             break
         elif choice == "2":
             # Assuming enter_damp_cave function exists in dampcave.py
             from locations.dampcave import enter_damp_cave
             player.current_location = 'damp_cave'
-            enter_damp_cave(player, shop)
+            enter_damp_cave(player)
             break
         elif choice == "3":
             print("\nYou decide to stay in town for now.")
@@ -170,7 +172,7 @@ def check_mystic_herb_quest_status(player):
         print(f"Guard Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
 
 def meet_guard_captain(player):
-    from items import Weapon
+    from items import Weapon, Potion
     clear_console()
     print("As you enter the town, the Guard Captain approaches you with a stern look.")
     input("\nPress Enter to continue...")
@@ -180,24 +182,17 @@ def meet_guard_captain(player):
     health_potion = Potion("Health Potion", "A potion that restores 50 health.", 50)
     player.inventory.add_item(health_potion)
 
-    # Add 8 Mystic Herbs and 1 Gilded Feather to the inventory for testing
-    # for _ in range(8):
-    #     mystic_herb = Item("Mystic Herb", "A herb used in the concoction of various potions.")
-    #     player.inventory.add_item(mystic_herb)
-    # gilded_feather = Item("Gilded Feather", "A shiny feather with mystical properties.")
-    # player.inventory.add_item(gilded_feather)
-
     input("\nPress Enter to continue...")
     clear_console()
 
     print(f"Guard Captain: 'And take this Rusted Sword as well. It's not much, but it's better than nothing.'")
-    
     rusted_sword = Weapon("Rusted Sword", 0.5, 0.5)
     player.available_weapons.append(rusted_sword)
     print(f"\n{player.name} received a Rusted Sword.")
     input("\nEnter your inventory to equip weapons and armour. Press Enter to continue...")
 
     clear_console()
+
 
 
     
