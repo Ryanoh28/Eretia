@@ -1,6 +1,6 @@
 from utilities import clear_console
 from skills.mining import mine_in_damp_cave
-from items import get_location_loot, Item, EnchantedFruit
+from items import get_location_loot, Item, EnchantedFruit, MageStaff, Rune
 from locations.locationfunctions import rest_in_location
 
 import random
@@ -191,9 +191,7 @@ def explore_straight_ahead(player):
 
     
     echoing_cavern(player)
-class Rune(Item):
-    def __init__(self, name, description):
-        super().__init__(name, description)
+
 
 def rune_sequence_barrier(player):
     clear_console()
@@ -252,9 +250,6 @@ def rune_sequence_barrier(player):
 
 
 
-class MageStaff(Item):
-    def __init__(self):
-        super().__init__("Mage Staff", "A mystical staff used by mages to channel magical energy.")
 
 def enchanted_grove(player):
     clear_console()

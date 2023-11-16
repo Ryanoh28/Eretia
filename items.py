@@ -4,6 +4,14 @@ class Item:
     def __init__(self, name, description):
         self.name = name
         self.description = description
+
+class MageStaff(Item):
+    def __init__(self):
+        super().__init__("Mage Staff", "A mystical staff used by mages to channel magical energy.")
+
+class Rune(Item):
+    def __init__(self, name, description):
+        super().__init__(name, description)
 class Cauldron(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
@@ -380,9 +388,11 @@ class Inventory:
     # Loot Items
 LOOT_ITEMS = {
     "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 20},
-    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 10},  
-    "Twilight Shard": {"description": "A small crystal that glows with the light of the setting sun.", "chance": 5}
-
+    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 10},
+    "Twilight Shard": {"description": "A small crystal that glows with the light of the setting sun.", "chance": 5},
+    "Earth Rune": {"object": Rune("Earth Rune", "A rune embodying the essence of Earth."), "chance": 15},
+    "Water Rune": {"object": Rune("Water Rune", "A rune embodying the essence of Water."), "chance": 15},
+    "Fire Rune": {"object": Rune("Fire Rune", "A rune embodying the essence of Fire."), "chance": 15}
 }
 
 def get_loot_drop():

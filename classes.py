@@ -1,6 +1,6 @@
 #classes.py
 import random
-from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion
+from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune
 from utilities import clear_console
 
 class Human:
@@ -353,7 +353,10 @@ class Shop:
             "Ethereal Stone": 100,
             "Stone": 1,
             "Fossilised Bone": 10,
-            "Iron Pickaxe": 30
+            "Iron Pickaxe": 30,
+            "Earth Rune": 25,
+            "Water Rune": 25,
+            "Fire Rune": 25,
             
         }
 
