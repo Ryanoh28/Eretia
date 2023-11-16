@@ -187,6 +187,7 @@ def meet_guard_captain(player):
     player.inventory.add_item(mage_staff)
 
     # Providing Runes
+    print("DEBUG PRINT: Runes and MageStaff added for testing purposes. Remember to remove after you idiot")
     earth_rune = Rune("Earth Rune", "A rune embodying the essence of Earth.")
     water_rune = Rune("Water Rune", "A rune embodying the essence of Water.")
     fire_rune = Rune("Fire Rune", "A rune embodying the essence of Fire.")

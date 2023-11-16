@@ -40,12 +40,10 @@ def show_instructions():
     input("\nPress Enter to return to the main menu...")
     clear_console()
 
-def main_menu():
+def main_menu(player=None):
     clear_console()
-    player = None
 
     while True:
-        clear_console()
         print("=== Main Menu ===")
         print("1. New Game")
         print("2. Continue Game")
@@ -64,6 +62,7 @@ def main_menu():
         elif choice == '2':
             if player:
                 return_to_border_town(player)
+                break  
             else:
                 print("No ongoing game to continue. Please start a new game.")
         elif choice == '3':
@@ -76,6 +75,7 @@ def main_menu():
                 player = load_game()
                 print("Game loaded successfully. Returning to camp.")
                 return_to_border_town(player)
+                break  
             except FileNotFoundError:
                 print("No saved game found. Please start a new game.")
         elif choice == '5':
@@ -87,5 +87,8 @@ def main_menu():
             print("Invalid choice. Please enter a number between 1 and 6.")
             input("Press Enter to continue...")
 
+        clear_console()  
+
+
 if __name__ == "__main__":
-    main_menu()
+    main_menu(player=None)
