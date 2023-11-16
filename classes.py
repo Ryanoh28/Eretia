@@ -1,6 +1,6 @@
 #classes.py
 import random
-from items import Inventory, Potion, Cauldron, Bedroll, Pickaxe
+from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion
 from utilities import clear_console
 
 class Human:
@@ -58,7 +58,8 @@ class Warrior(Human):
         self.mining_level = 1
         self.echo_cavern_completed = False
         self.flags = set()
-       
+        self.mana = 50
+        self.max_mana = 50
     
     def regain_energy(self, amount):
         self.energy += amount
@@ -76,6 +77,20 @@ class Warrior(Human):
         else:
             print("Not enough energy!")
             return False
+
+    def consume_mana(self, amount):
+        if self.mana >= amount:
+            self.mana -= amount
+            return True
+        else:
+            print("Not enough mana!")
+            return False
+        
+    def regain_mana(self, amount):
+        self.mana += amount
+        if self.mana > 50:  # Assuming 50 is the max mana
+            self.mana = 50
+        print(f"{self.name} regained {amount} mana.")    
 
     def regenerate_energy(self, amount=100):  
         self.energy = min(self.energy + amount, 100)
@@ -125,7 +140,7 @@ class Warrior(Human):
             stat_choice = input("Enter your choice (1-3): ").strip()
 
             if stat_choice == "1":
-                self.strength += 100 ####testing
+                self.strength += 1 
                 clear_console()
                 print(f"{self.name}'s strength increased to {self.strength}.")
             elif stat_choice == "2":
@@ -304,11 +319,13 @@ class Monster:
 class Shop:
     def __init__(self):
         self.items_for_sale = {
-            'health potion': {'price': 10, 'object': Potion("Health Potion", "A potion that restores 50 health.", 50)},
+            'health potion': {'price': 20, 'object': HealthPotion()},
+            'mana potion': {'price': 20, 'object': ManaPotion()},
             'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
-            'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 10)},
+            'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 10)}
         }
+
 
 
         

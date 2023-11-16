@@ -1,5 +1,6 @@
 from utilities import clear_console
 from items import get_loot_drop
+from skills.magic import spell_menu
 import random
 
 
@@ -9,44 +10,59 @@ import random
 def combat(player, monster):
     
     while player.alive and monster.alive:
-        print("\nChoose your action:")
-        print("\n1. Attack")
-        print("2. Run")
-        choice = input("\nEnter your choice (1-2): ").strip()
+        print("\nChoose your action:\n")
+        print("1. Attack")
+        print("2. Use Spell")
+        print("3. Inventory")
+        print("4. Run")
+        choice = input("\nEnter your choice (1-4): ").strip()
         clear_console()
 
         if choice == "1":
             player.normal_attack(monster)
-            if not monster.check_if_alive():
-                print(f"\nThe {monster.name} has been defeated!\n")
-                player.gain_experience(10)
-
-                loot = get_loot_drop()
-                for item in loot:
-                    print(f"You found a {item.name}!")
-                    player.inventory.add_item(item)
-
-                    examine_choice = input("Do you want to examine it? (Y/N):\n ").lower().strip()
-                    if examine_choice == 'y':
-                        clear_console()
-                        print(f"\n{item.name}: {item.description}\n")
-
-                input("Press Enter to continue...")
-                return 'monster_defeated'
-
         elif choice == "2":
+            selected_spell = spell_menu(player, monster)
+            if selected_spell:
+                selected_spell.cast(player, monster)
+        elif choice == "3":
+            
+            player.inventory.use_item_interface(player)
+            
+           
+        elif choice == "4":
             clear_console()
             print("You managed to escape from the Monster safely.\n")
-            #input("Press Enter to continue...")
+            input("Press enter to continue...")
             return 'escaped'
 
         if monster.alive:
             monster.monster_attack(player)
 
+        if not monster.check_if_alive():
+            print(f"\nThe {monster.name} has been defeated!\n")
+            player.gain_experience(10)
+            handle_loot_and_examine(player)
+            return 'monster_defeated'
+
     if not player.alive:
         return 'player_defeated'
 
     return 'end_of_combat'
+
+def handle_loot_and_examine(player):
+    loot = get_loot_drop()
+    for item in loot:
+        print(f"You found a {item.name}!")
+        player.inventory.add_item(item)
+
+        examine_choice = input("Do you want to examine it? (Y/N):\n ").lower().strip()
+        if examine_choice == 'y':
+            clear_console()
+            print(f"\n{item.name}: {item.description}\n")
+
+    input("Press Enter to continue...")
+
+
 
 
 

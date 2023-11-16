@@ -41,32 +41,43 @@ def search_dark_forest(player):
     clear_console()
     energy_cost_per_search = 10  
 
-    if player.energy >= energy_cost_per_search:
-        print("Searching the Dark Forest...\n")
-        
-        found_item = get_location_loot(DARK_FOREST_LOOT)
-
-        if found_item:
-            print(f"You found a {found_item.name}!")
-            player.inventory.add_item(found_item)
-            #print(f"Added {found_item.name} to inventory")
-            player.consume_energy(energy_cost_per_search)  
-            #print(f"Used {energy_cost_per_search} energy. Remaining energy: {player.energy}\n")
-
-            examine_choice = input("\nDo you want to examine it? (Y/N): ").lower().strip()
-            if examine_choice == 'y':
-                clear_console()
-                print(f"{found_item.name}: {found_item.description}")
+    while True:
+        if player.energy >= energy_cost_per_search:
+            print("Searching the Dark Forest...\n")
             
-            input("\nPress Enter to continue...")  
+            found_item = get_location_loot(DARK_FOREST_LOOT)
+
+            if found_item:
+                print(f"You found a {found_item.name}!")
+                player.inventory.add_item(found_item)
+                player.consume_energy(energy_cost_per_search)  
+
+                examine_choice = input("\nDo you want to examine it? (Y/N): ").lower().strip()
+                if examine_choice == 'y':
+                    clear_console()
+                    print(f"{found_item.name}: {found_item.description}")
+                
+            else:
+                player.consume_energy(energy_cost_per_search)  
+                print("You searched the forest but found nothing of interest.")
+                print(f"Used {energy_cost_per_search} energy. Remaining energy: {player.energy}\n")
+
         else:
-            player.consume_energy(energy_cost_per_search)  
-            print("You searched the forest but found nothing of interest.")
-            print(f"Used {energy_cost_per_search} energy. Remaining energy: {player.energy}\n")
-            input("Press Enter to continue...")
-    else:
-        print("You don't have enough energy to search. Rest to regain energy.")
-        input("\nPress Enter to continue...")
+            print("You don't have enough energy to search. Rest to regain energy.")
+            input("\nPress enter to continue...")
+            break
+
+        # Ask the player if they want to continue searching or leave
+        clear_console()
+        print("What would you like to do next?\n")
+        print("1. Continue Searching")
+        print("2. Leave the Dark Forest")
+        next_action = input("\nEnter your choice (1-2): ").strip()
+
+        if next_action != "1":
+            break
+        clear_console()
+
 
 
 

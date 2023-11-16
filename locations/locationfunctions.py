@@ -2,13 +2,13 @@
 
 
 def rest_in_location(player):
-    if player.inventory.has_item("Bedroll"):
-       
-        bedroll = next(item for item in player.inventory.items if item.name == "Bedroll")
+    if "Bedroll" in player.inventory.items:
+        bedroll = player.inventory.items["Bedroll"]['object']
         bedroll.use_bedroll(player)
     else:
-        print("You need a Bedroll to rest here.")
+        print("You don't have a Bedroll in your inventory.")
         input("\nPress Enter to continue...")
+
 
 def return_to_location(player):
     if player.current_location == 'dark_forest':

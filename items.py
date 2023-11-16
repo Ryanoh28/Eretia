@@ -4,19 +4,6 @@ class Item:
     def __init__(self, name, description):
         self.name = name
         self.description = description
-
-class GenericItem(Item):
-    def __init__(self, name, description, use_function=None):
-        super().__init__(name, description)
-        self.use_function = use_function
-
-    def use(self, target):
-        if self.use_function:
-            return self.use_function(target)
-        else:
-            print(f"{self.name} cannot be used this way.")
-            return False
-
 class Cauldron(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
@@ -32,7 +19,7 @@ class Cauldron(Item):
             if player.inventory.count_item("Mystic Herb") >= 2:
                 # Remove ingredients and add potion
                 player.inventory.remove_items("Mystic Herb", 2)
-                health_potion = Potion("Health Potion", "A potion that restores 50 health.", 50)
+                health_potion = HealthPotion()  # Creating an instance of HealthPotion
                 player.inventory.add_item(health_potion)
                 print("\nYou successfully concocted a Health Potion!")
             else:
@@ -40,6 +27,7 @@ class Cauldron(Item):
         else:
             print("\nYou do not have the required recipe to concoct a potion.")
         input("\nPress Enter to continue...")
+
 
 class Weapon:
     def __init__(self, name, extra_damage, crit_chance_bonus):
@@ -52,18 +40,39 @@ class Pickaxe(Item):
         super().__init__(name, description)
         self.boost = boost
 
-class Potion(Item):
-    def __init__(self, name, description, healing_amount):
-        super().__init__(name, description)
-        self.healing_amount = healing_amount
+
+class HealthPotion:
+    def __init__(self):
+        self.name = "Health Potion"
+        self.description = "A potion that restores 25 health."
+        self.healing_amount = 25
 
     def use(self, target):
         if target.health < target.max_health:
-            target.regain_health(self.healing_amount)
-            #print(f"\n{target.name} uses {self.name} and restores {self.healing_amount} health")
+            heal_amount = min(self.healing_amount, target.max_health - target.health)
+            target.regain_health(heal_amount)
+            print(f"{target.name} uses {self.name} and restores {heal_amount} health.")
             return True
         else:
+            print(f"{target.name}'s health is already full. Cannot use {self.name}.")
             return False
+
+class ManaPotion:
+    def __init__(self):
+        self.name = "Mana Potion"
+        self.description = "A potion that restores 25 mana."
+        self.mana_amount = 25
+
+    def use(self, target):
+        if target.mana < target.max_mana:
+            mana_restore_amount = min(self.mana_amount, target.max_mana - target.mana)
+            target.regain_mana(mana_restore_amount)
+            print(f"{target.name} uses {self.name} and restores {mana_restore_amount} mana.")
+            return True
+        else:
+            print(f"{target.name}'s mana is already full. Cannot use {self.name}.")
+            return False
+
 
 class EnchantedFruit(Item):
     def __init__(self, name, description, experience):
@@ -150,7 +159,7 @@ class Inventory:
             self.equipment.remove(equipment)
 
     
-    def add_item(self, item, quantity=1, print_confirmation=True):
+    def add_item(self, item, quantity=1, print_confirmation=True, found_quantity=1):
         item_name = item.name
 
         if item_name in self.items:
@@ -159,8 +168,8 @@ class Inventory:
             self.items[item_name] = {'object': item, 'quantity': quantity}
 
         if print_confirmation:
-            if self.items[item_name]['quantity'] > 1:
-                print(f"Added {item_name} ({self.items[item_name]['quantity']}) to inventory\n")
+            if found_quantity > 1:
+                print(f"Added {item_name} ({found_quantity}) to inventory\n")
             else:
                 print(f"Added {item_name} to inventory\n")
 
@@ -170,8 +179,11 @@ class Inventory:
         if player.weapon:
             weapon = player.weapon
             print(f"Equipped Weapon: {weapon.name}")
+            print("====================")
             print(f"  - Extra Damage: {weapon.extra_damage}")
             print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
+            
+        
         else:
             print("No weapon equipped.")
         
@@ -238,10 +250,6 @@ class Inventory:
             else:
                 print("Invalid choice. Please enter a valid option.")
 
-
-
-
-
     def use_item_interface(self, player):
         while True:
             clear_console()
@@ -252,16 +260,22 @@ class Inventory:
             item_choice = input("\nEnter the number of the item you want to use or (B)ack: ").lower().strip()
 
             if item_choice in ['b', 'back']:
+                clear_console()  # Clear console when going back to combat
                 break  # Break the inner loop to go back to the main inventory menu
             else:
                 try:
                     choice_index = int(item_choice) - 1
-                    self.use_item(choice_index, player)
-                    input("\nPress Enter to continue...")
+                    if self.use_item(choice_index, player):
+                        input("\nPress Enter to continue...")
+                    else:
+                        input("\nPress Enter to continue...")
                 except ValueError:
                     print("Invalid choice. Please enter a valid number or 'B' to go back.")
+                    input("\nPress Enter to continue...")
                 except IndexError:
                     print("Item not found. Try again or type 'B' to go back.")
+                    input("\nPress Enter to continue...")
+
     
     def equip_weapon_interface(self, player):
         clear_console()
@@ -320,18 +334,15 @@ class Inventory:
 
     def use_item(self, index, target):
         item_list = list(self.items.keys())
-        if index >= 0 and index < len(item_list):
+        if 0 <= index < len(item_list):
             item_name = item_list[index]
             item = self.items[item_name]['object']
-            if isinstance(item, Potion):
-                if target.health < target.max_health:
-                    item.use(target)
+
+            if isinstance(item, HealthPotion) or isinstance(item, ManaPotion):
+                if item.use(target):
                     self.remove_items(item_name, 1)
                     print(f"Used {item.name}.")
-                    return True
-                else:
-                    print(f"\n{target.name}'s health is already full. Cannot use {item.name}.")
-                    return False
+                return True
             else:
                 print(f"You can't use {item.name} in this way.")
                 return False
@@ -339,26 +350,6 @@ class Inventory:
             print("Item not found in inventory.")
             return False
 
-
-
-    def use_specific_item(self, item_name, target):
-        if item_name in self.items:
-            item = self.items[item_name]['object']
-            if isinstance(item, Potion):
-                if target.health < target.max_health:
-                    item.use(target)
-                    self.remove_items(item_name, 1)
-                    print(f"Used {item.name}.")
-                    return True
-                else:
-                    print(f"\n{target.name}'s health is already full. Cannot use {item.name}.")
-                    return False
-            else:
-                print(f"\nYou can't use {item.name} in this way.")
-                return False
-        else:
-            print(f"{item_name} not found in inventory.")
-            return False
 
 
     def manage_inventory(player):
@@ -395,7 +386,7 @@ LOOT_ITEMS = {
 }
 
 def get_loot_drop():
-    if random.randint(1, 100) <= 100:  # 30% chance for any loot to drop
+    if random.randint(1, 100) <= 45:  # 30% chance for any loot to drop
         cumulative_chance = 0
         roll = random.randint(1, 100)
         for item_name, item_info in LOOT_ITEMS.items():
