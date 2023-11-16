@@ -1,17 +1,71 @@
 import pickle
+import os
 from classes import Warrior
 from bordertown import meet_guard_captain, return_to_border_town
 from utilities import clear_console
 
-def save_game(player, filename="savegame.pkl"):
-    with open(filename, 'wb') as file:
-        pickle.dump(player, file)
-    print("Game saved successfully.")
+def list_save_files():
+    save_path = "saves"
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
 
-def load_game(filename="savegame.pkl"):
-    with open(filename, 'rb') as file:
+    return [f for f in os.listdir(save_path) if os.path.isfile(os.path.join(save_path, f))]
+
+def save_game(player):
+    save_path = "saves"
+    save_files = list_save_files()
+
+    print("Select a slot to save your game:")
+    for i, file in enumerate(save_files, 1):
+        print(f"{i}. {file.replace('.pkl', '')}")
+    print(f"{len(save_files) + 1}. Create new save")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice <= len(save_files):
+        filename = save_files[choice - 1]
+    else:
+        print("Enter a name for your new save file:")
+        filename = input().strip() + ".pkl"
+
+    filepath = os.path.join(save_path, filename)
+
+    with open(filepath, 'wb') as file:
+        pickle.dump(player, file)
+
+    print(f"Game saved successfully in slot {choice}.")
+
+def load_game():
+    save_path = "saves"
+    save_files = list_save_files()
+
+    if not save_files:
+        print("No saved games found.")
+        return None
+
+    print("Available saves:")
+    for i, file in enumerate(save_files, 1):
+        print(f"{i}. {file.replace('.pkl', '')}")
+
+    choice = int(input("Enter the number of the save file to load: "))
+    filepath = os.path.join(save_path, save_files[choice - 1])
+
+    with open(filepath, 'rb') as file:
         player = pickle.load(file)
+
+    print(f"Game loaded from slot {choice}.")
     return player
+
+
+# def save_game(player, filename="savegame.pkl"):
+#     with open(filename, 'wb') as file:
+#         pickle.dump(player, file)
+#     print("Game saved successfully.")
+
+# def load_game(filename="savegame.pkl"):
+#     with open(filename, 'rb') as file:
+#         player = pickle.load(file)
+#     return player
 
 def welcome():
     clear_console()
