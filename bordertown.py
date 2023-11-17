@@ -182,21 +182,10 @@ def meet_guard_captain(player):
     print(f"Guard Captain: 'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     health_potion = HealthPotion()
     player.inventory.add_item(health_potion)
-        # Providing Mage Staff
-    mage_staff = MageStaff()
-    player.inventory.add_item(mage_staff)
+        
 
-    # Providing Runes
-    print("DEBUG PRINT: Runes and MageStaff added for testing purposes. Remember to remove after you idiot")
-    earth_rune = Rune("Earth Rune", "A rune embodying the essence of Earth.")
-    water_rune = Rune("Water Rune", "A rune embodying the essence of Water.")
-    fire_rune = Rune("Fire Rune", "A rune embodying the essence of Fire.")
-    
-    enchanted_fruit = EnchantedFruit("Enchanted Fruit", "A magical fruit that grants 50 experience when consumed.", 50)
-    player.inventory.add_item(enchanted_fruit)
-    player.inventory.add_item(earth_rune)
-    player.inventory.add_item(water_rune)
-    player.inventory.add_item(fire_rune)
+#add debug items here to be given
+ 
     input("\nPress Enter to continue...")
     clear_console()
 
