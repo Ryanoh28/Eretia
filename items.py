@@ -240,7 +240,8 @@ class Inventory:
             print("3. Equip Weapon")
             print("4. Unequip Weapon")
             print("5. View Stats and Skills")
-            print("6. Back")
+            print("6. View Logbook")
+            print("7. Back")
 
             inventory_choice = input("\nWhat would you like to do? ").strip()
 
@@ -255,9 +256,48 @@ class Inventory:
             elif inventory_choice == '5':
                 self.show_skill_stats(player)
             elif inventory_choice == '6':
+                player.view_logbook()  # Call the view_logbook method from the Warrior class
+            elif inventory_choice == '7':
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
+
+
+    
+    # def inventory_menu(self, player):
+    #     while True:
+    #         clear_console()
+    #         print(f"\nStatus: {player.health} Health | {player.energy} Energy | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/100\n")
+
+    #         self.show_inventory()  # Show the inventory, this method already includes the heading
+
+    #         print("==== Equipment ====")
+    #         self.show_equipment(player)
+    #         print("====================\n")
+
+    #         print("1. Use Item")
+    #         print("2. View Equipment")
+    #         print("3. Equip Weapon")
+    #         print("4. Unequip Weapon")
+    #         print("5. View Stats and Skills")
+    #         print("6. Back")
+
+    #         inventory_choice = input("\nWhat would you like to do? ").strip()
+
+    #         if inventory_choice == '1':
+    #             self.use_item_interface(player)
+    #         elif inventory_choice == '2':
+    #             self.view_equipment(player)
+    #         elif inventory_choice == '3':
+    #             self.equip_weapon_interface(player)
+    #         elif inventory_choice == '4':
+    #             self.unequip_weapon(player)
+    #         elif inventory_choice == '5':
+    #             self.show_skill_stats(player)
+    #         elif inventory_choice == '6':
+    #             break
+    #         else:
+    #             print("Invalid choice. Please enter a valid option.")
 
     def use_item_interface(self, player):
         while True:

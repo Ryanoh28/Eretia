@@ -18,7 +18,7 @@ def enter_damp_cave(player):
         print("2. Mine")
         print("3. Rest")
         print("4. Inventory")
-        print("5. Return to Border Town")
+        print("5. Border Town Outskirts")
 
         choice = input("\nEnter your choice (1-5): ").strip()
 
@@ -34,9 +34,9 @@ def enter_damp_cave(player):
         elif choice == "4":
             player.inventory.inventory_menu(player)
         elif choice == "5":
-            from bordertown import return_to_border_town
+            from bordertown import leave_town
             player.current_location = None
-            return_to_border_town(player)
+            leave_town(player)
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")

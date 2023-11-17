@@ -109,8 +109,9 @@ def leave_town(player):
         print("Where would you like to go?\n")
         print("1. Dark Forest")
         print("2. Damp Cave")
-        print("3. Back to Border Town")
-        choice = input("\nEnter your choice (1-3): ").strip()
+        print("3. The Border")
+        print("4. Back to Border Town")
+        choice = input("\nEnter your choice (1-4): ").strip()
 
         if choice == "1":
             enter_dark_forest(player)
@@ -123,10 +124,17 @@ def leave_town(player):
             enter_damp_cave(player)
             break
         elif choice == "3":
+            
+            from locations.theborder import enter_the_border
+            player.current_location = 'the_border'
+            enter_the_border(player)
+            break
+        elif choice == "4":
             print("\nYou decide to stay in town for now.")
             break
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 3.")
+            print("\nInvalid choice. Please enter a number between 1 and 4.")
+
 
 
 def converse_with_guard_captain(player):

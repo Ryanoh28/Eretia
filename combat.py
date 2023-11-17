@@ -3,15 +3,6 @@ from items import get_loot_drop
 from skills.magic import spell_menu
 import random
 
-
-# def create_monster_wolf():
-#     return Monster("Monster Wolf", 60)
-
-
-
-
-
-
 def combat(player, monster):
     
     while player.alive and monster.alive:
@@ -83,19 +74,25 @@ def fight_monster(player, location):
             print(f"\nThe {monster.name} has been defeated!")
             player.gain_experience(10)
             
+            
+            if player.is_guild_member:
+                monster_type = monster.name
+                player.monster_kill_log[monster_type] = player.monster_kill_log.get(monster_type, 0) + 1
+                print(f"Monster logged in your kill log: {monster_type}")
 
         elif combat_result == 'escaped':
             print("You successfully escaped from the monster.")
 
         elif combat_result == 'player_defeated':
             player.handle_player_defeat()
-            
+            break
 
         break
 
     from locations.locationfunctions import return_to_location
     return_to_location(player)
     player.in_combat = False
+
 
 
 
@@ -107,6 +104,7 @@ def create_monster(location):
     location_level_ranges = {
         "Dark Forest": (1, 3),  
         "Damp Cave": (4, 7),    
+        "The Border": (8, 15)
         # Add other locations and level ranges as needed
     }
     
@@ -114,10 +112,11 @@ def create_monster(location):
     level = random.randint(min_level, max_level)
 
     monster_names = {
-        "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
-        "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
-        # Add more names for other locations
-    }
+    "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
+    "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
+    "The Border": ["Blighted Sentinel", "Feral Shadehound", "Ravaged Harpy", "Corrupted Ent", "Nightmare Wisp", "Barren Drake"]
+}
+
 
     name = random.choice(monster_names.get(location, ["Generic Monster Location not set properly"]))
     

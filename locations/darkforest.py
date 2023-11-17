@@ -14,7 +14,7 @@ def enter_dark_forest(player):
         print("2. Search Dark Forest")
         print("3. Inventory")
         print("4. Rest")
-        print("5. Return to Border Town")
+        print("5. Border Town Outskirts")
 
         choice = input("\nEnter your choice (1-5): ").strip()
 
@@ -28,9 +28,9 @@ def enter_dark_forest(player):
             clear_console()
             rest_in_location(player)
         elif choice == "5":
-            from bordertown import return_to_border_town
+            from bordertown import leave_town
             player.current_location = None
-            return_to_border_town(player)
+            leave_town(player)
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")

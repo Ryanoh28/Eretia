@@ -33,14 +33,55 @@ class Human:
         self.alive = False
 
 
+class Logbook:
+    def __init__(self):
+        self.missions = []
+        self.all_kills = {}
+
+    def add_mission(self, mission):
+        self.missions.append(mission)
+
+    def view_missions(self):
+        if self.missions:
+            print("\n=== Active Missions ===")
+            for mission in self.missions:
+                print(f"Target: {mission['monster']} in {mission['area']}")
+                print(f"   Required Kills: {mission['required_kills']}, Achieved Kills: {mission['current_kills']}")
+                print(f"   Reward: {mission['gold_reward']} Gold")
+            print("======================\n")
+        else:
+            print("No active missions.\n")
+
+    def update_mission(self, monster):
+        for mission in self.missions:
+            if mission['monster'] == monster:
+                mission['current_kills'] += 1
+
+        # Track all kills
+        if monster in self.all_kills:
+            self.all_kills[monster] += 1
+        else:
+            self.all_kills[monster] = 1
+
+    def view_logbook(self):
+        print("==== Monster Kill Log ====")
+        if self.all_kills:
+            for monster, count in self.all_kills.items():
+                print(f"{monster}: {count} kills")
+        else:
+            print("No monster kills recorded yet.")
+        print("\n==========================")
+
+
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
-        # Initial attributes
+        self.monster_kill_log = {}
         self.current_location = None
         self.energy = 100
         self.weapon = None
         self.available_weapons = []
+        self.logbook = None
         self.quests = {}
         self.strength = 2
         self.speed = 2
@@ -61,6 +102,18 @@ class Warrior(Human):
         self.mana = 50
         self.max_mana = 50
     
+    def join_guild(self):
+        if self.gold >= 100:
+            self.gold -= 100
+            self.logbook = Logbook()
+            print("You joined the Adventurer's Guild and received a logbook.")
+
+    def view_logbook(self):
+        if self.logbook:
+            self.logbook.view_logbook()
+        else:
+            print("You need to be a member of the Adventurer's Guild to access the logbook.")
+
     def regain_energy(self, amount):
         self.energy += amount
         if self.energy > 100:
