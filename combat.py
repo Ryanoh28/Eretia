@@ -7,6 +7,11 @@ import random
 # def create_monster_wolf():
 #     return Monster("Monster Wolf", 60)
 
+
+
+
+
+
 def combat(player, monster):
     
     while player.alive and monster.alive:
@@ -25,10 +30,7 @@ def combat(player, monster):
             if selected_spell:
                 selected_spell.cast(player, monster)
         elif choice == "3":
-            
             player.inventory.use_item_interface(player)
-            
-           
         elif choice == "4":
             clear_console()
             print("You managed to escape from the Monster safely.\n")
@@ -48,6 +50,7 @@ def combat(player, monster):
         return 'player_defeated'
 
     return 'end_of_combat'
+
 
 def handle_loot_and_examine(player):
     loot = get_loot_drop()
@@ -116,7 +119,7 @@ def create_monster(location):
         # Add more names for other locations
     }
 
-    name = random.choice(monster_names.get(location, ["Generic Monster"]))
+    name = random.choice(monster_names.get(location, ["Generic Monster Location not set properly"]))
     
     return Monster(name, base_health, level, level, level, level)
 

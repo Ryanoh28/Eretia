@@ -10,6 +10,7 @@ class Human:
         self.inventory = Inventory()
         self.health = 100  # Default max health for all humans
 
+   
     def lose_health(self, damage, attacker_strength):
         damage_reduction = max(0, self.defence - attacker_strength)
         effective_damage = max(1, damage - damage_reduction)  # Ensure minimum damage of 1
@@ -17,20 +18,19 @@ class Human:
         self.health -= effective_damage
         self.health = round(self.health, 1)
 
-        if effective_damage > 0:
+        if damage_reduction > 0:
+            print("\n=============================================")
             print(f"{self.name}'s defence negated {damage_reduction} points of damage from the attack!")
-        else:
-            print(f"{self.name} could not negate any damage from the attack.")
-
+            print("=============================================")
+        print("\n=============================================")
         print(f"{self.name} lost {effective_damage} health and now has {self.health} health.")
+        print("=============================================")
 
         if self.health <= 0:
             self.defeated()
-
+        
     def defeated(self):
         self.alive = False
-        
-
 
 
 class Warrior(Human):
@@ -130,48 +130,48 @@ class Warrior(Human):
         
 
     def training(self):
-        if self.training_count < 2:
+        while self.training_count < 3:
             clear_console()
             print("What would you like to train?\n")
             print("1. Strength")
             print("2. Speed")
-            print("3. Defence\n")
-            
-            stat_choice = input("Enter your choice (1-3): ").strip()
+            print("3. Defence")
+            print("4. Return to previous menu\n")
+
+            stat_choice = input("Enter your choice (1-4): ").strip()
 
             if stat_choice == "1":
-                self.strength += 1 
-                clear_console()
-                print(f"{self.name}'s strength increased to {self.strength}.")
+                self.strength += 1
+                print(f"\n{self.name}'s strength increased to {self.strength}.")
+                self.training_count += 1
             elif stat_choice == "2":
                 self.speed += 1
-                clear_console()
-                print(f"{self.name}'s speed increased to {self.speed}.")
+                print(f"\n{self.name}'s speed increased to {self.speed}.")
+                self.training_count += 1
             elif stat_choice == "3":
                 self.defence += 1
-                clear_console()
-                print(f"{self.name}'s defence increased to {self.defence}.")
+                print(f"\n{self.name}'s defence increased to {self.defence}.")
+                self.training_count += 1
+            elif stat_choice == "4":
+                print("\nReturning to previous menu.")
+                break
             else:
-                clear_console()
-                print("Invalid choice. Please enter a number between 1 and 3 to choose a stat to train.")
-            
+                print("Invalid choice. Please enter a number between 1 and 4.")
+
             input("\nPress Enter to continue...") 
-            self.training_count += 1
-        else:
+
+        if self.training_count >= 3:
             clear_console()
-            print("You have already trained twice at this level. Level up to train more.")
-            input("\nPress Enter to continue...")  
-
-
-
-    
-   
+            print("You have completed your training sessions for this level.")
+            input("\nPress Enter to continue...")
 
     def critical_attack(self, target):
         crit_damage_bonus = self.weapon.extra_damage if self.weapon else 0
         damage = round((self.strength * 2) + crit_damage_bonus, 1)
         weapon_name = self.weapon.name if self.weapon else "fists"
-        print(f"{self.name} used a critical attack with {weapon_name} and dealt {damage} damage.\n")
+        print("=============================================")
+        print(f"{self.name} used a critical attack with {weapon_name} and dealt {damage} damage.")
+        print("=============================================")
         target.monster_lose_health(damage)
 
     def normal_attack(self, target):
@@ -187,13 +187,16 @@ class Warrior(Human):
             base_damage = round(self.strength * random.uniform(1, 1.5), 1)
             total_damage = base_damage + (self.weapon.extra_damage if self.weapon else 0)
             target.monster_lose_health(total_damage)
+            print("=============================================")
             print(f"{self.name} used a normal attack with {weapon_name} and dealt {total_damage} damage.")
+            print("=============================================")
 
         if self.speed >= target.speed * 2:
             extra_damage = round(self.strength * random.uniform(1, 1.5), 1)
             extra_damage += self.weapon.extra_damage if self.weapon else 0
             target.monster_lose_health(extra_damage)
             print(f"{self.name} uses their swift speed to attack again with {weapon_name}, dealing {extra_damage} damage.")
+            print("=============================================")
 
     def regain_health(self, healing):
         self.health += healing
@@ -216,7 +219,7 @@ class Warrior(Human):
             self.level += 1
             self.training_count = 0  
             print(f"{self.name} has leveled up! You are now level {self.level}.\n")
-            self.increase_stats()
+            #self.increase_stats()
 
 
     def increase_stats(self):
@@ -257,6 +260,8 @@ class Warrior(Human):
         from bordertown import return_to_border_town
         return_to_border_town(self)
 
+
+
 class Monster:
     def __init__(self, name, health, strength_max, speed_max, defence_max, level=1):
         self.alive = True
@@ -294,16 +299,23 @@ class Monster:
         return alive_status
     
     def monster_attack(self, target):
-        damage_multiplier = random.uniform(0.8, 1.3)  # Random factor for variability
-        damage = self.strength * damage_multiplier  # Calculate damage based on strength and multiplier
-        rounded_damage = round(damage, 1)
-        if rounded_damage < 1:
-            rounded_damage = 1  # Ensure minimum damage is 1
-
-        print(f"{self.name} attacked and dealt {rounded_damage} damage to {target.name}.\n")
+        # First attack
+        damage_multiplier = random.uniform(0.8, 1.3)
+        damage = self.strength * damage_multiplier
+        rounded_damage = max(1, round(damage, 1))  # Ensure minimum damage is 1
+        print("\n---------------------------------------------")
+        print(f"{self.name} attacked and dealt {rounded_damage} damage to {target.name}.")
+        print("---------------------------------------------")
+        
         target.lose_health(rounded_damage, self.strength)
 
-        return rounded_damage
+        # Check for a second attack based on speed
+        if self.speed >= target.speed * 2:
+            second_attack_damage = max(1, round(self.strength * damage_multiplier * 0.5, 1))  # 50% damage for the second attack
+            print("\n---------------------------------------------")
+            print(f"{self.name} uses their swift speed to attack again, dealing {second_attack_damage} damage.")
+            print("---------------------------------------------")
+            target.lose_health(second_attack_damage, self.strength)
     
 
     def monster_lose_health(self, damage):
@@ -323,7 +335,7 @@ class Shop:
             'mana potion': {'price': 20, 'object': ManaPotion()},
             'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
-            'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 10)}
+            'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 20)}
         }
 
 
@@ -431,7 +443,7 @@ class Shop:
                 self.display_items_for_sale(player)
             elif choice in ['2', 'sell']:
                 self.sell_items_interface(player)
-            elif choice in ['3', 'b']:
+            elif choice in ['3', 'b', 'q']:
                 clear_console()  
                 break  
             else:
@@ -443,22 +455,24 @@ class Shop:
             print("Items and Weapons you can sell:\n")
             item_list = []
             item_count = {}
-            
-            # Gather item names and their quantities from the inventory
+
             for item_name, item_info in player.inventory.items.items():
                 item_count[item_name] = item_info['quantity']
                 item_list.append(item_name)
 
-            # Display items with their sale price
+            for weapon in player.available_weapons:
+                item_list.append(weapon.name)
+                item_count[weapon.name] = 1  
+
             for index, item_name in enumerate(item_list, 1):
                 sale_price = self.item_value.get(item_name, 0)
                 quantity = item_count[item_name]
                 print(f"{index}. {item_name} ({quantity}) - {sale_price} gold each")
 
-            print("\nType the number of the item you want to sell or (B)ack to return.")
+            print("\nType the number of the item you want to sell or (Q) to return.")
             choice = input("\nEnter your choice: ").lower()
 
-            if choice in ['b', 'back']:
+            if choice in ['b', 'back', "q"]:
                 clear_console()
                 break
             else:
@@ -470,6 +484,8 @@ class Shop:
                     self.sell_item(player, selected_item_name, item_count[selected_item_name])
                 except (ValueError, IndexError):
                     print("Invalid choice. Please enter a valid number.")
+    
+ 
 
     def sell_item(self, player, item_name, available_quantity):
         if available_quantity == 1:
