@@ -7,73 +7,87 @@ ORE_EXPERIENCE_POINTS = {
     "Copper Ore": 5,
     "Tin Ore": 8,
     "Iron Ore": 12,
-    "Stone": 1  
+    "Stone": 1, 
+    "Coal": 15 
 }
+def mine(player, location):
+    clear_console()
+
+    # Check for Iron Pickaxe in the player's inventory
+    has_iron_pickaxe = player.inventory.has_item("Iron Pickaxe")
+
+    if has_iron_pickaxe:
+        print("You start mining with your Iron Pickaxe...\n")
+        success_chance = player.mining_level + 1  # Enhanced success chance with Iron Pickaxe
+    else:
+        print("You start mining...\n")
+        success_chance = player.mining_level
+
+    energy_cost_per_mine = 10
+
+    if player.energy >= energy_cost_per_mine:
+        player.consume_energy(energy_cost_per_mine)
+        mining_successful = random.randint(1, 10) <= success_chance
+
+        if mining_successful:
+            # Select ores based on player's mining level
+            available_ores = [ore for ore, level in ORE_LEVEL_TABLE.items() if player.mining_level >= level]
+            ore_weights = [ORE_LEVEL_TABLE[ore] for ore in available_ores]  # Adjust weights if necessary
+            ore = random.choices(available_ores, weights=ore_weights, k=1)[0]
+
+            print(f"You have successfully mined {ore}!")
+            mined_ore = Item(ore, f"A piece of {ore} mined from the {location}.")
+            player.inventory.add_item(mined_ore)
+            gain_mining_experience(player, ore)
+
+            # Encounter check can be location-specific
+            if location == 'damp_cave' and random.randint(1, 4) == 1:
+                print("\nAs you mine, a monster emerges from the depths of the cave!")
+                input("\nPress enter to continue...")
+                fight_monster(player, location)
+
+        else:
+            print("\nYour mining attempt was unsuccessful. All you see is stone!")
+            gain_mining_experience(player, "Stone")
+            stone_item = Item("Stone", "A common stone, not worth much but can be sold.")
+            player.inventory.add_item(stone_item)
+
+    else:
+        print("You don't have enough energy to mine. Rest to regain energy.")
 
 
 def gain_mining_experience(player, ore):
-    
     exp = ORE_EXPERIENCE_POINTS.get(ore, 0)
-    player.mining_experience += exp
-    #print(f"Gained {exp} mining experience.")
+    level_factor = 1 + (player.mining_level - 1) * 0.1  # Scaling factor based on mining level
+    exp_gained = int(exp * level_factor)
+    player.mining_experience += exp_gained
 
-    if player.mining_experience >= 100:
+    print(f"{player.name} gained {exp_gained} mining experience points.")
+
+    # Check for mining level up
+    while player.mining_experience >= 100:
         player.mining_experience -= 100
         player.mining_level += 1
         print(f"Congratulations! Your mining level is now {player.mining_level}.")
 
 
 
+ORE_LEVEL_TABLE = {
+    "Copper Ore": 1,
+    "Tin Ore": 1,
+    "Iron Ore": 5,
+    "Coal": 8
+    # Add more ores and their corresponding levels here
+}
+
+
 def mine_in_damp_cave(player):
     player.current_location = 'damp_cave'
     while True:
-        clear_console()
-
-        # Check for Iron Pickaxe in the player's inventory
-        has_iron_pickaxe = player.inventory.has_item("Iron Pickaxe")
-
-        if has_iron_pickaxe:
-            print("You start mining with your Iron Pickaxe...\n")
-            success_chance = player.mining_level + 1
+        continue_mining = input("\nDo you want to mine in the Damp Cave? (Y/N): ").lower()
+        if continue_mining == 'y':
+            mine(player, 'damp_cave')
         else:
-            print("You start mining...\n")
-            success_chance = player.mining_level
-
-        energy_cost_per_mine = 10  
-
-        if player.energy >= energy_cost_per_mine:
-            player.consume_energy(energy_cost_per_mine)
-            mining_successful = random.randint(1, 10) <= success_chance
-
-            if mining_successful:
-                ore = random.choices(
-                    ["Copper Ore", "Tin Ore", "Iron Ore"],
-                    weights=(60, 30, 10) if player.mining_level < 5 else (30, 40, 30),
-                    k=1
-                )[0]
-                print(f"You have successfully mined {ore}!")
-                mined_ore = Item(ore, f"A piece of {ore} mined from the Damp Cave.")
-                player.inventory.add_item(mined_ore)
-                gain_mining_experience(player, ore)
-
-                if random.randint(1, 4) == 1:
-                    print("\nAs you mine, a monster emerges from the depths of the cave!")
-                    input("\nPress enter to continue...")
-                    fight_monster(player, "Damp Cave")
-
-            else:
-                print("\nYour mining attempt was unsuccessful. All you see is stone!")
-                gain_mining_experience(player, "Stone")  
-                stone_item = Item("Stone", "A common stone, not worth much but can be sold.")
-                player.inventory.add_item(stone_item)
-
-        else:
-            print("You don't have enough energy to mine. Rest to regain energy.")
-
-        # Ask the player if they want to mine again
-        continue_mining = input("\nDo you want to mine again? (Y/N): ").lower()
-        if continue_mining != 'y':
             break
 
 
-######/\/\/\/\/\/\/\####DAMP CAVE MINING#########/\/\/\/\/\/\/\#################
