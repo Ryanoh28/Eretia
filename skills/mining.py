@@ -11,14 +11,15 @@ ORE_EXPERIENCE_POINTS = {
     "Coal": 15 
 }
 def mine(player, location):
+    
+
     clear_console()
 
-    # Check for Iron Pickaxe in the player's inventory
     has_iron_pickaxe = player.inventory.has_item("Iron Pickaxe")
 
     if has_iron_pickaxe:
         print("You start mining with your Iron Pickaxe...\n")
-        success_chance = player.mining_level + 1  # Enhanced success chance with Iron Pickaxe
+        success_chance = player.mining_level + 1 + (player.mining_level * 0.20)
     else:
         print("You start mining...\n")
         success_chance = player.mining_level
@@ -30,9 +31,8 @@ def mine(player, location):
         mining_successful = random.randint(1, 10) <= success_chance
 
         if mining_successful:
-            # Select ores based on player's mining level
             available_ores = [ore for ore, level in ORE_LEVEL_TABLE.items() if player.mining_level >= level]
-            ore_weights = [ORE_LEVEL_TABLE[ore] for ore in available_ores]  # Adjust weights if necessary
+            ore_weights = [ORE_LEVEL_TABLE[ore] for ore in available_ores]
             ore = random.choices(available_ores, weights=ore_weights, k=1)[0]
 
             print(f"You have successfully mined {ore}!")
@@ -40,10 +40,12 @@ def mine(player, location):
             player.inventory.add_item(mined_ore)
             gain_mining_experience(player, ore)
 
-            # Encounter check can be location-specific
-            if location == 'damp_cave' and random.randint(1, 4) == 1:
+            # Monster encounter check
+            if random.randint(1, 4) == 1:
                 print("\nAs you mine, a monster emerges from the depths of the cave!")
+                
                 input("\nPress enter to continue...")
+                
                 fight_monster(player, location)
 
         else:
@@ -54,6 +56,7 @@ def mine(player, location):
 
     else:
         print("You don't have enough energy to mine. Rest to regain energy.")
+
 
 
 def gain_mining_experience(player, ore):
@@ -82,11 +85,12 @@ ORE_LEVEL_TABLE = {
 
 
 def mine_in_damp_cave(player):
-    player.current_location = 'damp_cave'
+    player.current_location = 'Damp Cave'
+    
     while True:
         continue_mining = input("\nDo you want to mine in the Damp Cave? (Y/N): ").lower()
         if continue_mining == 'y':
-            mine(player, 'damp_cave')
+            mine(player, 'Damp Cave')
         else:
             break
 

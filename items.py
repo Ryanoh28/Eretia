@@ -383,13 +383,15 @@ class Inventory:
             clear_console()
     
     # Loot Items
+    
 LOOT_ITEMS = {
-    "Gilded Feather": {"description": "A shiny feather with mystical properties.", "chance": 20},
-    "Enchanted Stone": {"description": "A stone radiating magical energy.", "chance": 10},
-    "Twilight Shard": {"description": "A small crystal that glows with the light of the setting sun.", "chance": 5},
-    "Earth Rune": {"object": Rune("Earth Rune", "A rune embodying the essence of Earth."), "chance": 15},
-    "Water Rune": {"object": Rune("Water Rune", "A rune embodying the essence of Water."), "chance": 15},
-    "Fire Rune": {"object": Rune("Fire Rune", "A rune embodying the essence of Fire."), "chance": 15}
+    "Gilded Feather": {"name": "Gilded Feather", "description": "A shiny feather with mystical properties.", "chance": 20},
+    "Enchanted Stone": {"name": "Enchanted Stone", "description": "A stone radiating magical energy.", "chance": 10},
+    "Twilight Shard": {"name": "Twilight Shard", "description": "A small crystal that glows with the light of the setting sun.", "chance": 5},
+    "Earth Rune": {"name": "Earth Rune", "object": Rune("Earth Rune", "A rune embodying the essence of Earth."), "chance": 15},
+    "Water Rune": {"name": "Water Rune", "object": Rune("Water Rune", "A rune embodying the essence of Water."), "chance": 15},
+    "Fire Rune": {"name": "Fire Rune", "object": Rune("Fire Rune", "A rune embodying the essence of Fire."), "chance": 15},
+    # ... other items
 }
 
 def get_loot_drop():

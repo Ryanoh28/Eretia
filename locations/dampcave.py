@@ -9,7 +9,8 @@ from combat import fight_monster
 
 
 def enter_damp_cave(player):
-    player.current_location = 'damp_cave'
+    player.current_location = 'Damp Cave'
+    
     while True:
         clear_console()
         print("You are in the Damp Cave. What would you like to do?\n")
@@ -24,6 +25,8 @@ def enter_damp_cave(player):
         if choice == "1":
             explore_passages(player)
         elif choice == "2":
+            player.current_location = "Damp Cave"
+            
             mine_in_damp_cave(player)
         elif choice == "3":
             clear_console()
@@ -456,7 +459,7 @@ DAMP_CAVE_LOOT = {
     "Ancient Bone Fragment": {"description": "A fragment of bone from an ancient creature.", "chance": 10},
     "Glowing Mushroom": {"description": "A rare mushroom that emits a soft light.", "chance": 4},
     "Ethereal Stone": {"description": "A stone shimmering with otherworldly energy.", "chance": 1},
-    "Fossilized Bone": {"description": "A bone from an ancient creature, long extinct.", "chance": 10}
+    "Fossilised Bone": {"description": "A bone from an ancient creature, long extinct.", "chance": 10}
 }
 
 

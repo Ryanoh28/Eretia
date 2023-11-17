@@ -90,7 +90,7 @@ def show_instructions():
     print("\n=== Game Instructions ===")
     print("Here you will fight monsters and gain gold.")
     print("Use the commands provided to interact with the game.")
-    print("Menu can only be accessed from the camp")
+    print("Menu can only be accessed from Border Town")
     input("\nPress Enter to return to the main menu...")
     clear_console()
 
@@ -105,6 +105,7 @@ def main_menu(player=None):
         print("4. Load Game")
         print("5. Instructions")
         print("6. Exit to Desktop")
+        print("=================")
         choice = input("Enter your choice (1-6): ").lower().strip()
 
         if choice == '1':
