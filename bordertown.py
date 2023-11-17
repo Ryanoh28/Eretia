@@ -172,7 +172,7 @@ def check_mystic_herb_quest_status(player):
         print(f"Guard Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
 
 def meet_guard_captain(player):
-    from items import Weapon, HealthPotion
+    from items import Weapon, HealthPotion, EnchantedFruit
     from locations.dampcave import Rune, MageStaff
     clear_console()
     print("As you enter the town, the Guard Captain approaches you with a stern look.")
@@ -191,6 +191,9 @@ def meet_guard_captain(player):
     earth_rune = Rune("Earth Rune", "A rune embodying the essence of Earth.")
     water_rune = Rune("Water Rune", "A rune embodying the essence of Water.")
     fire_rune = Rune("Fire Rune", "A rune embodying the essence of Fire.")
+    
+    enchanted_fruit = EnchantedFruit("Enchanted Fruit", "A magical fruit that grants 50 experience when consumed.", 50)
+    player.inventory.add_item(enchanted_fruit)
     player.inventory.add_item(earth_rune)
     player.inventory.add_item(water_rune)
     player.inventory.add_item(fire_rune)

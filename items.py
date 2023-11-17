@@ -90,7 +90,7 @@ class EnchantedFruit(Item):
     def use(self, target):
         target.gain_experience(self.experience)
         print(f"{target.name} consumes the {self.name} and gains {self.experience} experience.")
-        target.inventory.remove_item(self)
+
 
 
 class Bedroll(Item):
@@ -339,24 +339,21 @@ class Inventory:
         print("=================\n")
         input("\nPress Enter to continue...")
 
-
     def use_item(self, index, target):
         item_list = list(self.items.keys())
         if 0 <= index < len(item_list):
             item_name = item_list[index]
             item = self.items[item_name]['object']
 
-            if isinstance(item, HealthPotion) or isinstance(item, ManaPotion):
-                if item.use(target):
-                    self.remove_items(item_name, 1)
-                    print(f"Used {item.name}.")
-                return True
-            else:
-                print(f"You can't use {item.name} in this way.")
-                return False
-        else:
-            print("Item not found in inventory.")
-            return False
+            if hasattr(item, 'use'):
+                if item.use(target):  # Check if the use was successful
+                    self.remove_items(item_name, 1)  # Remove one item after successful use
+                    #print(f"Used {item.name}.")
+                    return True
+                else:
+                    #print(f"Cannot use {item.name}.")
+                    return False
+
 
 
 
@@ -396,14 +393,19 @@ LOOT_ITEMS = {
 }
 
 def get_loot_drop():
-    if random.randint(1, 100) <= 45:  # 30% chance for any loot to drop
+    if random.randint(1, 100) <= 30:  #30% any loot
         cumulative_chance = 0
         roll = random.randint(1, 100)
-        for item_name, item_info in LOOT_ITEMS.items():
+        for item_info in LOOT_ITEMS.values():
             cumulative_chance += item_info["chance"]
             if roll <= cumulative_chance:
-                return [Item(item_name, item_info["description"])]
+                if "object" in item_info:
+                    return [item_info["object"]]  
+                else:
+                    
+                    return [Item(item_info["name"], item_info["description"])]
     return []  # No loot drops
+
 
 def get_location_loot(loot_table):
     total_chance = 100  
