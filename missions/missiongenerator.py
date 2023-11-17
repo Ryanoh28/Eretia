@@ -2,9 +2,30 @@ import random
 
 
 monster_names = {
-    "Dark Forest": ["Dark Forest Wolf", "Forest Ape", "Shadow Stalker"],
-    "Damp Cave": ["Cave Bat", "Grey Slime", "Rock Troll"],
-    "The Border": ["Blighted Sentinel", "Feral Shadehound", "Ravaged Harpy", "Corrupted Ent", "Nightmare Wisp", "Barren Drake"]
+    "Dark Forest": [
+        "Dark Forest Wolf", 
+        "Forest Ape", 
+        "Shadow Stalker", 
+        "Mystic Owlbeast",   
+        "Thorned Lurker",    
+        "Whispering Wraith"  
+    ],
+    "Damp Cave": [
+        "Cave Bat", 
+        "Grey Slime", 
+        "Rock Troll", 
+        "Luminous Fungoid",  
+        "Echo Serpent",      
+        "Crystaline Beetle"  
+    ],
+    "The Border": [
+        "Blighted Sentinel", 
+        "Feral Shadehound", 
+        "Ravaged Harpy", 
+        "Corrupted Ent", 
+        "Nightmare Wisp", 
+        "Barren Drake"
+    ]
 }
 
 def generate_mission():
