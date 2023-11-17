@@ -3,7 +3,7 @@ from classes import Shop
 from utilities import clear_console
 from locations.darkforest import enter_dark_forest
 from missions.eldrin import speak_with_eldrin
-
+from colorama import Fore, Style
 
 def rest(player):
     clear_console()
@@ -131,7 +131,7 @@ def leave_town(player):
 
 def converse_with_guard_captain(player):
     clear_console()
-    print("Guard Captain: 'Greetings, warrior. What brings you to me today?'\n")
+    print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL + "'Greetings, warrior. What brings you to me today?'\n")
     print("1. Ask for advice")
     print("2. Talk with the Captain")
     print("3. Leave the conversation")
@@ -140,36 +140,36 @@ def converse_with_guard_captain(player):
 
     if choice == '1':
         clear_console()
-        print(f"Guard Captain: \"Remember, use your strengths wisely and learn from each battle. Every challenge is an opportunity to grow stronger.\"")
+        print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"\"Remember, use your strengths wisely and learn from each battle. Every challenge is an opportunity to grow stronger.\"")
     elif choice == '2':
         clear_console()
         # dialogue based on Eldrin's quest status
         if "monster_loot_quest" in player.quests:
             if player.quests["monster_loot_quest"]["completed"]:
-                print(f"Guard Captain: 'I've heard you've been quite successful in the Dark Forest, {player.name}. It's no small feat to take on those creatures.'")
+                print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'I've heard you've been quite successful in the Dark Forest, {player.name}. It's no small feat to take on those creatures.'")
             elif player.quests["monster_loot_quest"]["accepted"]:
-                print(f"Guard Captain: 'So, Eldrin has you hunting for treasures in the forest? Keep your guard up, {player.name}, and remember, our shop has potions if you need them.'")
+                print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'So, Eldrin has you hunting for treasures in the forest? Keep your guard up, {player.name}, and remember, our shop has potions if you need them.'")
             else:
                 check_mystic_herb_quest_status(player)
         else:
             check_mystic_herb_quest_status(player)
     elif choice == '3':
         clear_console()
-        print(f"Guard Captain: \"Very well, {player.name}. Stay safe out there.\"")
+        print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"\"Very well, {player.name}. Stay safe out there.\"")
     else:
         clear_console()
-        print("Guard Captain: \"I'm not sure what you mean. Could you please clarify?\"")
+        print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"I'm not sure what you mean. Could you please clarify?\"")
 
 def check_mystic_herb_quest_status(player):
     if "mystic_herb_quest" in player.quests:
         if player.quests["mystic_herb_quest"]["completed"]:
-            print(f"Guard Captain: 'Impressive work with Eldrin's herbs, {player.name}. The Blade of Verdant Greens is a fine reward for your efforts.'")
+            print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'Impressive work with Eldrin's herbs, {player.name}. The Blade of Verdant Greens is a fine reward for your efforts.'")
         elif player.quests["mystic_herb_quest"]["accepted"]:
-            print(f"Guard Captain: 'Heard you're running around for Eldrin. Be careful in the Dark Forest, {player.name}. It's a dangerous place.'")
+            print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'Heard you're running around for Eldrin. Be careful in the Dark Forest, {player.name}. It's a dangerous place.'")
         else:
-            print(f"Guard Captain: 'Eldrin the Greenwarden often has tasks for willing adventurers. Have you spoken with him in the tavern, {player.name}?'")
+            print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL + f"'Eldrin the Greenwarden often has tasks for willing adventurers. Have you spoken with him in the tavern, {player.name}?'")
     else:
-        print(f"Guard Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
+        print(Style.DIM + Fore.YELLOW + f"Guard Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
 
 def meet_guard_captain(player):
     from items import Weapon, HealthPotion, EnchantedFruit
@@ -179,7 +179,7 @@ def meet_guard_captain(player):
     input("\nPress Enter to continue...")
     clear_console()
 
-    print(f"Guard Captain: 'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
+    print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL + f"'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     health_potion = HealthPotion()
     player.inventory.add_item(health_potion)
         
@@ -189,7 +189,7 @@ def meet_guard_captain(player):
     input("\nPress Enter to continue...")
     clear_console()
 
-    print(f"Guard Captain: 'And take this Rusted Sword as well. It's not much, but it's better than nothing.'")
+    print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'And take this Rusted Sword as well. It's not much, but it's better than nothing.'" + Style.RESET_ALL)
     rusted_sword = Weapon("Rusted Sword", 0.5, 0.5)
     player.available_weapons.append(rusted_sword)
     print(f"\n{player.name} received a Rusted Sword.")

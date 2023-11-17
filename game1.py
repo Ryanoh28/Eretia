@@ -3,6 +3,8 @@ import os
 from classes import Warrior
 from bordertown import meet_guard_captain, return_to_border_town
 from utilities import clear_console
+from colorama import init, Fore, Style
+init(autoreset=True)  
 
 def list_save_files():
     save_path = "saves"
@@ -57,21 +59,11 @@ def load_game():
     return player
 
 
-# def save_game(player, filename="savegame.pkl"):
-#     with open(filename, 'wb') as file:
-#         pickle.dump(player, file)
-#     print("Game saved successfully.")
-
-# def load_game(filename="savegame.pkl"):
-#     with open(filename, 'rb') as file:
-#         player = pickle.load(file)
-#     return player
-
 def welcome():
     clear_console()
-    print("Welcome to the land of Eretia.\n")
-    print("Drawn by tales of untold challenges and uncharted frontiers, you have journeyed to Eretia's perilous edges. Here, where civilization meets the wild, legends are born, and warriors are tested against the hordes of monsters that roam these ancient lands.\n")
-    name = input("Brave adventurer, what is your name?\n")
+    print("Welcome to the land of " + Style.DIM + Fore.YELLOW + "Eretia" + Style.RESET_ALL + ".\n")
+    print("Drawn by tales of untold challenges and uncharted frontiers, you have journeyed to Eretia's perilous edges. Here, where civilisation meets the wild, legends are born, and warriors are tested against the hordes of monsters that roam these ancient lands.\n")
+    name = input(Style.DIM + Fore.YELLOW + "Brave adventurer, what is your name?\n" + Style.RESET_ALL)
     return name
 
 def game_over():
@@ -106,7 +98,7 @@ def main_menu(player=None):
         print("5. Instructions")
         print("6. Exit to Desktop")
         print("=================")
-        choice = input("Enter your choice (1-6): ").lower().strip()
+        choice = input("\nEnter your choice (1-6): ").lower().strip()
 
         if choice == '1':
             if player is None:

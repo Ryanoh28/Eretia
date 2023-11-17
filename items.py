@@ -1,5 +1,6 @@
 from utilities import clear_console
 import random
+from colorama import Style, Fore
 class Item:
     def __init__(self, name, description):
         self.name = name
@@ -177,9 +178,9 @@ class Inventory:
 
         if print_confirmation:
             if found_quantity > 1:
-                print(f"Added {item_name} ({found_quantity}) to inventory\n")
+                print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} ({found_quantity}) to inventory\n" + Style.RESET_ALL)
             else:
-                print(f"Added {item_name} to inventory\n")
+                print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} to inventory\n" + Style.RESET_ALL)
 
 
     def show_equipment(self, player):
