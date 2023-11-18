@@ -123,6 +123,13 @@ class Warrior(Human):
             self.training_count += 4
 
     def training(self):
+    # Check if the player has no training sessions left
+        if self.training_count <= 0:
+            clear_console()
+            print("You have completed your training sessions for this level.")
+            input("\nPress Enter to continue...")
+            return  # Return from the function
+
         while self.training_count > 0:
             clear_console()
             print(f"You have {self.training_count} training sessions remaining.\n")
@@ -155,10 +162,11 @@ class Warrior(Human):
                 print("Invalid choice. Please enter a number between 1 and 4.")
                 input("\nPress Enter to continue...")
 
-            if self.training_count <= 0:
-                clear_console()
-                print("You have completed your training sessions for this level.")
-                input("\nPress Enter to continue...")
+        if self.training_count <= 0:
+            clear_console()
+            print("You have completed your training sessions for this level.")
+            input("\nPress Enter to continue...")
+
     
     def update_monster_kill_log_and_missions(self, monster_name):
         if 'guild_member' in self.flags:

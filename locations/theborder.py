@@ -28,9 +28,9 @@ def enter_the_border(player):
         print("4. Border Crossing")
         print("5. Inventory")
         print("6. Quests")
-        print("7. Main Menu")  
-        print("8. Border Town Outskirts")
-
+        print("7. Border Town Outskirts")
+        print("8. Main Menu") 
+        
         choice = input("\nEnter your choice (1-8): ").strip()
 
         if choice == "1":
@@ -48,10 +48,10 @@ def enter_the_border(player):
             from bordertown import view_quest_log
             view_quest_log(player)
             pass
-        elif choice == "7":
+        elif choice == "8":
             player.current_location = 'the_border'
             main_menu(player)  
-        elif choice == "8":
+        elif choice == "7":
             print("\nReturning to Border Town.")
             from bordertown import leave_town
             leave_town(player)
@@ -73,9 +73,10 @@ def sentinel_garrison(player):
         print("What would you like to do?\n")
         print("1. Read the Noticeboard")
         print("2. Speak with Garrison Commander")
-        print("3. Leave")
+        print("3. Train with the Sentinels")
+        print("4. Leave")
 
-        choice = input("\nEnter your choice (1-3): ").strip()
+        choice = input("\nEnter your choice (1-4): ").strip()
 
         if choice == "1":
             read_noticeboard()
@@ -83,14 +84,17 @@ def sentinel_garrison(player):
             if 'met_commander' in player.flags:
                 clear_console()
                 print("The commander looks too busy at the moment.")
+                input("\nPress enter to continue...")
             else:
                 converse_with_commander(player)
         elif choice == "3":
+            player.training()  
+        elif choice == "4":
             print("\nYou decide to leave the Sentinel Garrison.")
             break
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 3.")
-        input("\nPress Enter to continue...")
+            print("\nInvalid choice. Please enter a number between 1 and 4.")
+        #input("\nPress Enter to continue...")
 
 def converse_with_commander(player):
     clear_console()
@@ -119,14 +123,13 @@ def converse_with_commander(player):
             print("Invalid choice. Please enter a number between 1 and 4.")
 
         player.flags.add('met_commander')
+        
+    
     else:
         print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'The commander looks too busy at the moment.'")
-        input("\nPress Enter to continue...")  
+        
+    input("\nPress Enter to continue...") 
     
-
-
-
-
 def read_noticeboard():
     clear_console()
     print("The noticeboard is filled with various posters and warnings. Several notices catch your eye:\n")

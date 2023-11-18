@@ -4,6 +4,7 @@ from classes import Warrior
 from bordertown import meet_guard_captain, return_to_border_town
 from utilities import clear_console
 from colorama import init, Fore, Style
+from locations.locationfunctions import return_to_location
 init(autoreset=True)  
 
 def list_save_files():
@@ -98,7 +99,7 @@ def main_menu(player=None):
         print("5. Instructions")
         print("6. Exit to Desktop")
         print("=================")
-        choice = input("\nEnter your choice (1-6): ").lower().strip()
+        choice = input("Enter your choice (1-6): ").lower().strip()
 
         if choice == '1':
             if player is None:
@@ -109,20 +110,23 @@ def main_menu(player=None):
         elif choice == '2':
             if player:
                 return_to_border_town(player)
-                break  
             else:
                 print("No ongoing game to continue. Please start a new game.")
         elif choice == '3':
             if player:
                 save_game(player)
+                
+                return_to_location(player)  # Return to the current location after saving
             else:
                 print("No game to save. Please start a new game.")
         elif choice == '4':
             try:
                 player = load_game()
-                print("Game loaded successfully. Returning to camp.")
-                return_to_border_town(player)
-                break  
+                if player:
+                    print("Game loaded successfully.")
+                    return_to_location(player)  # Return to the current location after loading
+                else:
+                    print("No saved game found. Please start a new game.")
             except FileNotFoundError:
                 print("No saved game found. Please start a new game.")
         elif choice == '5':
@@ -135,7 +139,6 @@ def main_menu(player=None):
             input("Press Enter to continue...")
 
         clear_console()  
-
 
 if __name__ == "__main__":
     main_menu(player=None)

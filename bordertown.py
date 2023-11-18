@@ -110,7 +110,7 @@ def leave_town(player):
         print("1. Dark Forest")
         print("2. Damp Cave")
         print("3. The Border")
-        print("4. Back to Border Town")
+        print("4. Border Town")
         choice = input("\nEnter your choice (1-4): ").strip()
 
         if choice == "1":
