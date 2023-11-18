@@ -20,3 +20,7 @@ def return_to_location(player):
     elif player.current_location == 'cave_entrance':
         from locations.dampcave import explore_passages
         explore_passages(player)
+    elif player.current_location == 'the_border':  
+        from locations.theborder import enter_the_border
+        enter_the_border(player)
+    # Add more elif statements for other locations if needed

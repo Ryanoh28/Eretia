@@ -1,13 +1,14 @@
 from combat import fight_monster
 from utilities import clear_console
-from items import get_location_loot
+from items import get_location_loot, HealthPotion, ManaPotion, Rune
 from locations.locationfunctions import rest_in_location
 from colorama import Style, Fore
 from missions.missiongenerator import generate_mission, accept_mission, complete_mission
-
+from classes import Shop
+from game1 import main_menu, save_game, load_game, show_instructions
 
 def enter_the_border(player):
-    player.current_location = 'The Border'
+    player.current_location = 'the_border'
     clear_console()
 
     # Check if the player is visiting The Border for the first time
@@ -27,33 +28,38 @@ def enter_the_border(player):
         print("4. Border Crossing")
         print("5. Inventory")
         print("6. Quests")
-        print("7. Border Town Outskirts")
+        print("7. Main Menu")  
+        print("8. Border Town Outskirts")
 
-        choice = input("\nEnter your choice (1-7): ").strip()
+        choice = input("\nEnter your choice (1-8): ").strip()
 
         if choice == "1":
             sentinel_garrison(player)
         elif choice == "2":
             adventurer_headquarters(player)
-            pass
         elif choice == "3":
-            # Functionality for Border Shop
-            pass
+            border_shop(player)  
         elif choice == "4":
             # Functionality for Border Crossing
             pass
         elif choice == "5":
             player.inventory.inventory_menu(player)
         elif choice == "6":
-            # Functionality for Quests
+            from bordertown import view_quest_log
+            view_quest_log(player)
             pass
         elif choice == "7":
+            player.current_location = 'the_border'
+            main_menu(player)  
+        elif choice == "8":
             print("\nReturning to Border Town.")
             from bordertown import leave_town
             leave_town(player)
             break
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 7.")
+            print("\nInvalid choice. Please enter a number between 1 and 8.")
+
+        input("\nPress Enter to continue...")
 
 
 def sentinel_garrison(player):
@@ -228,7 +234,12 @@ def bulletin_board(player):
     while True:
         clear_console()
         print("Bulletin Board: Available Missions\n")
-        
+
+        if 'guild_member' not in player.flags:
+            print("You need to be a member of the Adventurer's Guild to accept missions.")
+            input("\nPress Enter to return...")
+            break
+
         missions = [generate_mission() for _ in range(5)]  # Generate 5 missions
         for i, mission in enumerate(missions, 1):
             print(f"{i}. {mission['monster']} in {mission['area']} - {mission['required_kills']} kills for {mission['gold_reward']} gold")
@@ -247,9 +258,6 @@ def bulletin_board(player):
         
         input("\nPress Enter to continue...")
 
-
-
-
 def adventurer_lodging(player):
     clear_console()
     print("You enter the lodging area, a place for adventurers to rest and recover.\n")
@@ -262,3 +270,41 @@ def adventurer_lodging(player):
         print("You don't feel the need to rest right now.")
 
     input("\nPress Enter to continue...")
+
+
+border_shop_specific_items = {
+    'Earth Rune': {'price': 25, 'object': Rune("Earth Rune", "A rune imbued with the power of earth.")},
+    'Fire Rune': {'price': 25, 'object': Rune("Fire Rune", "A rune imbued with the power of fire.")},
+    'Water Rune': {'price': 25, 'object': Rune("Water Rune", "A rune imbued with the power of water.")}
+}
+
+
+border_shop_instance = Shop(additional_items=border_shop_specific_items)
+
+def border_shop(player):
+    while True:
+        clear_console()
+        print("Welcome to the border!\n")
+        print("Choose an option:\n")
+        print("1. View items to buy")
+        print("2. Sell items")
+        print("3. Back")
+
+        choice = input("\nEnter your choice: ").strip()
+
+        if choice == '1':
+            view_items_to_buy(player, border_shop_instance)
+        elif choice == '2':
+            sell_items(player, border_shop_instance)
+        elif choice == '3':
+            break
+        else:
+            print("Invalid choice. Please enter a valid option.")
+            input("\nPress Enter to continue...")
+
+def view_items_to_buy(player, shop):
+    shop.display_items_for_sale(player)
+
+def sell_items(player, shop):
+    shop.sell_items_interface(player)
+

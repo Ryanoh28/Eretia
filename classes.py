@@ -436,14 +436,21 @@ class Monster:
 
 
 class Shop:
-    def __init__(self):
-        self.items_for_sale = {
+    def __init__(self, additional_items=None):
+        self.base_items_for_sale = {
             'health potion': {'price': 20, 'object': HealthPotion()},
             'mana potion': {'price': 20, 'object': ManaPotion()},
             'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
             'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 20)}
         }
+
+        # Merge base items with additional items specific to the shop instance
+        self.items_for_sale = {**self.base_items_for_sale, **(additional_items if additional_items else {})}
+
+        # ... rest of your Shop class methods ...
+
+
 
 
 
@@ -473,9 +480,9 @@ class Shop:
             "Stone": 1,
             "Fossilised Bone": 10,
             "Iron Pickaxe": 30,
-            "Earth Rune": 25,
-            "Water Rune": 25,
-            "Fire Rune": 25,
+            "Earth Rune": 15,
+            "Water Rune": 15,
+            "Fire Rune": 15,
             
         }
 
