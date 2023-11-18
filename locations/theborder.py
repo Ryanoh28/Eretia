@@ -355,7 +355,7 @@ def lower_bonefields(player):
         print("The Lower Bonefields stretch out before you, a land of desolation and danger.\n")
         print("1. Adventure into the wilds")
         print("2. Follow the ancient road")
-        print("3. Rest in location")
+        print("3. Rest")
         print("4. Inventory")
         print("5. Return")
 
@@ -409,9 +409,9 @@ def adventure_into_wilds(player, first_time=True):
         
         input("Press enter to continue...")
 
-    if random.randint(1, 2) == 1:
+    if random.randint(1, 2) == 2:
         clear_console()
-        print("As you explore, a monster emerges from the wildlands!")
+        print(Fore.LIGHTRED_EX + "\nAs you explore, a monster emerges from the wildlands!" + Style.RESET_ALL)
         input("\nPress enter to continue...")
         fight_monster(player, "The Border")
 
@@ -436,7 +436,7 @@ def follow_ancient_road(player):
     # This could involve quests, discoveries, and character development
     pass
 
-sentinel_sword = Weapon("Sentinel Sword", 3, 2.5)
+sentinel_sword = Weapon("Sentinel Sword", "Forged for the valiant Sentinels guarding the fringes of civilisation, this sword bears the marks of numerous battles.", 3, 2.5)
 LOWER_BONEFIELDS_LOOT = {
     'Phantom Feather': {'chance': 20, 'object': Item("Phantom Feather", "A feather shimmering with ghostly light.")},
     'Ancient Manuscript': {'chance': 15, 'object': Item("Ancient Manuscript", "A script containing forgotten knowledge.")},

@@ -30,6 +30,10 @@ def combat(player, monster):
 
         if monster.alive:
             monster.monster_attack(player)
+            if player.stone_skin_turns_remaining > 0:
+                player.stone_skin_turns_remaining -= 1
+                if player.stone_skin_turns_remaining == 0:
+                    player.reduce_defence_post_effect()
 
         if not monster.check_if_alive():
             print(f"\nThe {monster.name} has been defeated!\n")
@@ -41,6 +45,7 @@ def combat(player, monster):
         return 'player_defeated'
 
     return 'end_of_combat'
+
 
 
 def handle_loot_and_examine(player):
@@ -80,6 +85,7 @@ def fight_monster(player, location):
             print("You successfully escaped from the monster.")
 
         elif combat_result == 'player_defeated':
+            input("\nYou've been defeated!\n")
             player.handle_player_defeat()
             break
 

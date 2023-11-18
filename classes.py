@@ -10,7 +10,15 @@ class Human:
         self.inventory = Inventory()
         self.health = 100  # Default max health for all humans
 
-   
+    def increase_defence_temporarily(self, increase, duration):
+        self.defence += increase
+        print(f"{self.name}'s defence increased by {increase} for {duration} turns.")
+        return duration  # return the duration for which the effect lasts
+
+    def reduce_defence_post_effect(self, decrease):
+        self.defence = max(0, self.defence - decrease)
+        print(f"{self.name}'s temporary defence bonus has worn off.")
+
     def lose_health(self, damage, attacker_strength):
         damage_reduction = max(0, self.defence - attacker_strength)
         effective_damage = max(1, damage - damage_reduction)  # Ensure minimum damage of 1
@@ -82,7 +90,7 @@ class Logbook:
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
-        
+        self.stone_skin_turns_remaining = 0
         self.monster_kill_log = {}
         self.current_location = None
         self.energy = 100
@@ -108,10 +116,21 @@ class Warrior(Human):
         self.mining_level = 1
         self.echo_cavern_completed = False
         self.flags = set()
-        self.mana = 50
-        self.max_mana = 50
+        self.mana = 100
+        self.max_mana = 100
         self.training_count = 4
         self.total_training_count = 0
+
+
+    def increase_defence_temporarily(self, potency, duration):
+        if self.stone_skin_turns_remaining == 0:
+            self.original_defence = self.defence  # Save the original defence if not under effect
+        self.defence += potency
+        self.stone_skin_turns_remaining = duration
+
+    def reduce_defence_post_effect(self):
+        self.defence = self.original_defence  # Reset defence to original value
+        self.stone_skin_turns_remaining = 0
 
     def check_level_up(self):
         while self.experience >= 100:  

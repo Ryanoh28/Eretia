@@ -1,4 +1,4 @@
-from items import HealthPotion
+from items import HealthPotion, Weapon
 from classes import Shop
 from utilities import clear_console
 from locations.darkforest import enter_dark_forest
@@ -180,8 +180,8 @@ def check_mystic_herb_quest_status(player):
         print(Style.DIM + Fore.YELLOW + f"Guard Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
 
 def meet_guard_captain(player):
-    from items import Weapon, HealthPotion, EnchantedFruit
-    from locations.dampcave import Rune, MageStaff
+    
+   
     clear_console()
     print("As you enter the town, the Guard Captain approaches you with a stern look.")
     input("\nPress Enter to continue...")
