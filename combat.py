@@ -101,7 +101,8 @@ def create_monster(location):
     location_level_ranges = {
         "Dark Forest": (1, 3),  
         "Damp Cave": (4, 7),    
-        "The Border": (8, 15)
+        "The Border": (8, 15),
+        "Echoing Cavern": (10,10) # Special mission monster
         # Add other locations and level ranges as needed
     }
     
@@ -132,7 +133,10 @@ def create_monster(location):
         "Corrupted Ent", 
         "Nightmare Wisp", 
         "Barren Drake"
-    ]
+    ],
+    "Echoing Cavern": [
+        "Illusionary Monster" ]
+
 }
 
 

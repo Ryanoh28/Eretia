@@ -205,14 +205,14 @@ def rune_sequence_barrier(player):
 
     # Assign numbers to runes
     rune_options = {'1': 'water', '2': 'earth', '3': 'fire'}
-    correct_sequence = ['water', 'earth', 'fire']
+    correct_sequence = ['earth', 'water', 'fire']
     attempts = 0
 
     print("Enter the numbers corresponding to the runes in the sequence you wish to activate them.")
     print("For example, to activate Water, Earth, Fire in sequence, type '1,2,3' and press Enter.")
 
     while attempts < 3:
-        print("\n1: Water, 2: Earth, 3: Fire\n")
+        print("\n1: " + Fore.CYAN + "Water" + Fore.RESET + ", 2: " + Fore.GREEN + "Earth" + Fore.RESET + ", 3: " + Fore.RED + "Fire" + Fore.RESET + "\n")
         sequence_input = input("Enter your sequence: ").split(',')
 
         # Convert sequence to rune names
@@ -260,7 +260,8 @@ def enchanted_grove(player):
     print("You find yourself in a serene grove, illuminated by bioluminescent plants.")
     
     print("\n1. Drink from the Healing Spring")
-    print("2. Pick a fruit from the Enchanted Tree")
+    if 'enchanted_fruit_picked' not in player.flags:
+        print("2. Pick a fruit from the Enchanted Tree")
     print("3. Continue deeper into the cave")
     print("4. Return to the cave entrance")
     
@@ -273,9 +274,10 @@ def enchanted_grove(player):
         input("\nPress Enter to continue...")
         enchanted_grove(player)
 
-    elif choice == "2":
+    elif choice == "2" and 'enchanted_fruit_picked' not in player.flags:
         enchanted_fruit = EnchantedFruit("Enchanted Fruit", "A magical fruit that grants 50 experience when consumed.", 50)
         player.inventory.add_item(enchanted_fruit)
+        player.flags.add('enchanted_fruit_picked')
         clear_console()
         print("You pick a fruit from the Enchanted Tree. The tree withers away after you pluck the fruit.")
         input("\nPress Enter to continue...")
@@ -294,6 +296,7 @@ def enchanted_grove(player):
 
 
 
+
     
     
 
@@ -307,7 +310,6 @@ def echoing_cavern(player):
     choice = input("\nEnter your choice (1-2): ").strip()
 
     if choice == "1":
-        # First, the player follows the echoes
         follow_the_echoes(player)
     elif choice == "2":
         explore_passages(player)
@@ -401,7 +403,7 @@ def confront_illusionary_monster(player):
     else:
         print("\n'Your heart harbors darkness. Now, face the consequences of your choices.'")
         input("\nPress Enter to confront the monster...")
-        fight_illusionary_monster(player)
+        fight_monster(player, "Echoing Cavern")
 
 def enter_mages_abode(player):
     clear_console()
@@ -444,10 +446,10 @@ def enter_mages_abode(player):
     explore_passages(player)
 
 
-def fight_illusionary_monster(player):
-    from classes import Monster
-    monster = Monster("Illusionary Monster", 200, 10, 10, 10, 10)
-    fight_monster(player, "Echoing Cavern", monster)
+# def fight_illusionary_monster(player):
+#     from classes import Monster
+#     monster = Monster("Illusionary Monster", 200, 10, 10, 10, 10)
+#     fight_monster(player, "Echoing Cavern", monster)
 
 
 
