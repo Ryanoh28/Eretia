@@ -231,7 +231,7 @@ class Inventory:
     def inventory_menu(self, player):
         while True:
             clear_console()
-            print(f"Status: {player.health} Health | {player.energy} Energy | {player.mana} Mana | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/100\n")
+            print(f"Status: {player.health} Health | {player.energy} Energy | {player.mana} Mana | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/{player.experience_required}\n")
             self.show_inventory()  # Show the inventory, this method already includes the heading
 
             print("==== Equipment ====")

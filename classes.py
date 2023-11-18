@@ -108,6 +108,7 @@ class Warrior(Human):
         self.max_health = 100
         self.level = 1
         self.experience = 0
+        self.experience_required = 100
         self.in_combat = False
         self.gold = 0
         self.choice = None
@@ -120,6 +121,22 @@ class Warrior(Human):
         self.max_mana = 100
         self.training_count = 4
         self.total_training_count = 0
+
+ 
+    
+    def check_level_up(self):
+        while self.experience >= self.experience_required:
+            self.experience -= self.experience_required
+            self.level += 1
+            print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}.\n" + Style.RESET_ALL)
+            self.increase_stats()
+            self.experience_required += 12
+
+            # Calculate the total training sessions available
+            self.total_training_count += 4
+            # Add new training sessions to existing ones
+            self.training_count += self.total_training_count
+
 
     def gain_experience(self, monster_level):
         level_difference = monster_level - self.level
@@ -138,22 +155,15 @@ class Warrior(Human):
 
     def increase_defence_temporarily(self, potency, duration):
         if self.stone_skin_turns_remaining == 0:
-            self.original_defence = self.defence  # Save the original defence if not under effect
+            self.original_defence = self.defence  
         self.defence += potency
         self.stone_skin_turns_remaining = duration
 
     def reduce_defence_post_effect(self):
-        self.defence = self.original_defence  # Reset defence to original value
+        self.defence = self.original_defence  
         self.stone_skin_turns_remaining = 0
 
-    def check_level_up(self):
-        while self.experience >= 100:  
-            self.experience -= 100
-            self.level += 1
-            print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}.\n" + Style.RESET_ALL)
-            
-            # Add 4 training sessions for each level up
-            self.training_count += 4
+    
 
     def training(self):
     # Check if the player has no training sessions left
@@ -358,12 +368,6 @@ class Warrior(Human):
             self.health = self.max_health
         self.health = round(self.health, 1)  
         #print(f"{self.name} regained {healing} health and now has {self.health} health.\n")
-
-    
-
-
-    
-
 
     def increase_stats(self):
         
