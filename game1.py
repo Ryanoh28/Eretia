@@ -73,7 +73,7 @@ def game_over():
 def start_game():
     player_name = welcome()
     player = Warrior(player_name)
-    player.gold = 500 # Testing
+    player.gold = 50 # Testing
     meet_guard_captain(player)
     return_to_border_town(player)
     return player
