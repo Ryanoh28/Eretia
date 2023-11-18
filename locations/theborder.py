@@ -377,8 +377,9 @@ def lower_bonefields(player):
             input("\nPress Enter to continue...")
 
 def adventure_into_wilds(player, first_time=True):
+    player.current_location = 'lower_bonefields'
     clear_console()
-
+    
     energy_cost_per_exploration = 10
 
     if player.energy < energy_cost_per_exploration:
@@ -418,13 +419,13 @@ def adventure_into_wilds(player, first_time=True):
     clear_console()
     print("What would you like to do next?\n")
     print("1. Continue adventuring in the wildlands")
-    print("2. Return to the crossing")
+    print("2. Return")
     next_action = input("\nEnter your choice (1-2): ").strip()
 
     if next_action == "1":
         adventure_into_wilds(player, first_time=False)
     elif next_action == "2":
-        cross_menu(player)
+        lower_bonefields(player)
     else:
         clear_console()
         print("Invalid choice. Please enter a valid number.")
@@ -504,9 +505,42 @@ def search_surroundings(player):
     if choice == "1":
         enter_mine(player)
     elif choice == "2":
-        print("\nYou continue to explore the area, but find nothing more of interest.")
-        input("\nPress Enter to continue...")
-        follow_ancient_road(player)
+        print("\nAs you delve deeper into the wilderness, you notice signs of recent human activity - a rarity in these monster-ruled lands. Suddenly, a figure steps out from the shadows. It's a human bandit, looking as surprised to see you as you are to see him.")
+
+        print(Fore.RED + "Bandit:" + Style.RESET_ALL + " 'What's a traveler like you doing in these parts? You know it's not safe here... for humans,' the bandit sneers, eyeing you cautiously.")
+
+        print("\n1. Try to talk to the bandit.")
+        print("2. Prepare for a fight.")
+        print("3. Try to sneak away.")
+        
+        bandit_choice = input("\nEnter your choice (1-3): ").strip()
+
+        if bandit_choice == "1":
+            print(Fore.YELLOW + "\nYou decide to engage with the bandit, trying to understand his presence in this dangerous territory." + Style.RESET_ALL)
+            print(Fore.RED + "Bandit:" + Style.RESET_ALL + " 'You must be either brave or foolish to venture here. I was once like you, an adventurer. But now, I'm a survivor in these cursed lands.'")
+
+            print(Fore.YELLOW + "\nThe bandit's eyes flicker with a mix of sadness and resolve. His armor is battered, and his cloak is tattered, hinting at countless battles and narrow escapes." + Style.RESET_ALL)
+            print(Fore.RED + "Bandit:" + Style.RESET_ALL + " 'The monsters here... they took everything from me. My comrades, my dreams, my sanity. Now, I take from those who dare cross these borders. It's either them or me.'")
+
+            print("\n1. Sympathize with the bandit and offer help.")
+            print("2. Condemn his actions and prepare to fight.")
+            print("3. Change your mind and try to sneak away.")
+            
+            deeper_choice = input("\nEnter your choice (1-3): ").strip()
+            pass
+        elif bandit_choice == "2":
+            # Trigger a combat sequence with the bandit
+            pass
+        elif bandit_choice == "3":
+            # Implement a stealth check or allow the player to escape
+            pass
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 3.")
+            input("\nPress Enter to continue...")
+            # Call a function or repeat this block
+
+        # Continue the storyline based on the outcome of the encounter
+
     elif choice == "3":
         print("\nDeciding against entering the mine, you return to the Ancient Road.")
         input("\nPress Enter to continue...")
@@ -516,7 +550,7 @@ def search_surroundings(player):
         input("\nPress Enter to continue...")
         search_surroundings(player)
 
-from skills.mining import mine  # Import the mine function from mining.py
+from skills.mining import mine  
 
 
 LOWER_BONEFIELDS_ORE_LEVEL_TABLE = {

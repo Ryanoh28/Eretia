@@ -20,6 +20,9 @@ def return_to_location(player):
     elif player.current_location == 'the_border':  
         from locations.theborder import enter_the_border
         enter_the_border(player)
+    elif player.current_location == 'lower_bonefields':  
+        from locations.theborder import lower_bonefields
+        lower_bonefields(player)    
     
     
     # Add more elif statements for other locations if needed
