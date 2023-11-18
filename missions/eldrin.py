@@ -41,7 +41,7 @@ def speak_with_eldrin(player):
 
 
 def give_mystic_herb_quest_reward(player):
-    verdant_blade = Weapon("Blade of Verdant Greens", 1, 2)
+    verdant_blade = Weapon("Blade of Verdant Greens", "A weapon crafted by Eldrin the Greenwarden, shimmering with a verdant glow.", 1, 2)
     player.available_weapons.append(verdant_blade)
     player.quests["mystic_herb_quest"]["reward_given"] = True
     clear_console()

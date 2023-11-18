@@ -46,11 +46,11 @@ def load_game():
         print("No saved games found.")
         return None
 
-    print("Available saves:")
+    print("\nAvailable saves:\n")
     for i, file in enumerate(save_files, 1):
         print(f"{i}. {file.replace('.pkl', '')}")
 
-    choice = int(input("Enter the number of the save file to load: "))
+    choice = int(input("\nEnter the number of the save file to load: "))
     filepath = os.path.join(save_path, save_files[choice - 1])
 
     with open(filepath, 'rb') as file:

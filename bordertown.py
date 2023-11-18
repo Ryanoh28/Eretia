@@ -197,7 +197,7 @@ def meet_guard_captain(player):
     clear_console()
 
     print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'And take this Rusted Sword as well. It's not much, but it's better than nothing.'" + Style.RESET_ALL)
-    rusted_sword = Weapon("Rusted Sword", 0.5, 0.5)
+    rusted_sword = Weapon("Rusted Sword", "A sword corroded by time, with a dulled edge.", 0.5, 0.5)
     player.available_weapons.append(rusted_sword)
     print(f"\n{player.name} received a Rusted Sword.")
     input("\nEnter your inventory to equip weapons and armour. Press Enter to continue...")

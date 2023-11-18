@@ -1,6 +1,3 @@
-
-
-
 def rest_in_location(player):
     if "Bedroll" in player.inventory.items:
         bedroll = player.inventory.items["Bedroll"]['object']
@@ -23,4 +20,6 @@ def return_to_location(player):
     elif player.current_location == 'the_border':  
         from locations.theborder import enter_the_border
         enter_the_border(player)
+    
+    
     # Add more elif statements for other locations if needed

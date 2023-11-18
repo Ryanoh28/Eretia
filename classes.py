@@ -491,6 +491,12 @@ class Shop:
             "Earth Rune": 15,
             "Water Rune": 15,
             "Fire Rune": 15,
+            'Ancient Manuscript': 20, 
+            'Spectral Dust': 10,
+            'Fossilized Scale': 17,
+            'Cursed Coin': 25,
+            'Bone Amulet': 25,
+            'Phantom Feather': 17
             
         }
 

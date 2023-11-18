@@ -1,11 +1,13 @@
 from combat import fight_monster
 from utilities import clear_console
 from items import get_location_loot, HealthPotion, ManaPotion, Rune
-from locations.locationfunctions import rest_in_location
+from locations.locationfunctions import rest_in_location, return_to_location
 from colorama import Style, Fore
 from missions.missiongenerator import generate_mission, accept_mission, complete_mission
 from classes import Shop
+from items import Item, Weapon
 from game1 import main_menu, save_game, load_game, show_instructions
+import random
 
 def enter_the_border(player):
     player.current_location = 'the_border'
@@ -23,7 +25,7 @@ def enter_the_border(player):
         clear_console()
         print("You are at The Border. What would you like to do?\n")
         print("1. Sentinel Garrison")
-        print("2. Adventurer Headquarters")
+        print("2. Adventurers' Guild")
         print("3. Border Shop")
         print("4. Border Crossing")
         print("5. Inventory")
@@ -40,8 +42,8 @@ def enter_the_border(player):
         elif choice == "3":
             border_shop(player)  
         elif choice == "4":
-            # Functionality for Border Crossing
-            pass
+            cross_menu(player)
+            
         elif choice == "5":
             player.inventory.inventory_menu(player)
         elif choice == "6":
@@ -157,7 +159,7 @@ def read_noticeboard():
 def adventurer_headquarters(player):
     while True:
         clear_console()
-        print("You are in the Adventurer Headquarters. What would you like to do?\n")
+        print("You are in the Adventurers' Guild. What would you like to do?\n")
         print("1. Front Desk")
         print("2. Bulletin Board")
         print("3. Adventurer Lodging")
@@ -311,3 +313,148 @@ def view_items_to_buy(player, shop):
 def sell_items(player, shop):
     shop.sell_items_interface(player)
 
+def cross_menu(player):
+    clear_console()
+    if 'first_visit_border_crossing' not in player.flags:
+        print(Fore.RED + "Warning: Beyond this point, humans have no influence and monsters roam unabashedly." + Style.RESET_ALL)
+        print(Fore.GREEN + "\nTwo Sentinel Guards salute you, praising your bravery and wishing you good luck." + Style.RESET_ALL)
+        player.flags.add('first_visit_border_crossing')
+        input("\nPress Enter to continue...")
+
+    while True:
+        clear_console()
+        print("You are at the Border Crossing. What would you like to do?\n")
+        print("1. Lower Bonefields")
+        print("2. Upper Bonefields")
+        print("3. Inventory")
+        print("4. Quests")
+        print("5. Return")
+
+        choice = input("\nEnter your choice (1-5): ").strip()
+
+        if choice == "1":
+            lower_bonefields(player)
+        elif choice == "2":
+            
+            pass
+        elif choice == "3":
+            player.inventory.inventory_menu(player)
+        elif choice == "4":
+            from bordertown import view_quest_log
+            view_quest_log(player)
+        elif choice == "5":
+            from locations.locationfunctions import return_to_location
+            return_to_location(player)  
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 5.")
+            input("\nPress Enter to continue...")
+
+def lower_bonefields(player):
+    while True:
+        clear_console()
+        print("The Lower Bonefields stretch out before you, a land of desolation and danger.\n")
+        print("1. Adventure into the wilds")
+        print("2. Follow the ancient road")
+        print("3. Rest in location")
+        print("4. Inventory")
+        print("5. Return")
+
+        choice = input("\nEnter your choice (1-5): ").strip()
+
+        if choice == "1":
+            adventure_into_wilds(player)
+        elif choice == "2":
+            follow_ancient_road(player)
+        elif choice == "3":
+            rest_in_location(player) 
+        elif choice == "4":
+            player.inventory.inventory_menu(player)  
+        elif choice == "5":
+            print("\nYou decide to head back.")
+            break
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 5.")
+            input("\nPress Enter to continue...")
+
+def adventure_into_wilds(player, first_time=True):
+    clear_console()
+
+    energy_cost_per_exploration = 10
+
+    if player.energy < energy_cost_per_exploration:
+        print("You don't have enough energy to continue exploring. Rest to regain energy.")
+        input("\nPress Enter to continue...")
+        return
+
+    if first_time:
+        print("You adventure out into the wildlands of the Lower Bonefields...\n")
+    else:
+        print("You delve deeper into the wildlands...\n")
+
+    player.consume_energy(energy_cost_per_exploration)
+
+    found_item = get_lower_bonefields_loot(LOWER_BONEFIELDS_LOOT)
+
+    if found_item:
+        if isinstance(found_item, Item):
+            print(f"You found a {found_item.name}!")
+            player.inventory.add_item(found_item)
+            examine_choice = input("\nDo you want to examine it? (Y/N): ").lower().strip()
+            if examine_choice == 'y':
+                clear_console()
+                print(f"{found_item.name}: {found_item.description}\n")
+        elif isinstance(found_item, Weapon):
+            print(Fore.CYAN + f"You found a {found_item.name} (Damage: {found_item.extra_damage}, Crit: {found_item.crit_chance_bonus})!" + Style.RESET_ALL)
+            player.available_weapons.append(found_item)
+        
+        input("Press enter to continue...")
+
+    if random.randint(1, 2) == 1:
+        clear_console()
+        print("As you explore, a monster emerges from the wildlands!")
+        input("\nPress enter to continue...")
+        fight_monster(player, "The Border")
+
+    clear_console()
+    print("What would you like to do next?\n")
+    print("1. Continue adventuring in the wildlands")
+    print("2. Return to the crossing")
+    next_action = input("\nEnter your choice (1-2): ").strip()
+
+    if next_action == "1":
+        adventure_into_wilds(player, first_time=False)
+    elif next_action == "2":
+        cross_menu(player)
+    else:
+        clear_console()
+        print("Invalid choice. Please enter a valid number.")
+        input("\nPress Enter to continue...")
+
+
+def follow_ancient_road(player):
+    # Implement a story tree or narrative-driven adventure
+    # This could involve quests, discoveries, and character development
+    pass
+
+sentinel_sword = Weapon("Sentinel Sword", 3, 2.5)
+LOWER_BONEFIELDS_LOOT = {
+    'Phantom Feather': {'chance': 20, 'object': Item("Phantom Feather", "A feather shimmering with ghostly light.")},
+    'Ancient Manuscript': {'chance': 15, 'object': Item("Ancient Manuscript", "A script containing forgotten knowledge.")},
+    'Spectral Dust': {'chance': 25, 'object': Item("Spectral Dust", "Dust that glows with a strange, otherworldly light.")},
+    'Fossilised Scale': {'chance': 10, 'object': Item("Fossilised Scale", "A scale from a long-extinct creature.")},
+    'Cursed Coin': {'chance': 5, 'object': Item("Cursed Coin", "A coin that seems to absorb light.")},
+    'Bone Amulet': {'chance': 10, 'object': Item("Bone Amulet", "An amulet made from the bones of an unknown creature.")},
+    'Sentinel Sword': {'chance': 1, 'object': sentinel_sword}  
+}
+
+def get_lower_bonefields_loot(loot_table):
+    total_chance = sum(item['chance'] for item in loot_table.values())
+    roll = random.randint(1, total_chance)
+    current = 0
+
+    for name, info in loot_table.items():
+        current += info['chance']
+        if roll <= current:
+            return info['object']
+
+    return None
