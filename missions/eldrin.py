@@ -53,7 +53,7 @@ def complete_mystic_herb_quest(player):
     if player.inventory.count_item("Mystic Herb") >= 8:
         player.inventory.remove_items("Mystic Herb", 8)
         player.quests["mystic_herb_quest"]["completed"] = True
-        verdant_blade = Weapon("Blade of Verdant Greens", 1, 2)
+        verdant_blade = Weapon("Blade of Verdant Greens", "A weapon crafted by Eldrin the Greenwarden, shimmering with a verdant glow.", 1, 2)
         player.available_weapons.append(verdant_blade)
         print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'Amazing work, {player.name}! Here is your Blade of Verdant Greens, as promised.\n'")
         print("You received 'The Blade of Verdant Greens' from Eldrin. ")

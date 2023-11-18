@@ -4,7 +4,6 @@ from skills.magic import spell_menu
 import random
 
 def combat(player, monster):
-    
     while player.alive and monster.alive:
         print("\nChoose your action:\n")
         print("1. Attack")
@@ -36,17 +35,16 @@ def combat(player, monster):
                     player.reduce_defence_post_effect()
 
         if not monster.check_if_alive():
-            print(f"\nThe {monster.name} has been defeated!\n")
-            player.gain_experience(10)
+            print(f"\nThe {monster.name} has been defeated!")
+            player.gain_experience(monster.level)  # This function will handle experience gain and printing
             handle_loot_and_examine(player)
+            input("Press Enter to continue...")  # Only one input prompt for continuation
             return 'monster_defeated'
 
     if not player.alive:
         return 'player_defeated'
 
     return 'end_of_combat'
-
-
 
 def handle_loot_and_examine(player):
     loot = get_loot_drop()
@@ -59,15 +57,9 @@ def handle_loot_and_examine(player):
             clear_console()
             print(f"\n{item.name}: {item.description}\n")
 
-    input("Press Enter to continue...")
-
-
-
-
 
 def fight_monster(player, location):
     clear_console()
-    
     player.in_combat = True
 
     while player.in_combat:
@@ -76,14 +68,12 @@ def fight_monster(player, location):
         combat_result = combat(player, monster)
 
         if combat_result == 'monster_defeated':
-            #print(f"\nThe {monster.name} has been defeated!")
-            #player.gain_experience(10)
+            #player.gain_experience(monster.level)
+            #print(f"\nThe {monster.name} has been defeated!\n")  # Show defeat message
+            #handle_loot_and_examine(player)  # Handle loot after showing XP gain
             player.update_monster_kill_log_and_missions(monster.name)
-            
-            
         elif combat_result == 'escaped':
             print("You successfully escaped from the monster.")
-
         elif combat_result == 'player_defeated':
             input("\nYou've been defeated!\n")
             player.handle_player_defeat()

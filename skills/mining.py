@@ -4,15 +4,14 @@ from combat import fight_monster
 from items import Item
 
 ORE_EXPERIENCE_POINTS = {
-    "Copper Ore": 5,
-    "Tin Ore": 8,
-    "Iron Ore": 12,
+    "Copper Ore": 3,
+    "Tin Ore": 4,
+    "Iron Ore": 5,
     "Stone": 1, 
-    "Coal": 15 
+    "Coal": 8,
+    "Mithril": 12 
 }
-def mine(player, location):
-    
-
+def mine(player, location, ore_level_table):
     clear_console()
 
     has_iron_pickaxe = player.inventory.has_item("Iron Pickaxe")
@@ -31,29 +30,24 @@ def mine(player, location):
         mining_successful = random.randint(1, 10) <= success_chance
 
         if mining_successful:
-            available_ores = [ore for ore, level in ORE_LEVEL_TABLE.items() if player.mining_level >= level]
-            ore_weights = [ORE_LEVEL_TABLE[ore] for ore in available_ores]
+            available_ores = [ore for ore, level in ore_level_table.items() if player.mining_level >= level]
+            ore_weights = [ore_level_table[ore] for ore in available_ores]
             ore = random.choices(available_ores, weights=ore_weights, k=1)[0]
 
             print(f"You have successfully mined {ore}!")
             mined_ore = Item(ore, f"A piece of {ore} mined from the {location}.")
             player.inventory.add_item(mined_ore)
-            gain_mining_experience(player, ore)
 
             # Monster encounter check
             if random.randint(1, 4) == 1:
-                print("\nAs you mine, a monster emerges from the depths of the cave!")
-                
+                print("\nAs you mine, a monster emerges from the depths of the mine!")
                 input("\nPress enter to continue...")
-                
                 fight_monster(player, location)
 
         else:
             print("Your mining attempt was unsuccessful. All you see is stone!")
             stone_item = Item("Stone", "A common stone, not worth much but can be sold.\n")
             player.inventory.add_item(stone_item)
-            gain_mining_experience(player, "Stone")
-            
 
     else:
         print("You don't have enough energy to mine. Rest to regain energy.")
@@ -91,8 +85,9 @@ def mine_in_damp_cave(player):
     while True:
         continue_mining = input("\nDo you want to mine in the Damp Cave? (Y/N): ").lower()
         if continue_mining == 'y':
-            mine(player, 'Damp Cave')
+            mine(player, 'Damp Cave', ORE_LEVEL_TABLE)
         else:
             break
+
 
 

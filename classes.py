@@ -121,6 +121,20 @@ class Warrior(Human):
         self.training_count = 4
         self.total_training_count = 0
 
+    def gain_experience(self, monster_level):
+        level_difference = monster_level - self.level
+        if level_difference > 0:
+            xp = 10 + level_difference
+        elif level_difference < 0:
+            xp = max(1, 10 + level_difference)
+        else:
+            xp = 10
+        self.experience += xp
+        print(Style.BRIGHT + Fore.YELLOW + f"\n{self.name} gained {xp} experience points.\n" + Style.RESET_ALL)
+        self.check_level_up()
+
+    
+
 
     def increase_defence_temporarily(self, potency, duration):
         if self.stone_skin_turns_remaining == 0:
@@ -136,7 +150,7 @@ class Warrior(Human):
         while self.experience >= 100:  
             self.experience -= 100
             self.level += 1
-            print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}." + Style.RESET_ALL)
+            print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}.\n" + Style.RESET_ALL)
             
             # Add 4 training sessions for each level up
             self.training_count += 4
@@ -345,12 +359,7 @@ class Warrior(Human):
         self.health = round(self.health, 1)  
         #print(f"{self.name} regained {healing} health and now has {self.health} health.\n")
 
-    def gain_experience(self, amount):
-        self.experience += amount
-        print(f"{self.name} gained {amount} experience points.\n")
-
-        
-        self.check_level_up()
+    
 
 
     
@@ -385,12 +394,12 @@ class Warrior(Human):
     
     def handle_player_defeat(self):
         clear_console()
-        print(f"\n{self.name} has been defeated.\n\n")  
+        #print(f"{self.name} has been defeated.\n")  
         self.health = self.max_health * 0.5  # Regain 50% of max health
         self.alive = True
-        print(f"{self.name} stumbled back to town after being defeated.\n")
-        print(f"{self.name} has regained 50% of their health.\n")  
-        input("Press Enter to return to town...\n")  
+        print(f"{self.name} stumbled back to town after being defeated and regained 50% health.\n")
+          
+        input("Press Enter to return to town...")  
         from bordertown import return_to_border_town
         return_to_border_town(self)
 

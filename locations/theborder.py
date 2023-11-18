@@ -458,3 +458,89 @@ def get_lower_bonefields_loot(loot_table):
             return info['object']
 
     return None
+
+def follow_ancient_road(player):
+    clear_console()
+    print(Fore.GREEN + "The Ancient Road:" + Style.RESET_ALL)
+    print("\nBefore you lies the Ancient Road, its once majestic cobblestones now weathered and cracked, a testament to the relentless march of time. Overgrown with creeping vines and flanked by the spectral silhouettes of long-dead trees, the road whispers tales of forgotten epochs.")
+    print("\nRumors speak of this path leading to forsaken ruins, where echoes of the past linger amidst shadows and dust. Yet, danger lurks at every turn - spectral apparitions and cursed souls are said to haunt these parts, preying on the unwary.")
+    
+    print("\nWhat will you do?\n")
+    print("1. Venture down the Ancient Road, braving its mysteries and dangers.")
+    print("2. Search the surroundings.")
+    print("3. Return to the safety of the main path in the Lower Bonefields.")
+
+    choice = input("\nEnter your choice (1-3): ").strip()
+
+    if choice == "1":
+        venture_ancient_road(player)
+    elif choice == "2":
+        search_surroundings(player)
+    elif choice == "3":
+        print("\nDeciding against the risks, you retreat back to the familiar path.")
+        input("\nPress Enter to continue...")
+        lower_bonefields(player)
+    else:
+        print("\nInvalid choice. Please enter a number between 1 and 3.")
+        input("\nPress Enter to continue...")
+        follow_ancient_road(player)
+
+def venture_ancient_road(player):
+    # Implement your adventure logic here
+    pass
+
+def search_surroundings(player):
+    clear_console()
+    print(Fore.YELLOW + "Searching the Surroundings:" + Style.RESET_ALL)
+    print("\nYou decide to explore the area surrounding the Ancient Road. As you wander off the beaten path, your attention is drawn to an overgrown entrance partially hidden by foliage. It appears to be an entrance to an old, abandoned mine.")
+
+    print("\nWhat will you do?\n")
+    print("1. Enter the mine.")
+    print("2. Continue exploring the area.")
+    print("3. Return to the Ancient Road.")
+
+    choice = input("\nEnter your choice (1-3): ").strip()
+
+    if choice == "1":
+        enter_mine(player)
+    elif choice == "2":
+        print("\nYou continue to explore the area, but find nothing more of interest.")
+        input("\nPress Enter to continue...")
+        follow_ancient_road(player)
+    elif choice == "3":
+        print("\nDeciding against entering the mine, you return to the Ancient Road.")
+        input("\nPress Enter to continue...")
+        follow_ancient_road(player)
+    else:
+        print("\nInvalid choice. Please enter a number between 1 and 3.")
+        input("\nPress Enter to continue...")
+        search_surroundings(player)
+
+from skills.mining import mine  # Import the mine function from mining.py
+
+
+LOWER_BONEFIELDS_ORE_LEVEL_TABLE = {
+    "Copper Ore": 1,
+    "Tin Ore": 1,
+    "Iron Ore": 5,
+    "Coal": 8,
+    "Mithril": 10  # Mithril available in the Lower Bonefields Mine
+}
+
+def enter_mine(player):
+    player.current_location = "The Border"
+    clear_console()
+    print("\nYou cautiously step into the darkened mine. The air is cool and musty, filled with the scent of damp earth. Your eyes catch the glint of metal in the mine's walls. It seems to be rich with deposits.")
+    
+
+    while True:
+        mine_choice = input("\nDo you want to mine in the Lower Bonefields Mine? (Y/N): ").lower()
+        if mine_choice == 'y':
+            mine(player, 'Lower Bonefields Mine', LOWER_BONEFIELDS_ORE_LEVEL_TABLE)
+        else:
+            print("\nYou decide to leave the mine.")
+            input("\nPress enter to continue...")
+            break
+
+
+
