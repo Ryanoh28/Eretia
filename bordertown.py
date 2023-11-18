@@ -130,8 +130,8 @@ def leave_town(player):
             enter_the_border(player)
             break
         elif choice == "4":
-            print("\nYou decide to stay in town for now.")
-            break
+            print("\nYou return to Border Town.")
+            return_to_border_town(player)
         else:
             print("\nInvalid choice. Please enter a number between 1 and 4.")
 

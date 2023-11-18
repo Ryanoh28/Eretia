@@ -2,7 +2,7 @@
 import random
 from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune
 from utilities import clear_console
-
+from colorama import Fore, Style
 class Human:
     def __init__(self, name):
         self.name = name
@@ -63,25 +63,35 @@ class Logbook:
         else:
             self.all_kills[monster] = 1
 
-    def view_logbook(self):
+    def view_logbook(self, player):
+        clear_console()
         print("==== Monster Kill Log ====")
-        if self.all_kills:
-            for monster, count in self.all_kills.items():
-                print(f"{monster}: {count} kills")
+        if player.is_guild_member:
+            if player.monster_kill_log:
+                for monster, count in player.monster_kill_log.items():
+                    print(f"{monster}: {count} kills")
+            else:
+                print("No monster kills recorded yet.")
         else:
-            print("No monster kills recorded yet.")
-        print("\n==========================")
+            print("You need to be a member of the Adventurer's Guild to access the logbook.")
+        
+        input("\nPress Enter to return...")  # This line gives the player time to read the message before clearing the console.
+
 
 
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
+        
         self.monster_kill_log = {}
         self.current_location = None
         self.energy = 100
         self.weapon = None
         self.available_weapons = []
-        self.logbook = None
+        self.logbook = {
+            'missions': [],
+            'monster_kills': {}
+        }
         self.quests = {}
         self.strength = 2
         self.speed = 2
@@ -102,17 +112,44 @@ class Warrior(Human):
         self.mana = 50
         self.max_mana = 50
     
+    def update_monster_kill_log(self, monster_name):
+        if 'guild_member' in self.flags:
+            self.logbook['monster_kills'][monster_name] = self.logbook['monster_kills'].get(monster_name, 0) + 1
+            print(f"Monster logged in your kill log: {monster_name}")
+    
     def join_guild(self):
         if self.gold >= 100:
             self.gold -= 100
-            self.logbook = Logbook()
+            self.flags.add('guild_member')
+            self.logbook['missions'] = []  # Initialize missions list
+            self.logbook['monster_kills'] = {}  # Initialize monster kills dictionary
             print("You joined the Adventurer's Guild and received a logbook.")
 
     def view_logbook(self):
-        if self.logbook:
-            self.logbook.view_logbook()
+        clear_console()  
+        if 'guild_member' in self.flags:
+            print("\n==== Logbook ====")
+            print("---- Monster Kills ----")
+            if self.logbook['monster_kills']:
+                for monster, count in self.logbook['monster_kills'].items():
+                    print(f"{monster}: {count} kills")
+            else:
+                print("No monster kills recorded yet.")
+
+            print("\n---- Missions ----")
+            if self.logbook['missions']:
+                for mission in self.logbook['missions']:
+                    print(Fore.YELLOW + "Mission:" + Style.RESET_ALL + f" Defeat {mission['required_kills']} {mission['monster']} in {mission['area']} for {mission['gold_reward']} gold")
+                    print(f"Current Progress: {mission['current_kills']} kills")
+            else:
+                print("No missions accepted yet.")
+
+            input("\nPress Enter to continue...")
         else:
-            print("You need to be a member of the Adventurer's Guild to access the logbook.")
+            print("\nYou need to be a member of the Adventurer's Guild to access the logbook.")
+            input("\nPress Enter to continue...")
+
+    
 
     def regain_energy(self, amount):
         self.energy += amount

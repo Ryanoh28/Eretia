@@ -73,13 +73,9 @@ def fight_monster(player, location):
         if combat_result == 'monster_defeated':
             print(f"\nThe {monster.name} has been defeated!")
             player.gain_experience(10)
+            player.update_monster_kill_log(monster.name)
             
             
-            if player.is_guild_member:
-                monster_type = monster.name
-                player.monster_kill_log[monster_type] = player.monster_kill_log.get(monster_type, 0) + 1
-                print(f"Monster logged in your kill log: {monster_type}")
-
         elif combat_result == 'escaped':
             print("You successfully escaped from the monster.")
 
@@ -92,6 +88,7 @@ def fight_monster(player, location):
     from locations.locationfunctions import return_to_location
     return_to_location(player)
     player.in_combat = False
+
 
 
 

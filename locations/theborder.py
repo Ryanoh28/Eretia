@@ -203,7 +203,8 @@ def join_guild(player):
         if player.gold >= 100:
             player.gold -= 100
             player.flags.add('guild_member')
-            # Logic for adding the logbook to the player's inventory
+            player.logbook['missions'] = []  # Initialize missions list
+            player.logbook['monster_kills'] = {}  # Initialize monster kills dictionary
             print(Fore.MAGENTA + "Front Desk Attendant: " + Style.RESET_ALL + "'Congratulations! You're now a member of the Adventurer's Guild. Here is your logbook.'")
         else:
             print(Fore.MAGENTA + "Front Desk Attendant: " + Style.RESET_ALL + "'You need 100 gold to join the Adventurer's Guild.'")
@@ -212,20 +213,16 @@ def join_guild(player):
 
 def complete_missions_at_desk(player):
     clear_console()
-    if player.logbook and player.logbook.missions:
-        for mission in player.logbook.missions[:]:
+    if 'guild_member' in player.flags and player.logbook['missions']:
+        for mission in player.logbook['missions'][:]:
             if mission['current_kills'] >= mission['required_kills']:
                 player.gold += mission['gold_reward']
                 print(Fore.MAGENTA + "Front Desk Attendant: " + Style.RESET_ALL + f"'Mission completed! Earned {mission['gold_reward']} gold for defeating {mission['required_kills']} {mission['monster']}.'")
-                player.logbook.missions.remove(mission)
+                player.logbook['missions'].remove(mission)
             else:
                 print(Fore.MAGENTA + "Front Desk Attendant: " + Style.RESET_ALL + f"'Mission to defeat {mission['required_kills']} {mission['monster']} not yet completed.'")
     else:
         print(Fore.MAGENTA + "Front Desk Attendant: " + Style.RESET_ALL + "'You don't have any missions to complete at the moment.'")
-    
-
-
-
 
 def bulletin_board(player):
     while True:
@@ -249,6 +246,7 @@ def bulletin_board(player):
             print("Invalid choice. Please enter a number between 1 and 6.")
         
         input("\nPress Enter to continue...")
+
 
 
 
