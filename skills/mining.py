@@ -49,10 +49,11 @@ def mine(player, location):
                 fight_monster(player, location)
 
         else:
-            print("\nYour mining attempt was unsuccessful. All you see is stone!")
-            gain_mining_experience(player, "Stone")
-            stone_item = Item("Stone", "A common stone, not worth much but can be sold.")
+            print("Your mining attempt was unsuccessful. All you see is stone!")
+            stone_item = Item("Stone", "A common stone, not worth much but can be sold.\n")
             player.inventory.add_item(stone_item)
+            gain_mining_experience(player, "Stone")
+            
 
     else:
         print("You don't have enough energy to mine. Rest to regain energy.")

@@ -193,7 +193,6 @@ def meet_guard_captain(player):
         
 
 #add debug items here to be given
- 
     input("\nPress Enter to continue...")
     clear_console()
 

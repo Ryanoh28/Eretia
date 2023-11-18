@@ -103,7 +103,6 @@ class Warrior(Human):
         self.in_combat = False
         self.gold = 0
         self.choice = None
-        self.training_count = 0
         self.search_count = 0
         self.mining_experience = 0
         self.mining_level = 1
@@ -111,12 +110,61 @@ class Warrior(Human):
         self.flags = set()
         self.mana = 50
         self.max_mana = 50
+        self.training_count = 4
+        self.total_training_count = 0
+
+    def check_level_up(self):
+        while self.experience >= 100:  
+            self.experience -= 100
+            self.level += 1
+            print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}." + Style.RESET_ALL)
+            
+            # Add 4 training sessions for each level up
+            self.training_count += 4
+
+    def training(self):
+        while self.training_count > 0:
+            clear_console()
+            print(f"You have {self.training_count} training sessions remaining.\n")
+            print("What would you like to train?\n")
+            print("1. Strength")
+            print("2. Speed")
+            print("3. Defence")
+            print("4. Return to previous menu\n")
+
+            stat_choice = input("Enter your choice (1-4): ").strip()
+
+            if stat_choice in ["1", "2", "3"]:
+                if stat_choice == "1":
+                    self.strength += 1
+                    print(f"\n{self.name}'s strength increased to {self.strength}.")
+                elif stat_choice == "2":
+                    self.speed += 1
+                    print(f"\n{self.name}'s speed increased to {self.speed}.")
+                elif stat_choice == "3":
+                    self.defence += 1
+                    print(f"\n{self.name}'s defence increased to {self.defence}.")
+
+                self.training_count -= 1
+                input("\nPress Enter to continue...") 
+
+            elif stat_choice == "4":
+                print("\nReturning to the previous menu.")
+                break
+            else:
+                print("Invalid choice. Please enter a number between 1 and 4.")
+                input("\nPress Enter to continue...")
+
+            if self.training_count <= 0:
+                clear_console()
+                print("You have completed your training sessions for this level.")
+                input("\nPress Enter to continue...")
     
     def update_monster_kill_log_and_missions(self, monster_name):
         if 'guild_member' in self.flags:
             # Update the monster kill log
             self.logbook['monster_kills'][monster_name] = self.logbook['monster_kills'].get(monster_name, 0) + 1
-            print(f"Monster logged in your kill log: {monster_name}")
+            #print(f"Monster logged in your kill log: {monster_name}")
 
             # Update missions progress
             for mission in self.logbook['missions']:
@@ -227,41 +275,8 @@ class Warrior(Human):
         self.search_count = 0
         
 
-    def training(self):
-        while self.training_count < 4:
-            clear_console()
-            print("What would you like to train?\n")
-            print("1. Strength")
-            print("2. Speed")
-            print("3. Defence")
-            print("4. Return to previous menu\n")
-
-            stat_choice = input("Enter your choice (1-4): ").strip()
-
-            if stat_choice == "1":
-                self.strength += 1
-                print(f"\n{self.name}'s strength increased to {self.strength}.")
-                self.training_count += 1
-            elif stat_choice == "2":
-                self.speed += 1
-                print(f"\n{self.name}'s speed increased to {self.speed}.")
-                self.training_count += 1
-            elif stat_choice == "3":
-                self.defence += 1
-                print(f"\n{self.name}'s defence increased to {self.defence}.")
-                self.training_count += 1
-            elif stat_choice == "4":
-                print("\nReturning to previous menu.")
-                break
-            else:
-                print("Invalid choice. Please enter a number between 1 and 4.")
-
-            input("\nPress Enter to continue...") 
-
-        if self.training_count >= 4:
-            clear_console()
-            print("You have completed your training sessions for this level.")
-            input("\nPress Enter to continue...")
+    
+            
 
     def critical_attack(self, target):
         crit_damage_bonus = self.weapon.extra_damage if self.weapon else 0
@@ -311,13 +326,7 @@ class Warrior(Human):
         self.check_level_up()
 
 
-    def check_level_up(self):
-        while self.experience >= 100:  
-            self.experience -= 100
-            self.level += 1
-            self.training_count = 0  
-            print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}." + Style.RESET_ALL)
-            #self.increase_stats()
+    
 
 
     def increase_stats(self):

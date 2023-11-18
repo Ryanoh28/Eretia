@@ -71,8 +71,8 @@ def fight_monster(player, location):
         combat_result = combat(player, monster)
 
         if combat_result == 'monster_defeated':
-            print(f"\nThe {monster.name} has been defeated!")
-            player.gain_experience(10)
+            #print(f"\nThe {monster.name} has been defeated!")
+            #player.gain_experience(10)
             player.update_monster_kill_log_and_missions(monster.name)
             
             

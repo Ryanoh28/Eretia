@@ -156,7 +156,7 @@ def explore_left_tunnel(player, first_time=True):
             print(f"{found_item.name}: {found_item.description}\n")
             input("Press enter to continue...")
 
-    if random.randint(1, 3) == 1:
+    if random.randint(1, 2) == 1:
         clear_console()
         print("As you explore, a monster emerges from the shadows of the tunnel!")
         input("\nPress enter to continue...")
