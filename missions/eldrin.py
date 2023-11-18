@@ -128,7 +128,7 @@ def handle_monster_loot_quest(player):
 
 def check_back_later_message():
     clear_console()
-    print("Eldrin: 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment. Check back later, and I might have new challenges for you.'")
+    print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment. Check back later, and I might have new challenges for you.'")
     # No need for an additional input if it's just to continue without decision-making or significant acknowledgment.
 
 

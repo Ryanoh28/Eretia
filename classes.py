@@ -112,10 +112,18 @@ class Warrior(Human):
         self.mana = 50
         self.max_mana = 50
     
-    def update_monster_kill_log(self, monster_name):
+    def update_monster_kill_log_and_missions(self, monster_name):
         if 'guild_member' in self.flags:
+            # Update the monster kill log
             self.logbook['monster_kills'][monster_name] = self.logbook['monster_kills'].get(monster_name, 0) + 1
             print(f"Monster logged in your kill log: {monster_name}")
+
+            # Update missions progress
+            for mission in self.logbook['missions']:
+                if mission['monster'] == monster_name:
+                    mission['current_kills'] += 1
+                    if mission['current_kills'] >= mission['required_kills']:
+                        print(f"Mission to defeat {mission['required_kills']} {monster_name} completed!")
     
     def join_guild(self):
         if self.gold >= 100:

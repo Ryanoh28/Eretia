@@ -56,6 +56,7 @@ def search_dark_forest(player):
                 if examine_choice == 'y':
                     clear_console()
                     print(f"{found_item.name}: {found_item.description}")
+                    input("\nPress enter to continue...")
                 
             else:
                 player.consume_energy(energy_cost_per_search)  

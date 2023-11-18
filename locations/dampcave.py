@@ -2,7 +2,7 @@ from utilities import clear_console
 from skills.mining import mine_in_damp_cave
 from items import get_location_loot, Item, EnchantedFruit, MageStaff, Rune
 from locations.locationfunctions import rest_in_location
-
+from colorama import Fore
 import random
 from combat import fight_monster
 
@@ -83,21 +83,22 @@ def explore_right_tunnel(player, section=1):
         next_action = input("\nEnter your choice (1-2): ").strip()
 
     elif section == 2:
-        print("The carvings depict the early days of the Great Beast Tide, showing monstrous creatures overwhelming settlements.")
+        print("The carvings depict the early days of " + Fore.RED + "The Great Beast Tide" + Fore.RESET + ", showing monstrous creatures overwhelming settlements.")
         print("\nWhat would you like to do?\n")
         print("1. Delve deeper into the story")
         print("2. Return")
         next_action = input("\nEnter your choice (1-2): ").strip()
 
     elif section == 3:
-        print("Further down, the story transitions to the formation of Border Town, a symbol of hope and defiance.")
+        print("Further down, the story transitions to the formation of " + Fore.GREEN + "Border Town" + Fore.RESET + ", a symbol of " + Fore.CYAN + "hope" + Fore.RESET + " and " + Fore.CYAN + "defiance." + Fore.RESET)
         print("\nWhat would you like to do?\n")
         print("1. Continue uncovering the history")
         print("2. Head back")
         next_action = input("\nEnter your choice (1-2): ").strip()
 
     elif section == 4:
-        print("The narrative honors the heroes and sacrifices made during the Beast Tide.")
+        print("The narrative honors " + Fore.YELLOW + "the heroes" + Fore.RESET + " and " + Fore.YELLOW + "sacrifices" + Fore.RESET + " made during " + Fore.RED + "The Great Beast Tide." + Fore.RESET 
+)
         print("\nAs you reach the end of the carvings, you discover a hidden alcove with an ancient and ornate staff.\n")
         
         mage_staff = MageStaff()
