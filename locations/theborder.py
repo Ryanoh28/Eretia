@@ -129,7 +129,7 @@ def read_noticeboard():
     print("1. A weathered poster with bold letters reads:")
     print(Fore.RED + "'Beware! Blighted Sentinels roam The Border. Once our brave defenders, "
           "now twisted by a sinister force. Avoid at all costs! They are strong, merciless, "
-          "and unrecognizable from their former selves.'" + Style.RESET_ALL)
+          "and unrecognisable from their former selves.'" + Style.RESET_ALL)
     
     # General warnings
     print("\n2. Another notice, with a grim illustration, warns:")
@@ -203,8 +203,8 @@ def join_guild(player):
         if player.gold >= 100:
             player.gold -= 100
             player.flags.add('guild_member')
-            player.logbook['missions'] = []  # Initialize missions list
-            player.logbook['monster_kills'] = {}  # Initialize monster kills dictionary
+            player.logbook['missions'] = []  
+            player.logbook['monster_kills'] = {} 
             print(Fore.MAGENTA + "Front Desk Attendant: " + Style.RESET_ALL + "'Congratulations! You're now a member of the Adventurer's Guild. Here is your logbook.'")
         else:
             print(Fore.MAGENTA + "Front Desk Attendant: " + Style.RESET_ALL + "'You need 100 gold to join the Adventurer's Guild.'")

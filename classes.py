@@ -228,7 +228,7 @@ class Warrior(Human):
         
 
     def training(self):
-        while self.training_count < 3:
+        while self.training_count < 4:
             clear_console()
             print("What would you like to train?\n")
             print("1. Strength")
@@ -258,7 +258,7 @@ class Warrior(Human):
 
             input("\nPress Enter to continue...") 
 
-        if self.training_count >= 3:
+        if self.training_count >= 4:
             clear_console()
             print("You have completed your training sessions for this level.")
             input("\nPress Enter to continue...")
@@ -316,7 +316,7 @@ class Warrior(Human):
             self.experience -= 100
             self.level += 1
             self.training_count = 0  
-            print(f"{self.name} has leveled up! You are now level {self.level}.\n")
+            print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}." + Style.RESET_ALL)
             #self.increase_stats()
 
 
