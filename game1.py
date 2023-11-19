@@ -18,12 +18,12 @@ def save_game(player):
     save_path = "saves"
     save_files = list_save_files()
 
-    print("Select a slot to save your game:")
+    print("Select a slot to save your game:\n")
     for i, file in enumerate(save_files, 1):
         print(f"{i}. {file.replace('.pkl', '')}")
     print(f"{len(save_files) + 1}. Create new save")
 
-    choice = int(input("Enter your choice: "))
+    choice = int(input("\nEnter your choice: "))
 
     if choice <= len(save_files):
         filename = save_files[choice - 1]

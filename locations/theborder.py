@@ -561,7 +561,7 @@ def enter_mine(player):
     while True:
         mine_choice = input("\nDo you want to mine in the Lower Bonefields Mine? (Y/N): ").lower()
         if mine_choice == 'y':
-            mine(player, 'Lower Bonefields Mine', LOWER_BONEFIELDS_ORE_LEVEL_TABLE)
+            mine(player, 'The Border', LOWER_BONEFIELDS_ORE_LEVEL_TABLE)
         else:
             print("\nYou decide to leave the mine.")
             input("\nPress enter to continue...")
