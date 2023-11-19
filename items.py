@@ -1,10 +1,24 @@
 from utilities import clear_console
 import random
 from colorama import Style, Fore
+
 class Item:
     def __init__(self, name, description):
         self.name = name
         self.description = description
+
+class EyeOfInsight(Item):
+    def __init__(self):
+        super().__init__("Eye of Insight", "A mystical artifact that reveals the true nature of your foes.")
+
+    def use(self, monster):
+        print(f"\nUsing {self.name}...")
+        print(f"Monster Name: {monster.name}")
+        print(f"Health: {monster.health}")
+        print(f"Attack: {monster.attack}")
+        print(f"Defence: {monster.defence}")
+        input("Press enter to continue...")
+        
 
 class MageStaff(Item):
     def __init__(self):

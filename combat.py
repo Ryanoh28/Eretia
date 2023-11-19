@@ -1,5 +1,5 @@
 from utilities import clear_console
-from items import get_loot_drop
+from items import get_loot_drop, EyeOfInsight
 from skills.magic import spell_menu
 import random
 
@@ -10,7 +10,12 @@ def combat(player, monster):
         print("2. Use Spell")
         print("3. Inventory")
         print("4. Run")
-        choice = input("\nEnter your choice (1-4): ").strip()
+        
+        # Check for Eye of Insight in player's inventory
+        if any(isinstance(item, EyeOfInsight) for item in player.inventory.items):
+            print("5. Use Eye of Insight")
+
+        choice = input("\nEnter your choice (1-5): ").strip()
         clear_console()
 
         if choice == "1":
@@ -22,11 +27,16 @@ def combat(player, monster):
         elif choice == "3":
             player.inventory.use_item_interface(player)
         elif choice == "4":
-            clear_console()
+            
             print("You managed to escape from the Monster safely.\n")
             input("Press enter to continue...")
             return 'escaped'
-
+        elif choice == "5":
+            eye_of_insight = next((item for item in player.inventory.items if isinstance(item, EyeOfInsight)), None)
+            if eye_of_insight:
+                eye_of_insight.use(monster)
+            else:
+                print("\nYou do not have the Eye of Insight.")
         if monster.alive:
             monster.monster_attack(player)
             if player.stone_skin_turns_remaining > 0:
@@ -73,7 +83,8 @@ def fight_monster(player, location):
             #handle_loot_and_examine(player)  # Handle loot after showing XP gain
             player.update_monster_kill_log_and_missions(monster.name)
         elif combat_result == 'escaped':
-            print("You successfully escaped from the monster.")
+            #print("You successfully escaped from the monster.")
+            pass
         elif combat_result == 'player_defeated':
             input("\nYou've been defeated!\n")
             player.handle_player_defeat()
@@ -98,8 +109,8 @@ def create_monster(location):
         "Dark Forest": (1, 3),  
         "Damp Cave": (4, 7),    
         "The Border": (8, 20),
-        "Echoing Cavern": (10,10) # Special mission monster
-        
+        "Echoing Cavern": (10,10), # Special mission monster
+        "Human Bandit": (10,15 )
     }
     
     min_level, max_level = location_level_ranges.get(location, (1, 1))  
@@ -131,8 +142,10 @@ def create_monster(location):
         "Barren Drake"
     ],
     "Echoing Cavern": [
-        "Illusionary Monster" ]
-
+        "Illusionary Monster" ],
+     "Human Bandit": [
+         "Human Bandit"
+     ]
 }
 
 

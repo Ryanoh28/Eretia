@@ -1,11 +1,11 @@
-from combat import fight_monster
+from combat import fight_monster, create_monster, combat
 from utilities import clear_console
-from items import get_location_loot, HealthPotion, ManaPotion, Rune
+from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight
 from locations.locationfunctions import rest_in_location, return_to_location
 from colorama import Style, Fore
 from missions.missiongenerator import generate_mission, accept_mission, complete_mission
 from classes import Shop
-from items import Item, Weapon
+
 from game1 import main_menu, save_game, load_game, show_instructions
 import random
 
@@ -343,8 +343,8 @@ def cross_menu(player):
             from bordertown import view_quest_log
             view_quest_log(player)
         elif choice == "5":
-            from locations.locationfunctions import return_to_location
-            return_to_location(player)  
+            
+            enter_the_border(player)  
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")
             input("\nPress Enter to continue...")
@@ -431,11 +431,71 @@ def adventure_into_wilds(player, first_time=True):
         print("Invalid choice. Please enter a valid number.")
         input("\nPress Enter to continue...")
 
-
 def follow_ancient_road(player):
-    # Implement a story tree or narrative-driven adventure
-    # This could involve quests, discoveries, and character development
-    pass
+    while True:
+        clear_console()
+        print("You are on the Ancient Road. What would you like to do?\n")
+        print("1. Mine for resources.")
+        print("2. Follow the road and fight monsters.")
+        print("3. Decrepit Waystation.")
+        print("4. Return to the Lower Bonefields.")
+
+        choice = input("\nEnter your choice (1-4): ").strip()
+
+        if choice == "1":
+            enter_mine(player)
+        elif choice == "2":
+            fight_on_road(player)
+        elif choice == "3":
+            decrepit_waystation(player)
+        elif choice == "4":
+            lower_bonefields(player)
+            break
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 4.")
+            input("\nPress Enter to continue...")
+
+def decrepit_waystation(player):
+    clear_console()
+    print("Before you stands an ancient waystation, a relic from times when these roads were frequented by travelers. Its walls are crumbling, and the roof has long since given way to the elements. Despite its ruinous state, it exudes an aura of forgotten tales and hidden secrets.")
+    input("\nPress Enter to continue...")
+
+    clear_console()
+    while True:
+        print("What would you like to do at the Decrepit Waystation?\n")
+        print("1. Investigate Waystation.")
+        print("2. Return.")
+
+        choice = input("\nEnter your choice (1-2): ").strip()
+
+        if choice == "1":
+            investigate_waystation(player)
+        elif choice == "2":
+            break
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 2.")
+            input("\nPress Enter to continue...")
+
+def investigate_waystation(player):
+    pass  # Placeholder for future implementation
+
+def fight_on_road(player):
+    while True:
+        clear_console()
+        print("\nYou continue down the Ancient Road, vigilant and ready for combat.")
+        fight_monster(player, "The Border")
+
+        if not player.alive:
+            print("\nYou have been defeated.")
+            input("\nPress Enter to continue...")
+            break
+
+        cont = input("\nDo you want to continue fighting? (Y/N): ").lower()
+        if cont != 'y':
+            break
+
+
+
 
 sentinel_sword = Weapon("Sentinel Sword", "Forged for the valiant Sentinels guarding the fringes of civilisation, this sword bears the marks of numerous battles.", 3, 2.5)
 LOWER_BONEFIELDS_LOOT = {
@@ -449,6 +509,7 @@ LOWER_BONEFIELDS_LOOT = {
 }
 
 def get_lower_bonefields_loot(loot_table):
+    
     total_chance = sum(item['chance'] for item in loot_table.values())
     roll = random.randint(1, total_chance)
     current = 0
@@ -460,95 +521,9 @@ def get_lower_bonefields_loot(loot_table):
 
     return None
 
-def follow_ancient_road(player):
-    clear_console()
-    print(Fore.GREEN + "The Ancient Road:" + Style.RESET_ALL)
-    print("\nBefore you lies the Ancient Road, its once majestic cobblestones now weathered and cracked, a testament to the relentless march of time. Overgrown with creeping vines and flanked by the spectral silhouettes of long-dead trees, the road whispers tales of forgotten epochs.")
-    print("\nRumors speak of this path leading to forsaken ruins, where echoes of the past linger amidst shadows and dust. Yet, danger lurks at every turn - spectral apparitions and cursed souls are said to haunt these parts, preying on the unwary.")
-    
-    print("\nWhat will you do?\n")
-    print("1. Venture down the Ancient Road, braving its mysteries and dangers.")
-    print("2. Search the surroundings.")
-    print("3. Return to the safety of the main path in the Lower Bonefields.")
 
-    choice = input("\nEnter your choice (1-3): ").strip()
 
-    if choice == "1":
-        venture_ancient_road(player)
-    elif choice == "2":
-        search_surroundings(player)
-    elif choice == "3":
-        print("\nDeciding against the risks, you retreat back to the familiar path.")
-        input("\nPress Enter to continue...")
-        lower_bonefields(player)
-    else:
-        print("\nInvalid choice. Please enter a number between 1 and 3.")
-        input("\nPress Enter to continue...")
-        follow_ancient_road(player)
 
-def venture_ancient_road(player):
-    # Implement your adventure logic here
-    pass
-
-def search_surroundings(player):
-    clear_console()
-    print(Fore.YELLOW + "Searching the Surroundings:" + Style.RESET_ALL)
-    print("\nYou decide to explore the area surrounding the Ancient Road. As you wander off the beaten path, your attention is drawn to an overgrown entrance partially hidden by foliage. It appears to be an entrance to an old, abandoned mine.")
-
-    print("\nWhat will you do?\n")
-    print("1. Enter the mine.")
-    print("2. Continue exploring the area.")
-    print("3. Return to the Ancient Road.")
-
-    choice = input("\nEnter your choice (1-3): ").strip()
-
-    if choice == "1":
-        enter_mine(player)
-    elif choice == "2":
-        print("\nAs you delve deeper into the wilderness, you notice signs of recent human activity - a rarity in these monster-ruled lands. Suddenly, a figure steps out from the shadows. It's a human bandit, looking as surprised to see you as you are to see him.")
-
-        print(Fore.RED + "Bandit:" + Style.RESET_ALL + " 'What's a traveler like you doing in these parts? You know it's not safe here... for humans,' the bandit sneers, eyeing you cautiously.")
-
-        print("\n1. Try to talk to the bandit.")
-        print("2. Prepare for a fight.")
-        print("3. Try to sneak away.")
-        
-        bandit_choice = input("\nEnter your choice (1-3): ").strip()
-
-        if bandit_choice == "1":
-            print(Fore.YELLOW + "\nYou decide to engage with the bandit, trying to understand his presence in this dangerous territory." + Style.RESET_ALL)
-            print(Fore.RED + "Bandit:" + Style.RESET_ALL + " 'You must be either brave or foolish to venture here. I was once like you, an adventurer. But now, I'm a survivor in these cursed lands.'")
-
-            print(Fore.YELLOW + "\nThe bandit's eyes flicker with a mix of sadness and resolve. His armor is battered, and his cloak is tattered, hinting at countless battles and narrow escapes." + Style.RESET_ALL)
-            print(Fore.RED + "Bandit:" + Style.RESET_ALL + " 'The monsters here... they took everything from me. My comrades, my dreams, my sanity. Now, I take from those who dare cross these borders. It's either them or me.'")
-
-            print("\n1. Sympathize with the bandit and offer help.")
-            print("2. Condemn his actions and prepare to fight.")
-            print("3. Change your mind and try to sneak away.")
-            
-            deeper_choice = input("\nEnter your choice (1-3): ").strip()
-            pass
-        elif bandit_choice == "2":
-            # Trigger a combat sequence with the bandit
-            pass
-        elif bandit_choice == "3":
-            # Implement a stealth check or allow the player to escape
-            pass
-        else:
-            print("\nInvalid choice. Please enter a number between 1 and 3.")
-            input("\nPress Enter to continue...")
-            # Call a function or repeat this block
-
-        # Continue the storyline based on the outcome of the encounter
-
-    elif choice == "3":
-        print("\nDeciding against entering the mine, you return to the Ancient Road.")
-        input("\nPress Enter to continue...")
-        follow_ancient_road(player)
-    else:
-        print("\nInvalid choice. Please enter a number between 1 and 3.")
-        input("\nPress Enter to continue...")
-        search_surroundings(player)
 
 from skills.mining import mine  
 
