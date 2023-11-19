@@ -105,7 +105,7 @@ class EnchantedFruit(Item):
 
     def use(self, target):
         target.gain_experience(self.experience)
-        print(f"{target.name} consumes the {self.name} and gains {self.experience} experience.")
+        print(f"{target.name} consumes the {self.name}.")
         return True  # Indicate that the use was successful
 
 

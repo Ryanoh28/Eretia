@@ -100,8 +100,21 @@ def sentinel_garrison(player):
 
 def converse_with_commander(player):
     clear_console()
+
+    
+    if "potion_delivery_quest" in player.quests and not player.quests["potion_delivery_quest"]["completed"]:
+        if player.inventory.count_item("Parcel") >= 1:  
+            player.inventory.remove_items("Parcel", 1)  
+            player.quests["potion_delivery_quest"]["completed"] = True
+            print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + f"'Ah, you must be the courier from Eldrin. Thank you for delivering this parcel. Our soldiers will greatly benefit from the contents.'")
+        else:
+            print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'It looks like you don't have the parcel yet. Please deliver it as soon as possible.'")
+        input("\nPress Enter to continue...")
+        clear_console()
+        return
+
     if 'met_commander' not in player.flags:
-        print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'I don't believe we've met. You seem like a new face around these parts. What brings you to the edge of Eretia?'")
+        print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + f"'What brings you to the edge of Eretia, {player.name}?'")
         
         print("\nHow do you respond?\n")
         print("1. I seek adventure beyond The Border.")
@@ -125,12 +138,15 @@ def converse_with_commander(player):
             print("Invalid choice. Please enter a number between 1 and 4.")
 
         player.flags.add('met_commander')
-        
+        input("\nPress Enter to continue...")
+        clear_console()
+        return
     
     else:
+        # Default message when not delivering potions and not the first meeting
         print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'The commander looks too busy at the moment.'")
-        
-    input("\nPress Enter to continue...") 
+        input("\nPress Enter to continue...") 
+
     
 def read_noticeboard():
     clear_console()
@@ -434,7 +450,7 @@ def adventure_into_wilds(player, first_time=True):
 def follow_ancient_road(player):
     while True:
         clear_console()
-        print("You are on the Ancient Road. What would you like to do?\n")
+        print("You are on the Ancient Road. You see the a mine entrance just off to the right covered with overgrown vines, and on the other side a decrepit waystation. What would you like to do?\n")
         print("1. Mine for resources.")
         print("2. Follow the road and fight monsters.")
         print("3. Decrepit Waystation.")

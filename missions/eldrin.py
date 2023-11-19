@@ -1,9 +1,46 @@
 from utilities import clear_console
-from items import Weapon, LOOT_ITEMS
+from items import Weapon, LOOT_ITEMS, Item
 import time
 from colorama import Style, Fore
 
+# def speak_with_eldrin(player):
+#     # Handle Mystic Herb Quest
+#     if "mystic_herb_quest" in player.quests:
+#         mystic_herb_quest = player.quests["mystic_herb_quest"]
+#         if mystic_herb_quest["completed"]:
+#             if not mystic_herb_quest.get("reward_given"):
+#                 clear_console()  
+#                 give_mystic_herb_quest_reward(player)
+#             else:
+                
+#                 if "monster_loot_quest" not in player.quests or not player.quests["monster_loot_quest"]["completed"]:
+#                     offer_monster_loot_quest(player)
+#                 else:
+#                     check_back_later_message()
+#             return
+#         elif player.inventory.count_item("Mystic Herb") >= 8:
+#             clear_console()
+#             complete_mystic_herb_quest(player)
+#             return
+#         else:
+#             print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" '{player.name}, I need 8 Mystic Herbs. You can find them in the Dark Forest.'")
+#             time.sleep(3)  # Pause for 3 seconds 
+#             clear_console()
+#             return
+
+    
+#     if "mystic_herb_quest" not in player.quests:
+#         offer_mystic_herb_quest(player)
+#         return
+
+    
+#     if "monster_loot_quest" in player.quests:
+#         handle_monster_loot_quest(player)
+#     else:
+#         check_back_later_message()
+
 def speak_with_eldrin(player):
+    
     # Handle Mystic Herb Quest
     if "mystic_herb_quest" in player.quests:
         mystic_herb_quest = player.quests["mystic_herb_quest"]
@@ -12,9 +49,16 @@ def speak_with_eldrin(player):
                 clear_console()  
                 give_mystic_herb_quest_reward(player)
             else:
-                
+                # Check if there are any other quests to be offered or completed
                 if "monster_loot_quest" not in player.quests or not player.quests["monster_loot_quest"]["completed"]:
                     offer_monster_loot_quest(player)
+                elif "potion_delivery_quest" not in player.quests:
+                    if player.level >= 5:
+                        offer_potion_delivery_quest(player)
+                    else:
+                        print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'You're doing well, {player.name}. I might have another important task for you once you reach level 5.'")
+                elif not player.quests["potion_delivery_quest"]["completed"]:
+                    handle_potion_delivery_quest(player)
                 else:
                     check_back_later_message()
             return
@@ -24,21 +68,74 @@ def speak_with_eldrin(player):
             return
         else:
             print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" '{player.name}, I need 8 Mystic Herbs. You can find them in the Dark Forest.'")
-            time.sleep(3)  # Pause for 3 seconds 
+            time.sleep(3)  
             clear_console()
             return
 
-    
     if "mystic_herb_quest" not in player.quests:
         offer_mystic_herb_quest(player)
         return
 
-    
-    if "monster_loot_quest" in player.quests:
+    # Handle Monster Loot Quest
+    if "monster_loot_quest" in player.quests and not player.quests["monster_loot_quest"]["completed"]:
         handle_monster_loot_quest(player)
+    elif "potion_delivery_quest" in player.quests and not player.quests["potion_delivery_quest"]["completed"]:
+        handle_potion_delivery_quest(player)
+    elif player.level < 5:
+        print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'You're doing well, {player.name}. I might have another important task for you once you reach level 5.'")
     else:
         check_back_later_message()
 
+
+
+
+
+def offer_potion_delivery_quest(player):
+    clear_console()
+    print(Fore.GREEN + "Eldrin the Greenwarden" + Style.RESET_ALL + " greets you warmly.\n")
+    print(f"'Greetings, {player.name}. The soldiers at the Sentinel Garrison are in dire need of health potions. Can you deliver this batch to the Garrison Commander? I trust you with this task.'\n")
+    print("1. Accept the quest")
+    print("2. Decline the quest")
+    accept_decline_potion_delivery_quest(player)
+
+def handle_potion_delivery_quest(player):
+    if "potion_delivery_quest" in player.quests and player.quests["potion_delivery_quest"]["completed"]:
+        if not player.quests["potion_delivery_quest"].get("reward_given"):
+            # Reward the player
+            reward_amount = 80  # Amount of gold to reward the player
+            player.gold += reward_amount  # Add the reward to the player's gold
+            player.quests["potion_delivery_quest"]["reward_given"] = True
+
+            clear_console()
+            print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'Thank you for delivering the parcel to the Garrison Commander. Here is your reward of {reward_amount} gold as promised.'")
+            input("\nPress Enter to continue...")
+            clear_console()
+        else:
+            # If the reward has already been given, display a standard message
+            print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + " 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment.'")
+            input("\nPress Enter to continue...")
+            clear_console()
+    else:
+        # If the quest has not been completed or does not exist
+        print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + " 'How goes the task I have given you?'")
+        # input("\nPress Enter to continue...")
+        # clear_console()
+
+
+def accept_decline_potion_delivery_quest(player):
+    choice = input("\nWhat will you do? ").lower().strip()
+    clear_console()
+    if choice == '1':
+        player.quests["potion_delivery_quest"] = {"accepted": True, "completed": False}
+        parcel = Item("Parcel", "A sealed parcel containing health potions for the Sentinel Garrison.")
+        player.inventory.add_item(parcel)
+
+        print("You've accepted Eldrin's quest to deliver health potions to the Sentinel Garrison.\n")
+        print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'Thank you, {player.name}. Your help is invaluable. The Sentinel Garrison is relying on these potions. Deliver them with haste.'")
+    elif choice == '2':
+        print("\nYou've decided not to accept the quest right now.")
+        print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'I see. Should you change your mind, you know where to find me.'")  
+       
 
 def give_mystic_herb_quest_reward(player):
     verdant_blade = Weapon("Blade of Verdant Greens", "A weapon crafted by Eldrin the Greenwarden, shimmering with a verdant glow.", 1, 2)

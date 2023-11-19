@@ -129,13 +129,14 @@ class Warrior(Human):
             self.experience -= self.experience_required
             self.level += 1
             print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}.\n" + Style.RESET_ALL)
-            
+
             self.experience_required += 12
 
-            # Calculate the total training sessions available
+            self.training_count += 4
+
             self.total_training_count += 4
-            # Add new training sessions to existing ones
-            self.training_count += self.total_training_count
+
+
 
 
     def gain_experience(self, monster_level):

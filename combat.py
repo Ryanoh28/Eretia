@@ -2,6 +2,7 @@ from utilities import clear_console
 from items import get_loot_drop, EyeOfInsight
 from skills.magic import spell_menu
 import random
+from colorama import Fore, Style
 
 def combat(player, monster):
     while player.alive and monster.alive:
@@ -74,7 +75,13 @@ def fight_monster(player, location):
 
     while player.in_combat:
         monster = create_monster(location)
-        print(f"You encounter a Level {monster.level} {monster.name}...")
+        if monster.level < player.level:
+            level_color = Fore.GREEN
+        elif monster.level == player.level:
+            level_color = Fore.YELLOW
+        else:
+            level_color = Fore.RED
+        print(f"You encounter a {level_color}Level {monster.level}{Style.RESET_ALL} {monster.name}...")
         combat_result = combat(player, monster)
 
         if combat_result == 'monster_defeated':
@@ -143,6 +150,7 @@ def create_monster(location):
     ],
     "Echoing Cavern": [
         "Illusionary Monster" ],
+     
      "Human Bandit": [
          "Human Bandit"
      ]

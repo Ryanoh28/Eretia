@@ -4,6 +4,7 @@ from combat import fight_monster
 from items import Item
 
 ORE_EXPERIENCE_POINTS = {
+    "Stone": 1,
     "Copper Ore": 3,
     "Tin Ore": 4,
     "Iron Ore": 5,
@@ -38,8 +39,11 @@ def mine(player, location, ore_level_table):
             mined_ore = Item(ore, f"A piece of {ore} mined from the {location}.")
             player.inventory.add_item(mined_ore)
 
+            # Gain mining experience
+            gain_mining_experience(player, ore)
+
             # Monster encounter check
-            if random.randint(1, 4) == 1:
+            if random.randint(1, 3) == 1:
                 print("\nAs you mine, a monster emerges from the depths of the mine!")
                 input("\nPress enter to continue...")
                 fight_monster(player, location)
@@ -48,6 +52,9 @@ def mine(player, location, ore_level_table):
             print("Your mining attempt was unsuccessful. All you see is stone!")
             stone_item = Item("Stone", "A common stone, not worth much but can be sold.\n")
             player.inventory.add_item(stone_item)
+
+            # Gain mining experience for stone
+            gain_mining_experience(player, "Stone")
 
     else:
         print("You don't have enough energy to mine. Rest to regain energy.")
