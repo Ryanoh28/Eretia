@@ -129,7 +129,7 @@ class Warrior(Human):
             self.experience -= self.experience_required
             self.level += 1
             print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}.\n" + Style.RESET_ALL)
-            self.increase_stats()
+            
             self.experience_required += 12
 
             # Calculate the total training sessions available
@@ -176,6 +176,12 @@ class Warrior(Human):
         while self.training_count > 0:
             clear_console()
             print(f"You have {self.training_count} training sessions remaining.\n")
+            print(f"Current Combat Stats")
+            print("=====================")
+            print(f"Strength: {self.strength}")
+            print(f"Speed: {self.speed}")
+            print(f"Defence: {self.defence}")
+            print("=====================\n")
             print("What would you like to train?\n")
             print("1. Strength")
             print("2. Speed")
@@ -247,7 +253,7 @@ class Warrior(Human):
             if self.logbook['missions']:
                 for mission in self.logbook['missions']:
                     print(Fore.YELLOW + "Mission:" + Style.RESET_ALL + f" Defeat {mission['required_kills']} {mission['monster']} in {mission['area']} for {mission['gold_reward']} gold")
-                    print(f"Current Progress: {mission['current_kills']} kills")
+                    print(f"Current Progress: {mission['current_kills']} kills\n")
             else:
                 print("No missions accepted yet.")
 

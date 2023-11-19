@@ -23,6 +23,7 @@ def return_to_location(player):
     elif player.current_location == 'lower_bonefields':  
         from locations.theborder import lower_bonefields
         lower_bonefields(player)    
-    
+    elif player.current_location == 'border_town':
+        from locations.darkforest import enter_dark_forest
     
     # Add more elif statements for other locations if needed

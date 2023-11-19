@@ -31,6 +31,7 @@ def view_quest_log(player):
     
 
 def return_to_border_town(player):
+    player.current_location == 'border_town'
     shop = Shop()
     while True:
         clear_console()
