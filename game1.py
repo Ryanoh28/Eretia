@@ -1,5 +1,6 @@
 import pickle
 import os
+import sys
 from classes import Warrior
 from bordertown import meet_guard_captain, return_to_border_town
 from utilities import clear_console
@@ -57,6 +58,7 @@ def load_game():
         player = pickle.load(file)
 
     print(f"Game loaded from slot {choice}.")
+    return_to_location(player)
     return player
 
 
@@ -104,41 +106,47 @@ def main_menu(player=None):
         if choice == '1':
             if player is None:
                 player = start_game()
+                return_to_location(player)  
             else:
-                print("Game already started. Returning to camp.")
-                return_to_border_town(player)
+                print("Game already started.")
+                return_to_location(player)  
+
         elif choice == '2':
             if player:
-                return_to_border_town(player)
+                return_to_location(player)  
             else:
                 print("No ongoing game to continue. Please start a new game.")
+
         elif choice == '3':
             if player:
                 save_game(player)
-                
-                return_to_location(player)  # Return to the current location after saving
             else:
                 print("No game to save. Please start a new game.")
+
         elif choice == '4':
             try:
                 player = load_game()
                 if player:
                     print("Game loaded successfully.")
-                    return_to_location(player)  # Return to the current location after loading
-                else:
-                    print("No saved game found. Please start a new game.")
+                    return_to_location(player)  
             except FileNotFoundError:
                 print("No saved game found. Please start a new game.")
+
         elif choice == '5':
             show_instructions()
+
         elif choice == '6':
             print("Exiting game. Goodbye!")
-            exit()
+            sys.exit()
+
         else:
             print("Invalid choice. Please enter a number between 1 and 6.")
             input("Press Enter to continue...")
 
-        clear_console()  
+        clear_console()
 
 if __name__ == "__main__":
     main_menu(player=None)
+
+
+

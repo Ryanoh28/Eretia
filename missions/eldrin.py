@@ -99,27 +99,38 @@ def offer_potion_delivery_quest(player):
     accept_decline_potion_delivery_quest(player)
 
 def handle_potion_delivery_quest(player):
-    if "potion_delivery_quest" in player.quests and player.quests["potion_delivery_quest"]["completed"]:
-        if not player.quests["potion_delivery_quest"].get("reward_given"):
+    if "potion_delivery_quest" in player.quests:
+        # Check if the player has the envelope and the quest is not yet marked as completed
+        if player.inventory.count_item("Envelope") >= 1 and not player.quests["potion_delivery_quest"]["completed"]:
+            player.inventory.remove_items("Envelope", 1)  # Remove the envelope from the inventory
+            player.quests["potion_delivery_quest"]["completed"] = True  # Mark the quest as completed
+
             # Reward the player
             reward_amount = 80  # Amount of gold to reward the player
             player.gold += reward_amount  # Add the reward to the player's gold
-            player.quests["potion_delivery_quest"]["reward_given"] = True
+            player.quests["potion_delivery_quest"]["reward_given"] = True  # Mark the reward as given
 
             clear_console()
-            print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'Thank you for delivering the parcel to the Garrison Commander. Here is your reward of {reward_amount} gold as promised.'")
+            print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + f" 'Thank you for delivering the envelope from the Garrison Commander. Here is your reward of {reward_amount} gold as promised.'")
+            input("\nPress Enter to continue...")
+            clear_console()
+        elif player.quests["potion_delivery_quest"].get("reward_given"):
+            # If the reward has already been given, display a standard message
+            print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + " 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment. Check back later, and I might have new challenges for you.'")
             input("\nPress Enter to continue...")
             clear_console()
         else:
-            # If the reward has already been given, display a standard message
-            print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + " 'Thank you for your help, brave adventurer. I have no more tasks for you at the moment.'")
-            input("\nPress Enter to continue...")
-            clear_console()
-    else:
-        # If the quest has not been completed or does not exist
-        print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + " 'How goes the task I have given you?'")
-        # input("\nPress Enter to continue...")
-        # clear_console()
+            # If the quest is accepted but not completed
+            if player.quests["potion_delivery_quest"]["accepted"] and not player.quests["potion_delivery_quest"]["completed"]:
+                print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + " 'Have you delivered the potions to the Garrison Commander and brought back the envelope?'")
+                input("\nPress Enter to continue...")
+                clear_console()
+            else:
+                # If the quest is not accepted yet
+                print(Fore.GREEN + "Eldrin:" + Style.RESET_ALL + " 'The Sentinel Garrison still awaits the delivery of the health potions.'")
+                input("\nPress Enter to continue...")
+                clear_console()
+
 
 
 def accept_decline_potion_delivery_quest(player):

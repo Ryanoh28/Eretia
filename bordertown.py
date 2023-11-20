@@ -31,9 +31,10 @@ def view_quest_log(player):
     
 
 def return_to_border_town(player):
-    player.current_location == 'border_town'
+    player.current_location = 'border_town'
     shop = Shop()
     while True:
+        
         clear_console()
         print("You are in Border Town. What would you like to do?\n")
         print("1. Train")
@@ -52,6 +53,7 @@ def return_to_border_town(player):
         elif choice == "2":
             leave_town(player)
         elif choice == "3":
+            
             visit_tavern(player)
         elif choice == "4":
             rest(player)
@@ -62,7 +64,9 @@ def return_to_border_town(player):
         elif choice == "7":
             view_quest_log(player)
         elif choice == "8":
+            
             from game1 import main_menu
+            
             main_menu(player)
         else:
             print("\nInvalid choice. Please enter a number between 1 and 8.\n")
@@ -116,23 +120,20 @@ def leave_town(player):
 
         if choice == "1":
             enter_dark_forest(player)
-            player.current_location = 'dark_forest'
+            
             break
         elif choice == "2":
-            # Assuming enter_damp_cave function exists in dampcave.py
             from locations.dampcave import enter_damp_cave
-            player.current_location = 'damp_cave'
             enter_damp_cave(player)
             break
         elif choice == "3":
-            
             from locations.theborder import enter_the_border
-            player.current_location = 'the_border'
             enter_the_border(player)
             break
         elif choice == "4":
             print("\nYou return to Border Town.")
             return_to_border_town(player)
+            player.current_location = 'border_town'
         else:
             print("\nInvalid choice. Please enter a number between 1 and 4.")
 

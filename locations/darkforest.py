@@ -29,7 +29,7 @@ def enter_dark_forest(player):
             rest_in_location(player)
         elif choice == "5":
             from bordertown import leave_town
-            player.current_location = None
+            player.current_location = 'border_town'
             leave_town(player)
             break
         else:

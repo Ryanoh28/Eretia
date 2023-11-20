@@ -101,12 +101,17 @@ def sentinel_garrison(player):
 def converse_with_commander(player):
     clear_console()
 
-    
+    # Handle Potion Delivery Quest
     if "potion_delivery_quest" in player.quests and not player.quests["potion_delivery_quest"]["completed"]:
-        if player.inventory.count_item("Parcel") >= 1:  
-            player.inventory.remove_items("Parcel", 1)  
-            player.quests["potion_delivery_quest"]["completed"] = True
-            print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + f"'Ah, you must be the courier from Eldrin. Thank you for delivering this parcel. Our soldiers will greatly benefit from the contents.'")
+        if player.inventory.count_item("Parcel") >= 1:
+            player.inventory.remove_items("Parcel", 1)
+            # Note: Removed the line that marked the quest as completed here.
+            player.quests["potion_delivery_quest"]["envelope_received"] = False  # New flag for envelope
+            print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'Ah, you must be the courier from Eldrin. Thank you for delivering this parcel. Our soldiers will greatly benefit from the contents. Please take this envelope back to Eldrin.\n'")
+
+            # Give the player the envelope
+            envelope = Item("Envelope", "A sealed envelope from the Garrison Commander to Eldrin.")
+            player.inventory.add_item(envelope)
         else:
             print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'It looks like you don't have the parcel yet. Please deliver it as soon as possible.'")
         input("\nPress Enter to continue...")
@@ -331,6 +336,7 @@ def sell_items(player, shop):
 
 def cross_menu(player):
     clear_console()
+    player.current_location = 'crossing'
     if 'first_visit_border_crossing' not in player.flags:
         print(Fore.RED + "Warning: Beyond this point, humans have no influence and monsters roam unabashedly." + Style.RESET_ALL)
         print(Fore.GREEN + "\nTwo Sentinel Guards salute you, praising your bravery and wishing you good luck." + Style.RESET_ALL)
@@ -349,6 +355,7 @@ def cross_menu(player):
         choice = input("\nEnter your choice (1-5): ").strip()
 
         if choice == "1":
+            
             lower_bonefields(player)
         elif choice == "2":
             
@@ -366,7 +373,9 @@ def cross_menu(player):
             input("\nPress Enter to continue...")
 
 def lower_bonefields(player):
+    player.current_location = 'lower_bonefields'
     while True:
+        
         clear_console()
         print("The Lower Bonefields stretch out before you, a land of desolation and danger.\n")
         print("1. Adventure into the wilds")
@@ -448,6 +457,7 @@ def adventure_into_wilds(player, first_time=True):
         input("\nPress Enter to continue...")
 
 def follow_ancient_road(player):
+    player.current_location = 'follow_ancient_road'
     while True:
         clear_console()
         print("You are on the Ancient Road. You see the a mine entrance just off to the right covered with overgrown vines, and on the other side a decrepit waystation. What would you like to do?\n")
@@ -553,7 +563,7 @@ LOWER_BONEFIELDS_ORE_LEVEL_TABLE = {
 }
 
 def enter_mine(player):
-    player.current_location = "The Border"
+    player.current_location = "the_border"
     clear_console()
     print("\nYou cautiously step into the darkened mine. The air is cool and musty, filled with the scent of damp earth. Your eyes catch the glint of metal in the mine's walls. It seems to be rich with deposits.")
     
