@@ -250,7 +250,7 @@ class Warrior(Human):
             else:
                 print("No monster kills recorded yet.")
 
-            print("\n---- Missions ----")
+            print("\n---- Guild Missions ----")
             if self.logbook['missions']:
                 for mission in self.logbook['missions']:
                     print(Fore.YELLOW + "Mission:" + Style.RESET_ALL + f" Defeat {mission['required_kills']} {mission['monster']} in {mission['area']} for {mission['gold_reward']} gold")
