@@ -152,8 +152,8 @@ class Inventory:
         for index, weapon in enumerate(weapon_list, 1):
             print(f"{index}. {weapon.name}")
 
-        weapon_choice = input("\nEnter the number of the weapon to equip or (B)ack: ").lower().strip()
-        if weapon_choice in ['b', 'back']:
+        weapon_choice = input("\nEnter the number of the weapon to equip or (Q) to return: ").lower().strip()
+        if weapon_choice in ['b', 'back', 'q']:
             return
 
         try:
@@ -274,7 +274,7 @@ class Inventory:
                 self.show_skill_stats(player)
             elif inventory_choice == '6':
                 player.view_logbook()  # Call the view_logbook method from the Warrior class
-            elif inventory_choice == '7':
+            elif inventory_choice == '7' or 'q':
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
@@ -290,7 +290,7 @@ class Inventory:
             
             item_choice = input("\nEnter the number of the item you want to use or (B)ack: ").lower().strip()
 
-            if item_choice in ['b', 'back']:
+            if item_choice in ['b', 'back', 'q']:
                 clear_console()  # Clear console when going back to combat
                 break  # Break the inner loop to go back to the main inventory menu
             else:
@@ -391,7 +391,7 @@ class Inventory:
             print(f"\nInventory: {player.health} Health | {player.gold} Gold\n")
             item_choice = input("Enter the name of the item you want to use or type '(B)ack' to return: \n").lower()
 
-            if item_choice in ['b', 'back']:
+            if item_choice in ['b', 'back', 'q']:
                 break
             else:
                 used = player.inventory.use_item(item_choice, player)

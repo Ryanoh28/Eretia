@@ -101,12 +101,12 @@ class Warrior(Human):
             'monster_kills': {}
         }
         self.quests = {}
-        self.strength = 100
+        self.strength = 2
         self.speed = 2
         self.defence = 2
         self.attack = 2
         self.max_health = 100
-        self.level = 5
+        self.level = 1
         self.experience = 0
         self.experience_required = 100
         self.in_combat = False
@@ -532,7 +532,7 @@ class Shop:
             "Fire Rune": 15,
             'Ancient Manuscript': 20, 
             'Spectral Dust': 10,
-            'Fossilized Scale': 17,
+            'Fossilised Scale': 17,
             'Cursed Coin': 25,
             'Bone Amulet': 25,
             'Phantom Feather': 17
@@ -689,7 +689,7 @@ class Shop:
 
         player.gold += total_sale_price
         clear_console()
-        print(f"\nSold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
+        print(f"Sold {quantity_to_sell} {item_name}(s) for {total_sale_price} gold.\n")
         input("Press Enter to continue...")
 
 

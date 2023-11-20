@@ -194,7 +194,7 @@ def adventurer_headquarters(player):
             bulletin_board(player)
         elif choice == "3":
             adventurer_lodging(player)
-        elif choice == "4":
+        elif choice == "4" or 'q':
             print("\nLeaving the Adventurer Headquarters.")
             break
         else:
@@ -224,7 +224,7 @@ def front_desk(player):
             clear_console()
             complete_missions_at_desk(player)
             input("\nPress Enter to continue...")
-        elif choice == "4":
+        elif choice == "4" or 'q':
             break
         else:
             clear_console()
@@ -277,7 +277,7 @@ def bulletin_board(player):
         if choice in ['1', '2', '3', '4', '5']:  # Choices for missions
             mission_index = int(choice) - 1
             accept_mission(player, missions[mission_index])
-        elif choice == '6':
+        elif choice == '6' or 'q':
             break  # Return to the previous menu
         else:
             print("Invalid choice. Please enter a number between 1 and 6.")
@@ -322,7 +322,7 @@ def border_shop(player):
             view_items_to_buy(player, border_shop_instance)
         elif choice == '2':
             sell_items(player, border_shop_instance)
-        elif choice == '3':
+        elif choice == '3' or 'q':
             break
         else:
             print("Invalid choice. Please enter a valid option.")
@@ -365,7 +365,7 @@ def cross_menu(player):
         elif choice == "4":
             from bordertown import view_quest_log
             view_quest_log(player)
-        elif choice == "5":
+        elif choice == "5" or 'q':
             
             enter_the_border(player)  
         else:
@@ -394,7 +394,7 @@ def lower_bonefields(player):
             rest_in_location(player) 
         elif choice == "4":
             player.inventory.inventory_menu(player)  
-        elif choice == "5":
+        elif choice == "5" or 'q':
             print("\nYou decide to head back.")
             break
         else:
@@ -449,7 +449,7 @@ def adventure_into_wilds(player, first_time=True):
 
     if next_action == "1":
         adventure_into_wilds(player, first_time=False)
-    elif next_action == "2":
+    elif next_action == "2" or 'q':
         lower_bonefields(player)
     else:
         clear_console()
@@ -474,7 +474,7 @@ def follow_ancient_road(player):
             fight_on_road(player)
         elif choice == "3":
             decrepit_waystation(player)
-        elif choice == "4":
+        elif choice == "4" or 'q':
             lower_bonefields(player)
             break
         else:
@@ -496,7 +496,7 @@ def decrepit_waystation(player):
 
         if choice == "1":
             investigate_waystation(player)
-        elif choice == "2":
+        elif choice == "2" or 'q':
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 2.")

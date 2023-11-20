@@ -112,7 +112,7 @@ def explore_right_tunnel(player, section=1):
         else:
             input("\nPress Enter to return to the cave entrance...")
             explore_passages(player)
-    elif next_action == "2":
+    elif next_action == "2" or "q":
         explore_passages(player)
     else:
         print("\nInvalid choice. Please enter a valid number.")
@@ -286,7 +286,7 @@ def enchanted_grove(player):
     elif choice == "3":
         echoing_cavern(player)
 
-    elif choice == "4":
+    elif choice == "4" or 'q':
         explore_passages(player)
 
     else:
@@ -311,7 +311,7 @@ def echoing_cavern(player):
 
     if choice == "1":
         follow_the_echoes(player)
-    elif choice == "2":
+    elif choice == "2" or 'q':
         explore_passages(player)
     else:
         print("\nInvalid choice. Please enter a valid number.")
@@ -435,7 +435,7 @@ def enter_mages_abode(player):
             print("The Mage gives a mysterious smile. 'Who I am is of little consequence. What matters is your journey and the strength you gather along the way. Use your time wisely.'")
             input("\nPress Enter to continue...")
             clear_console()
-        elif choice == "3":
+        elif choice == "3" or 'q':
             break
         else:
             print("\nInvalid choice. Please enter a valid number.")

@@ -2,8 +2,10 @@ from items import HealthPotion, Weapon
 from classes import Shop
 from utilities import clear_console
 from locations.darkforest import enter_dark_forest
+#from locations.northernhills import enter_northern_hills
 from missions.eldrin import speak_with_eldrin
 from colorama import Fore, Style
+import random
 
 def rest(player):
     clear_console()
@@ -78,7 +80,7 @@ def visit_tavern(player):
         clear_console()
         print("You enter the bustling tavern filled with adventurers and townsfolk.\n")
         print("1. Talk to the Guard Captain")
-        print("2. Listen to rumors")
+        print("2. Listen to the crowd")
         print("3. Speak with Eldrin the Greenwarden")
         print("4. Leave the tavern")
         tavern_choice = input("\nWhat would you like to do? ").lower().strip()
@@ -88,7 +90,7 @@ def visit_tavern(player):
             converse_with_guard_captain(player)
         elif tavern_choice == '2':
             clear_console()
-            listen_to_rumors(player)
+            listen_to_crowd(player)
         elif tavern_choice == '3':
             clear_console()
             speak_with_eldrin(player)
@@ -101,11 +103,39 @@ def visit_tavern(player):
         input("\nPress Enter to continue...")
 
 
-def listen_to_rumors(player):
+import random
+
+def listen_to_crowd(player):
     clear_console()
-    # Placeholder for future rumor listening functionality
-    print("#Not implemented yet, low priority#")
-    print("You overhear various adventurers sharing stories and rumors about the lands beyond the town. Apparently one named 'Crook' has been seen walking around with an extra sword in his pants...")
+
+    # Your updated list of random dialogues/tips
+    tavern_chatter = [
+        '"I heard they found a vast deposit of ore in the Damp Caves... shame about the monsters though."',
+        '"The Adventurers Guild are hiring... if you got 100 gold spare and don\'t mind life on the border."',
+        '"Heard bandits are roaming the outer edges of the border crossing."',
+        '"A traveling merchant told me about a rare herb that grows only on the cliffs of Eretia. It\'s said to have miraculous healing properties."',
+        '"There\'s an alchemist in town looking for rare ingredients. I hear they pay handsomely for the right stuff."',
+        '"I\'ve heard whispers of a secret society that meets under the cover of darkness. They\'re said to possess ancient knowledge and forbidden magic."',
+        '"Some adventurers spoke of a cavern filled with crystals that emit a haunting melody. It\'s supposedly hidden somewhere in the Damp Caves."',
+        '"A group of miners went missing in the northern hills. People say they stumbled upon something... unnatural."',
+        '"There\'s a rogue, \'Crook\' they called him I think, hunts the beasts in the Dark Forest for sport..."'
+        
+    ]
+
+    print("You listen in to the chatter around the tavern...\n")
+    random.shuffle(tavern_chatter)  
+
+    for dialogue in tavern_chatter:
+        print(f"Overheard: {dialogue}\n")
+        choice = input("Do you want to continue listening? (Y/N): ").lower().strip()
+        if choice != "y":
+            break  
+        clear_console()  
+
+    print("You decide to stop eavesdropping and focus on your next move.\n")
+
+
+    
     
 
 def leave_town(player):
@@ -114,28 +144,37 @@ def leave_town(player):
         print("Where would you like to go?\n")
         print("1. Dark Forest")
         print("2. Damp Cave")
-        print("3. The Border")
-        print("4. Border Town")
-        choice = input("\nEnter your choice (1-4): ").strip()
+        print("3. Northern Hills")
+        print("4. The Border")
+        print("5. Border Town")
+        choice = input("\nEnter your choice (1-5): ").strip()
 
         if choice == "1":
             enter_dark_forest(player)
-            
             break
         elif choice == "2":
             from locations.dampcave import enter_damp_cave
             enter_damp_cave(player)
             break
         elif choice == "3":
+            
+            pass # until implemented
+            enter_northern_hills(player)
+            break
+        elif choice == "4":
             from locations.theborder import enter_the_border
             enter_the_border(player)
             break
-        elif choice == "4":
+        elif choice == "5":
             print("\nYou return to Border Town.")
             return_to_border_town(player)
             player.current_location = 'border_town'
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 4.")
+            print("\nInvalid choice. Please enter a number between 1 and 5.")
+
+
+
+
 
 
 
