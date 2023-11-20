@@ -346,38 +346,35 @@ class Inventory:
         clear_console()
         print("==== All Equipment ====")
 
-        # Display the equipped weapon, if any
         if player.weapon:
             print(f"Equipped Weapon: {player.weapon.name}")
         else:
             print("No weapon equipped.")
 
-        # Display the equipped armor, if any
         if player.armour:
             print(f"Equipped Armour: {player.armour.name}")
         else:
             print("No armour equipped.")
 
-        # Display unequipped weapons, if any
         print("\nAvailable Weapons:")
-        if any(isinstance(item, Weapon) for item in player.inventory.equipment):
-            for item in player.inventory.equipment:
-                if isinstance(item, Weapon) and item != player.weapon:
-                    print(f"- {item.name}")
+        unequipped_weapons = [item for item in self.equipment if isinstance(item, Weapon) and item != player.weapon]
+        if unequipped_weapons:
+            for weapon in unequipped_weapons:
+                print(f"- {weapon.name}")
         else:
             print("No additional weapons available.")
 
-        # Display unequipped armours, if any
         print("\nAvailable Armours:")
-        if any(isinstance(item, Armour) for item in player.inventory.equipment):
-            for item in player.inventory.equipment:
-                if isinstance(item, Armour) and item != player.armour:
-                    print(f"- {item.name}")
+        unequipped_armours = [item for item in self.equipment if isinstance(item, Armour) and item != player.armour]
+        if unequipped_armours:
+            for armour in unequipped_armours:
+                print(f"- {armour.name}")
         else:
             print("No additional armours available.")
 
-        print("\n====================")
+        print("====================")
         input("\nPress enter to continue...")
+
 
     
     def inventory_menu(self, player):
