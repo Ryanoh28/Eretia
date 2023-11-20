@@ -43,7 +43,7 @@ def mine(player, location, ore_level_table):
             gain_mining_experience(player, ore)
 
             # Monster encounter check
-            if random.randint(1, 3) == 1:
+            if random.randint(1, 4) == 1:
                 print("\nAs you mine, a monster emerges from the depths of the mine!")
                 input("\nPress enter to continue...")
                 fight_monster(player, location)
@@ -87,8 +87,7 @@ ORE_LEVEL_TABLE = {
 
 
 def mine_in_damp_cave(player):
-    player.current_location = 'Damp Cave'
-    
+    player.current_location = 'damp_cave'
     while True:
         continue_mining = input("\nDo you want to mine in the Damp Cave? (Y/N): ").lower()
         if continue_mining == 'y':

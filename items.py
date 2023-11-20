@@ -7,6 +7,13 @@ class Item:
         self.name = name
         self.description = description
 
+class Armour:
+    def __init__(self, name, description, defense_boost):
+        self.name = name
+        self.description = description
+        self.defense_boost = defense_boost
+
+
 class EyeOfInsight(Item):
     def __init__(self):
         super().__init__("Eye of Insight", "A mystical artifact that reveals the true nature of your foes.")
@@ -131,6 +138,40 @@ class Inventory:
         self.items = {}
         self.equipment = []
 
+    def equip_armour(self, player):
+        clear_console()
+        print("Available Armour:")
+        # Display list of armours in player's inventory
+        armour_list = [item for item in self.equipment if isinstance(item, Armour)]
+        for index, armour in enumerate(armour_list, 1):
+            print(f"{index}. {armour.name}")
+
+        armour_choice = input("\nEnter the number of the armour to equip or (Q) to return: ").lower().strip()
+        if armour_choice in ['b', 'back', 'q']:
+            return
+
+        try:
+            choice_index = int(armour_choice) - 1
+            if choice_index < 0 or choice_index >= len(armour_list):
+                raise ValueError
+            selected_armour = armour_list[choice_index]
+            player.armour = selected_armour
+            print(f"\n{player.name} equipped {selected_armour.name}.\n")
+        except (ValueError, IndexError):
+            print("Invalid choice. Please enter a valid number.")
+        #input("\nPress Enter to continue...")
+
+    def unequip_armour(self, player):
+        clear_console()
+        if player.armour:
+            print(f"Unequipping {player.armour.name}.")
+            self.equipment.append(player.armour)  # Add the unequipped armour back to equipment
+            player.armour = None
+        else:
+            print("You have no armour equipped.")
+        input("\nPress Enter to continue...")
+
+  
     def has_item(self, item_name):
         return item_name in self.items
 
@@ -175,7 +216,7 @@ class Inventory:
             player.weapon = None
         else:
             print("You have no weapon equipped.")
-        input("\nPress Enter to continue...")
+        #input("\nPress Enter to continue...")
  
 
     def add_equipment(self, equipment):
@@ -202,17 +243,28 @@ class Inventory:
 
 
     def show_equipment(self, player):
+        print("\n==== Equipment ====")
         
+        # Display the equipped weapon
         if player.weapon:
             weapon = player.weapon
             print(f"Equipped Weapon: {weapon.name}")
-            print("====================")
             print(f"  - Extra Damage: {weapon.extra_damage}")
             print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
-            
-        
+            print()  # Adding a space after the weapon section
         else:
-            print("No weapon equipped.")
+            print("No weapon equipped.\n")  # Ensure there's a space even when no weapon is equipped
+
+        # Display the equipped armor
+        if player.armour:
+            armour = player.armour
+            print(f"Equipped Armour: {armour.name}")
+            print(f"  - Defense Boost: {armour.defense_boost}")
+        else:
+            print("No armour equipped.")
+
+        print("====================")
+
         
     
     def show_inventory(self):
@@ -225,12 +277,20 @@ class Inventory:
                 print(f"{index}. {item_name} ({quantity})")
 
 
+
     def show_skill_stats(self, player):
         clear_console()
         print("=== Combat Stats ===")
         print(f"Strength: {player.strength}")
         print(f"Speed: {player.speed}")
-        print(f"Defence: {player.defence}")
+
+        # Check for equipped armor and its defense boost
+        armor_defense_boost = player.armour.defense_boost if player.armour else 0
+        if armor_defense_boost > 0:
+            print(f"Defence: {player.defence} " + Fore.GREEN + f"(+{armor_defense_boost})" + Style.RESET_ALL)
+        else:
+            print(f"Defence: {player.defence}")
+
         print("====================\n")
 
         print("=== Skill Stats ===")
@@ -239,45 +299,116 @@ class Inventory:
         print("====================\n")
 
         input("\nPress Enter to return...")
-    
-    
 
+    
+    
+    def equipment_menu(self, player):
+        while True:
+            clear_console()
+            print("==== Equipment Menu ====")
+            print("1. Equip Weapon")
+            print("2. Unequip Weapon")
+            print("3. Equip Armour")
+            print("4. Unequip Armour")
+            print("5. View All Equipment")
+            print("6. Back")
+
+            choice = input("\nEnter your choice: ").strip()
+
+            if choice == '1':
+                self.equip_weapon_from_inventory(player)
+            elif choice == '2':
+                self.unequip_weapon(player)
+            elif choice == '3':
+                self.equip_armour(player)
+            elif choice == '4':
+                self.unequip_armour(player)
+            elif choice == '5':
+                self.view_all_equipment(player)
+            elif choice == '6' or choice == 'q':
+                break
+            else:
+                print("Invalid choice. Please enter a valid number.")
+                input("\nPress enter to continue...")
+
+    # def view_all_equipment(self, player):
+    #     clear_console()
+    #     print("==== All Equipment ====")
+    #     if player.weapon:
+    #         print(f"Weapon: {player.weapon.name}")
+    #     if player.armour:
+    #         print(f"Armour: {player.armour.name}")
+    #     if not player.weapon and not player.armour:
+    #         print("No equipment available.")
+    #     input("\nPress enter to continue...")
+    
+    def view_all_equipment(self, player):
+        clear_console()
+        print("==== All Equipment ====")
+
+        # Display the equipped weapon, if any
+        if player.weapon:
+            print(f"Equipped Weapon: {player.weapon.name}")
+        else:
+            print("No weapon equipped.")
+
+        # Display the equipped armor, if any
+        if player.armour:
+            print(f"Equipped Armour: {player.armour.name}")
+        else:
+            print("No armour equipped.")
+
+        # Display unequipped weapons, if any
+        print("\nAvailable Weapons:")
+        if any(isinstance(item, Weapon) for item in player.inventory.equipment):
+            for item in player.inventory.equipment:
+                if isinstance(item, Weapon) and item != player.weapon:
+                    print(f"- {item.name}")
+        else:
+            print("No additional weapons available.")
+
+        # Display unequipped armours, if any
+        print("\nAvailable Armours:")
+        if any(isinstance(item, Armour) for item in player.inventory.equipment):
+            for item in player.inventory.equipment:
+                if isinstance(item, Armour) and item != player.armour:
+                    print(f"- {item.name}")
+        else:
+            print("No additional armours available.")
+
+        print("\n====================")
+        input("\nPress enter to continue...")
+
+    
     def inventory_menu(self, player):
         while True:
             clear_console()
             print(f"Status: {player.health} Health | {player.energy} Energy | {player.mana} Mana | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/{player.experience_required}\n")
-            self.show_inventory()  # Show the inventory, this method already includes the heading
+            self.show_inventory()  
 
-            print("==== Equipment ====")
-            self.show_equipment(player)
-            print("====================\n")
+            self.show_equipment(player)  
 
             print("1. Use Item")
-            print("2. View Equipment")
-            print("3. Equip Weapon")
-            print("4. Unequip Weapon")
-            print("5. View Stats and Skills")
-            print("6. View Logbook")
-            print("7. Back")
+            print("2. Equipment Menu")
+            print("3. View Stats and Skills")
+            print("4. View Logbook")
+            print("5. Back")  
 
             inventory_choice = input("\nWhat would you like to do? ").strip()
 
             if inventory_choice == '1':
                 self.use_item_interface(player)
             elif inventory_choice == '2':
-                self.view_equipment(player)
+                self.equipment_menu(player) 
             elif inventory_choice == '3':
-                self.equip_weapon_interface(player)
-            elif inventory_choice == '4':
-                self.unequip_weapon(player)
-            elif inventory_choice == '5':
                 self.show_skill_stats(player)
-            elif inventory_choice == '6':
-                player.view_logbook()  # Call the view_logbook method from the Warrior class
-            elif inventory_choice == '7' or 'q':
+            elif inventory_choice == '4':
+                player.view_logbook()
+            elif inventory_choice == '5' or inventory_choice == 'q':
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
+
 
 
  
@@ -332,31 +463,31 @@ class Inventory:
                     print("Weapon not found. Try again.")
         else:
             print("No available weapons to equip.")
-        input("\nPress Enter to continue...")
+        #input("\nPress Enter to continue...")
 
 
-    def view_equipment(self, player):
-        clear_console()
-        print("==== Equipment ====")
+    # #def view_equipment(self, player):
+    #     clear_console()
+    #     print("==== Equipment ====")
 
-        # Display the equipped weapon
-        if player.weapon:
-            weapon = player.weapon
-            print(f"Equipped Weapon: {weapon.name}")
-            print(f"  - Extra Damage: {weapon.extra_damage}")
-            print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
-        else:
-            print("No weapon equipped.")
+    #     # Display the equipped weapon
+    #     if player.weapon:
+    #         weapon = player.weapon
+    #         print(f"Equipped Weapon: {weapon.name}")
+    #         print(f"  - Extra Damage: {weapon.extra_damage}")
+    #         print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
+    #     else:
+    #         print("No weapon equipped.")
 
-        # Display unequipped weapons
-        print("\nAvailable Weapons:")
-        if player.available_weapons:
-            for weapon in player.available_weapons:
-                print(f"- {weapon.name} (Damage: {weapon.extra_damage}, Crit: {weapon.crit_chance_bonus})")
-        else:
-            print("No additional weapons available.")
+    #     # Display unequipped weapons
+    #     print("\nAvailable Weapons:")
+    #     if player.available_weapons:
+    #         for weapon in player.available_weapons:
+    #             print(f"- {weapon.name} (Damage: {weapon.extra_damage}, Crit: {weapon.crit_chance_bonus})")
+    #     else:
+    #         print("No additional weapons available.")
 
-        # Armours etc later
+    #     # Armours etc later
         
 
         print("=================\n")

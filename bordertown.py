@@ -2,7 +2,7 @@ from items import HealthPotion, Weapon
 from classes import Shop
 from utilities import clear_console
 from locations.darkforest import enter_dark_forest
-#from locations.northernhills import enter_northern_hills
+from locations.northernhills import enter_northern_hills
 from missions.eldrin import speak_with_eldrin
 from colorama import Fore, Style
 import random
@@ -157,8 +157,6 @@ def leave_town(player):
             enter_damp_cave(player)
             break
         elif choice == "3":
-            
-            pass # until implemented
             enter_northern_hills(player)
             break
         elif choice == "4":

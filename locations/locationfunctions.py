@@ -45,4 +45,5 @@ def return_to_location(player):
         else:
             print("Unknown location. Redirecting to a default location.")
             player.current_location = 'border_town'
+            from bordertown import return_to_border_town
             return_to_border_town(player)

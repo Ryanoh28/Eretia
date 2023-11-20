@@ -119,9 +119,9 @@ class Warrior(Human):
         self.flags = set()
         self.mana = 100
         self.max_mana = 100
-        self.training_count = 4
+        self.training_count = 4 
         self.total_training_count = 0
-
+        self.first_time_northern_hills = True
  
     
     def check_level_up(self):
@@ -235,8 +235,8 @@ class Warrior(Human):
         if self.gold >= 100:
             self.gold -= 100
             self.flags.add('guild_member')
-            self.logbook['missions'] = []  # Initialize missions list
-            self.logbook['monster_kills'] = {}  # Initialize monster kills dictionary
+            self.logbook['missions'] = []  
+            self.logbook['monster_kills'] = {}  
             print("You joined the Adventurer's Guild and received a logbook.")
 
     def view_logbook(self):
