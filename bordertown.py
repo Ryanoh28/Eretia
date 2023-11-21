@@ -94,7 +94,7 @@ def visit_tavern(player):
         elif tavern_choice == '3':
             clear_console()
             speak_with_eldrin(player)
-        elif tavern_choice == '4':
+        elif tavern_choice == '4' or 'q':
             clear_console()
             print("You leave the tavern and head back to the town center.")
             break  # Breaks out of the loop to return to the town menu
@@ -163,7 +163,7 @@ def leave_town(player):
             from locations.theborder import enter_the_border
             enter_the_border(player)
             break
-        elif choice == "5":
+        elif choice == "5" or 'q':
             print("\nYou return to Border Town.")
             return_to_border_town(player)
             player.current_location = 'border_town'

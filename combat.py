@@ -12,8 +12,8 @@ def combat(player, monster):
         print("2. Use Spell")
         print("3. Inventory")
         print("4. Run")
-        print(f" DEBUG Monster strength: {monster.strength}")
-        print(f"DEBUG Player defence: {player.defence}")
+        # print(f" DEBUG Monster strength: {monster.strength}")
+        # print(f"DEBUG Player defence: {player.defence}")
         
         # Check for Eye of Insight in player's inventory
         eye_of_insight = next((item for item in player.inventory.items if isinstance(item, EyeOfInsight)), None)
