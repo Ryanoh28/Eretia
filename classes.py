@@ -1,6 +1,6 @@
 #classes.py
 import random
-from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion
+from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion, EyeOfInsight
 from utilities import clear_console
 from colorama import Fore, Style
 class Human:
@@ -494,7 +494,8 @@ class Shop:
             'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
             'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 20)},
-            'Deluxe Energy Potion': {'price': 100, 'object': EnergyPotion("Deluxe Energy Potion", "A powerful potion that boosts your energy to 500.")}
+            'Deluxe Energy Potion': {'price': 100, 'object': EnergyPotion("Deluxe Energy Potion", "A powerful potion that boosts your energy to 500.")},
+            'Eye of Insight': {'price': 0, 'object': EyeOfInsight()}
         }
         
 

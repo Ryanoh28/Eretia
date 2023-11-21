@@ -15,10 +15,10 @@ class EyeOfInsight(Item):
         super().__init__("Eye of Insight", "A mystical artifact that reveals the true nature of your foes.")
 
     def use(self, monster):
-        print(f"\nUsing {self.name}...")
+        print(f"\nUsing {self.name}...\n")
         print(f"Monster Name: {monster.name}")
-        print(f"Health: {monster.health}")
-        print(f"Attack: {monster.attack}")
+        print(f"Strength: {monster.strength}")
+        print(f"Speed: {monster.speed}")
         print(f"Defence: {monster.defence}")
         input("Press enter to continue...")
         
@@ -164,16 +164,21 @@ class Inventory:
             if choice_index < 0 or choice_index >= len(armour_list):
                 raise ValueError
             selected_armour = armour_list[choice_index]
+
+            if player.armour:  # Unequip current armour if any
+                player.defence -= player.armour.defense_boost
             player.armour = selected_armour
+            player.defence += selected_armour.defense_boost  # Increase defence stat
+
             print(f"\n{player.name} equipped {selected_armour.name}.\n")
         except (ValueError, IndexError):
             print("Invalid choice. Please enter a valid number.")
-        #input("\nPress Enter to continue...")
 
     def unequip_armour(self, player):
         clear_console()
         if player.armour:
             print(f"Unequipping {player.armour.name}.")
+            player.defence -= player.armour.defense_boost  # Decrease defence stat
             self.equipment.append(player.armour)  # Add the unequipped armour back to equipment
             player.armour = None
         else:
@@ -181,19 +186,6 @@ class Inventory:
         input("\nPress Enter to continue...")
 
   
-    def has_item(self, item_name):
-        return item_name in self.items
-
-
-    def count_item(self, item_name):
-        return self.items.get(item_name, {'quantity': 0})['quantity']
-
-    def remove_items(self, item_name, count):
-        if item_name in self.items:
-            self.items[item_name]['quantity'] -= count
-            if self.items[item_name]['quantity'] <= 0:
-                del self.items[item_name]
-    
     def equip_weapon_from_inventory(self, player):
         clear_console()
         print("Available Weapons:")
@@ -227,6 +219,21 @@ class Inventory:
         else:
             print("You have no weapon equipped.")
         input("\nPress Enter to continue...")
+    
+    def has_item(self, item_name):
+        return item_name in self.items
+
+
+    def count_item(self, item_name):
+        return self.items.get(item_name, {'quantity': 0})['quantity']
+
+    def remove_items(self, item_name, count):
+        if item_name in self.items:
+            self.items[item_name]['quantity'] -= count
+            if self.items[item_name]['quantity'] <= 0:
+                del self.items[item_name]
+    
+    
 
  
 

@@ -227,10 +227,12 @@ def meet_guard_captain(player):
     print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL + f"'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     health_potion = HealthPotion()
     player.inventory.add_item(health_potion)
-
+    from items import Armour
+    iron_armour = Armour("Iron Armour", "+5 Defence Buff", 7)
+    player.inventory.add_equipment(iron_armour)
     input("\nPress Enter to continue...")
     clear_console()
-
+    
     print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'And take this Rusted Sword as well. It's not much, but it's better than nothing.'" + Style.RESET_ALL)
     rusted_sword = Weapon("Rusted Sword", "A sword corroded by time, with a dulled edge.", 0.5, 0.5)
     player.inventory.add_equipment(rusted_sword)  # Adding the weapon to the equipment list
