@@ -1,6 +1,6 @@
 #classes.py
 import random
-from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune
+from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion
 from utilities import clear_console
 from colorama import Fore, Style
 class Human:
@@ -94,7 +94,9 @@ class Warrior(Human):
         self.monster_kill_log = {}
         self.current_location = None
         self.energy = 100
+        self.active_effects = {}
         self.weapon = None
+        self.armour = None
         self.available_weapons = []
         self.logbook = {
             'missions': [],
@@ -131,7 +133,9 @@ class Warrior(Human):
             print(Style.BRIGHT + Fore.YELLOW + f"{self.name} has leveled up! You are now level {self.level}.\n" + Style.RESET_ALL)
 
             self.experience_required += 12
-
+            self.mana = 100
+            self.health = 100
+            self.energy = 100
             self.training_count += 4
 
             self.total_training_count += 4
@@ -489,8 +493,10 @@ class Shop:
             'mana potion': {'price': 20, 'object': ManaPotion()},
             'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
-            'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 20)}
+            'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 20)},
+            'Deluxe Energy Potion': {'price': 100, 'object': EnergyPotion("Deluxe Energy Potion", "A powerful potion that boosts your energy to 500.")}
         }
+        
 
         # Merge base items with additional items specific to the shop instance
         self.items_for_sale = {**self.base_items_for_sale, **(additional_items if additional_items else {})}
@@ -535,7 +541,8 @@ class Shop:
             'Fossilised Scale': 17,
             'Cursed Coin': 25,
             'Bone Amulet': 25,
-            'Phantom Feather': 17
+            'Phantom Feather': 17,
+            'Bronze Armour': 35
             
         }
 
@@ -619,18 +626,22 @@ class Shop:
     def sell_items_interface(self, player):
         while True:
             clear_console()
-            print("Items and Weapons you can sell:\n")
+            print("Items and Equipment you can sell:\n")
             item_list = []
             item_count = {}
 
+            # Add regular items
             for item_name, item_info in player.inventory.items.items():
                 item_count[item_name] = item_info['quantity']
                 item_list.append(item_name)
 
-            for weapon in player.available_weapons:
-                item_list.append(weapon.name)
-                item_count[weapon.name] = 1  
+            # Add equipment (weapons and armor), excluding equipped armor
+            for equipment_item in player.inventory.equipment:
+                if not (isinstance(equipment_item, Armour) and equipment_item == player.armour):
+                    item_list.append(equipment_item.name)
+                    item_count[equipment_item.name] = 1
 
+            # Display items with sale price
             for index, item_name in enumerate(item_list, 1):
                 sale_price = self.item_value.get(item_name, 0)
                 quantity = item_count[item_name]
@@ -651,6 +662,9 @@ class Shop:
                     self.sell_item(player, selected_item_name, item_count[selected_item_name])
                 except (ValueError, IndexError):
                     print("Invalid choice. Please enter a valid number.")
+    
+    
+
     
  
 
@@ -674,15 +688,12 @@ class Shop:
 
         sale_price = self.item_value.get(item_name, 0)
         total_sale_price = sale_price * quantity_to_sell
-        
-        # Check if the item is a weapon or a regular item
-        if item_name in [weapon.name for weapon in player.available_weapons]:
-            # Remove the weapon from available weapons
+
+        if item_name in [equipment.name for equipment in player.inventory.equipment]:
             for _ in range(quantity_to_sell):
-                weapon_to_remove = next(weapon for weapon in player.available_weapons if weapon.name == item_name)
-                player.available_weapons.remove(weapon_to_remove)
+                equipment_to_remove = next(e for e in player.inventory.equipment if e.name == item_name)
+                player.inventory.equipment.remove(equipment_to_remove)
         else:
-            # Decrease the quantity of the item in the inventory
             player.inventory.items[item_name]['quantity'] -= quantity_to_sell
             if player.inventory.items[item_name]['quantity'] <= 0:
                 del player.inventory.items[item_name]
@@ -693,7 +704,7 @@ class Shop:
         input("Press Enter to continue...")
 
 
-    
+        
   
     
 
