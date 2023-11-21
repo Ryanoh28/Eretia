@@ -42,6 +42,9 @@ def return_to_location(player):
         elif player.current_location == 'follow_ancient_road':
             from locations.theborder import follow_ancient_road
             follow_ancient_road(player)
+        if player.current_location == 'northern_hills':
+            from locations.northernhills import show_northern_hills_menu
+            show_northern_hills_menu(player)
         else:
             print("Unknown location. Redirecting to a default location.")
             player.current_location = 'border_town'

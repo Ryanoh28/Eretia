@@ -83,12 +83,7 @@ def sentinel_garrison(player):
         if choice == "1":
             read_noticeboard()
         elif choice == "2":
-            if 'met_commander' in player.flags:
-                clear_console()
-                print("The commander looks too busy at the moment.")
-                input("\nPress enter to continue...")
-            else:
-                converse_with_commander(player)
+            converse_with_commander(player)
         elif choice == "3":
             player.training()  
         elif choice == "4":
@@ -100,25 +95,22 @@ def sentinel_garrison(player):
 
 def converse_with_commander(player):
     clear_console()
-
-    # Handle Potion Delivery Quest
+    
     if "potion_delivery_quest" in player.quests and not player.quests["potion_delivery_quest"]["completed"]:
         if player.inventory.count_item("Parcel") >= 1:
             player.inventory.remove_items("Parcel", 1)
-            # Note: Removed the line that marked the quest as completed here.
-            player.quests["potion_delivery_quest"]["envelope_received"] = False  # New flag for envelope
+            player.quests["potion_delivery_quest"]["envelope_received"] = False
             print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'Ah, you must be the courier from Eldrin. Thank you for delivering this parcel. Our soldiers will greatly benefit from the contents. Please take this envelope back to Eldrin.\n'")
 
-            # Give the player the envelope
             envelope = Item("Envelope", "A sealed envelope from the Garrison Commander to Eldrin.")
             player.inventory.add_item(envelope)
         else:
-            print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'It looks like you don't have the parcel yet. Please deliver it as soon as possible.'")
+            print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'Thank you again for the parcel. Eldrin should be waiting for his envelope.'")
         input("\nPress Enter to continue...")
         clear_console()
         return
 
-    if 'met_commander' not in player.flags:
+    elif 'met_commander' not in player.flags:
         print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + f"'What brings you to the edge of Eretia, {player.name}?'")
         
         print("\nHow do you respond?\n")
@@ -139,8 +131,6 @@ def converse_with_commander(player):
             print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'Uncertainty is a common trait in these lands, " + player.name + ". Take your time to find your calling.'")
         elif choice == '4':
             print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'The Border holds many secrets, " + player.name + ". Tread carefully, for not all are meant to be uncovered.'")
-        else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
 
         player.flags.add('met_commander')
         input("\nPress Enter to continue...")
@@ -148,9 +138,9 @@ def converse_with_commander(player):
         return
     
     else:
-        # Default message when not delivering potions and not the first meeting
         print(Fore.GREEN + "Garrison Commander: " + Style.RESET_ALL + "'The commander looks too busy at the moment.'")
         input("\nPress Enter to continue...") 
+
 
     
 def read_noticeboard():
