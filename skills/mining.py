@@ -2,6 +2,9 @@ from utilities import clear_console
 import random
 from combat import fight_monster
 from items import Item
+from colorama import Fore, Style, init
+
+init(autoreset=True)
 
 ORE_EXPERIENCE_POINTS = {
     "Stone": 1,
@@ -44,7 +47,7 @@ def mine(player, location, ore_level_table):
 
             # Monster encounter check
             if random.randint(1, 4) == 1:
-                print("\nAs you mine, a monster emerges from the depths of the mine!")
+                print(Fore.RED + "\nAs you mine, a monster emerges from the depths of the mine!" + Style.RESET_ALL)
                 input("\nPress enter to continue...")
                 fight_monster(player, location)
 
@@ -57,7 +60,7 @@ def mine(player, location, ore_level_table):
             gain_mining_experience(player, "Stone")
 
     else:
-        print("You don't have enough energy to mine. Rest to regain energy.")
+        print(Fore.RED + Fore.YELLOW + "You don't have enough energy to mine. Rest to regain energy.")
 
 
 
