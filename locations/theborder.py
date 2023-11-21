@@ -396,6 +396,7 @@ def lower_bonefields(player):
             player.inventory.inventory_menu(player)  
         elif choice == "5" or 'q':
             print("\nYou decide to head back.")
+            cross_menu(player)
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")
@@ -464,9 +465,11 @@ def follow_ancient_road(player):
         print("1. Mine for resources.")
         print("2. Follow the road and fight monsters.")
         print("3. Decrepit Waystation.")
-        print("4. Return to the Lower Bonefields.")
+        print("4. Rest")
+        print("5. Inventory")
+        print("6. Return to the Lower Bonefields.")
 
-        choice = input("\nEnter your choice (1-4): ").strip()
+        choice = input("\nEnter your choice (1-6): ").strip()
 
         if choice == "1":
             enter_mine(player)
@@ -474,12 +477,17 @@ def follow_ancient_road(player):
             fight_on_road(player)
         elif choice == "3":
             decrepit_waystation(player)
-        elif choice == "4" or 'q':
+        elif choice == "4":
+            rest_in_location(player)
+        elif choice == "5":
+            player.inventory.inventory_menu(player)
+        elif choice == "6" or 'q':
             lower_bonefields(player)
             break
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 4.")
+            print("\nInvalid choice. Please enter a number between 1 and 6.")
             input("\nPress Enter to continue...")
+
 
 def decrepit_waystation(player):
     clear_console()
@@ -563,7 +571,7 @@ LOWER_BONEFIELDS_ORE_LEVEL_TABLE = {
 }
 
 def enter_mine(player):
-    player.current_location = "the_border"
+    player.current_location = 'follow_ancient_road'
     clear_console()
     print("\nYou cautiously step into the darkened mine. The air is cool and musty, filled with the scent of damp earth. Your eyes catch the glint of metal in the mine's walls. It seems to be rich with deposits.")
     
