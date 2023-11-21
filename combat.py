@@ -118,7 +118,8 @@ def create_monster(location):
         "The Border": (8, 20),
         "Echoing Cavern": (10,10), # Special mission monster
         "Human Bandit": (10,15),
-        "Northern Hills": (3,3)
+        "Northern Hills Unique": (3,3),
+        "Northern Hills": (5,9)
     }
     
     min_level, max_level = location_level_ranges.get(location, (1, 1))  
@@ -156,9 +157,18 @@ def create_monster(location):
          "Human Bandit"
      ],
 
-     "Northern Hills": [
+     "Northern Hills Unique": [
          "Hill Hound"
-         ]
+         ],
+    
+     "Northern Hills": [
+        "Frost-Feathered Eagle", 
+        "Stonehide Boar", 
+        "Gale Howler Wolf", 
+        "Hill Serpent", 
+        "Mist Wraith",
+        "Hill Hound"
+    ]
 }
 
 
