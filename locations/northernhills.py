@@ -33,6 +33,7 @@ def lead_player_to_smithy(player):
 def show_northern_hills_menu(player):
     clear_console()
     while True:
+        clear_console()
         print("What would you like to do?\n")
         print("1. Visit Smithy")
         print("2. Inventory")
@@ -76,7 +77,7 @@ def visit_blacksmith(player):
                     print("Old Man: 'I'm a bit busy now, come back later.'")
                 elif blacksmith_quest["completed"]:
                     clear_console()
-                    print("Old Man: 'Thank you for bringing the ores. Here is your bronze armor.'")
+                    print("Old Man: 'Thank you for bringing the ores. Here is your bronze armour.'")
                     blacksmith_quest["reward_given"] = True
                 elif blacksmith_quest["accepted"]:
                     clear_console()
@@ -106,9 +107,9 @@ def armour_menu(player):
     while True:
         clear_console()
         print("Armours available for purchase:\n")
-        print("1. Bronze Armour: +2 Defence Buff")
+        print("1. Bronze Armour: +3 Defence Buff")
         print("   Price: 5 Copper Ore, 5 Tin Ore, 50 Gold")
-        print("\n2. Iron Armour: +5 Defence Buff")
+        print("\n2. Iron Armour: +7 Defence Buff")
         print("   Price: 10 Iron Ore, 200 Gold")
         print("\n3. Back")
 
@@ -119,7 +120,7 @@ def armour_menu(player):
                 player.inventory.remove_items("Copper Ore", 5)
                 player.inventory.remove_items("Tin Ore", 5)
                 player.gold -= 50
-                bronze_armour = Armour("Bronze Armour", "+2 Defence Buff", 2)
+                bronze_armour = Armour("Bronze Armour", "+2 Defence Buff", 3)
                 player.inventory.add_equipment(bronze_armour)
                 print("You have purchased Bronze Armour.")
             else:
@@ -129,7 +130,7 @@ def armour_menu(player):
             if player.inventory.count_item("Iron Ore") >= 10 and player.gold >= 200:
                 player.inventory.remove_items("Iron Ore", 10)
                 player.gold -= 200
-                iron_armour = Armour("Iron Armour", "+5 Defence Buff", 5)
+                iron_armour = Armour("Iron Armour", "+5 Defence Buff", 7)
                 player.inventory.add_equipment(iron_armour)
                 print("You have purchased Iron Armour.")
             else:
@@ -162,16 +163,16 @@ def complete_blacksmith_quest(player):
         player.quests["blacksmith_quest"]["completed"] = True
         player.quests["blacksmith_quest"]["reward_given"] = True  
 
-        bronze_armor = Armour("Bronze Armor", "Sturdy armor crafted by the Northern Hills blacksmith.", defense_boost=2)
-        player.inventory.add_equipment(bronze_armor)
-        print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + f" 'Thank you, {player.name}! Here is your Bronze Armor, as promised.'")
-        print("You received 'Bronze Armor' from the blacksmith.")
+        bronze_armour = Armour("Bronze Armour", "Sturdy armour crafted by the Northern Hills blacksmith.", defense_boost=3)
+        player.inventory.add_equipment(bronze_armour)
+        print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + f" 'Thank you, {player.name}! Here is your Bronze Armour, as promised.'")
+        print("You received 'Bronze Armour' from the blacksmith.")
     else:
-        print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + f" '{player.name}, remember, I need 5 Tin Ore and 5 Copper Ore for the armor.'")
+        print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + f" '{player.name}, remember, I need 5 Tin Ore and 5 Copper Ore for the armour.'")
 
 
 def offer_blacksmith_quest(player):
-    print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + " 'I need 5 copper and 5 tin ore to make some bronze armor. Will you bring them to me?'")
+    print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + " 'I need 5 copper and 5 tin ore to make some bronze armour. Will you bring them to me?'")
     quest_acceptance = input("Accept quest? (Y/N): ").strip().lower()
     if quest_acceptance == 'y':
         print("\nYou have accepted the quest.\n")
