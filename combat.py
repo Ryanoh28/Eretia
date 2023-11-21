@@ -156,7 +156,7 @@ def create_monster(location):
          "Human Bandit"
      ],
 
-     "Nortern Hills": [
+     "Northern Hills": [
          "Hill Hound"
          ]
 }
