@@ -7,11 +7,7 @@ class Item:
         self.name = name
         self.description = description
 
-class Armour:
-    def __init__(self, name, description, defense_boost):
-        self.name = name
-        self.description = description
-        self.defense_boost = defense_boost
+
 
 
 class EyeOfInsight(Item):
@@ -57,14 +53,6 @@ class Cauldron(Item):
         else:
             print("\nYou do not have the required recipe to concoct a potion.")
         input("\nPress Enter to continue...")
-
-
-class Weapon:
-    def __init__(self, name, description, extra_damage, crit_chance_bonus):
-        self.name = name
-        self.description = description
-        self.extra_damage = extra_damage
-        self.crit_chance_bonus = crit_chance_bonus
 
 class Pickaxe(Item):
     def __init__(self, name, description, boost):
@@ -116,6 +104,14 @@ class EnchantedFruit(Item):
         return True  # Indicate that the use was successful
 
 
+class EnergyPotion:
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
+    def use(self, player):
+        player.energy = 500
+        print(f"\n{player.name}'s energy has been boosted to 500!")
 
 
 
@@ -132,6 +128,19 @@ class Bedroll(Item):
         input("\nPress enter to continue...")
         return True
 
+
+class Armour:
+    def __init__(self, name, description, defense_boost):
+        self.name = name
+        self.description = description
+        self.defense_boost = defense_boost
+
+class Weapon:
+    def __init__(self, name, description, extra_damage, crit_chance_bonus):
+        self.name = name
+        self.description = description
+        self.extra_damage = extra_damage
+        self.crit_chance_bonus = crit_chance_bonus
 
 class Inventory:
     def __init__(self):
@@ -189,7 +198,7 @@ class Inventory:
         clear_console()
         print("Available Weapons:")
         # Display list of weapons in player's inventory
-        weapon_list = [item for item in player.inventory.items if isinstance(item, Weapon)]
+        weapon_list = [item for item in self.equipment if isinstance(item, Weapon)]
         for index, weapon in enumerate(weapon_list, 1):
             print(f"{index}. {weapon.name}")
 
@@ -203,6 +212,7 @@ class Inventory:
                 raise ValueError
             selected_weapon = weapon_list[choice_index]
             player.weapon = selected_weapon
+            self.equipment.remove(selected_weapon)  # Remove the equipped weapon from equipment list
             print(f"\n{player.name} equipped {selected_weapon.name}.\n")
         except (ValueError, IndexError):
             print("Invalid choice. Please enter a valid number.")
@@ -212,11 +222,12 @@ class Inventory:
         clear_console()
         if player.weapon:
             print(f"Unequipping {player.weapon.name}.")
-            player.available_weapons.append(player.weapon)  # Add the unequipped weapon back to available weapons
+            self.equipment.append(player.weapon)  # Add the unequipped weapon back to equipment list
             player.weapon = None
         else:
             print("You have no weapon equipped.")
-        #input("\nPress Enter to continue...")
+        input("\nPress Enter to continue...")
+
  
 
     def add_equipment(self, equipment):
@@ -487,8 +498,8 @@ class Inventory:
     #     # Armours etc later
         
 
-        print("=================\n")
-        input("\nPress Enter to continue...")
+        # print("=================\n")
+        # input("\nPress Enter to continue...")
 
     def use_item(self, index, target):
         item_list = list(self.items.keys())
