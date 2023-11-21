@@ -219,8 +219,6 @@ def check_mystic_herb_quest_status(player):
         print(Style.DIM + Fore.YELLOW + f"Guard Captain: \"There are always challenges to be found around here, {player.name}. Keep your wits about you.\"")
 
 def meet_guard_captain(player):
-    
-   
     clear_console()
     print("As you enter the town, the Guard Captain approaches you with a stern look.")
     input("\nPress Enter to continue...")
@@ -229,19 +227,18 @@ def meet_guard_captain(player):
     print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL + f"'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     health_potion = HealthPotion()
     player.inventory.add_item(health_potion)
-        
 
-#add debug items here to be given
     input("\nPress Enter to continue...")
     clear_console()
 
     print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'And take this Rusted Sword as well. It's not much, but it's better than nothing.'" + Style.RESET_ALL)
     rusted_sword = Weapon("Rusted Sword", "A sword corroded by time, with a dulled edge.", 0.5, 0.5)
-    player.available_weapons.append(rusted_sword)
-    print(f"\n{player.name} received a Rusted Sword.")
+    player.inventory.add_equipment(rusted_sword)  # Adding the weapon to the equipment list
+    print(Style.BRIGHT + Fore.BLUE + f"\n{player.name} received a Rusted Sword." + Style.RESET_ALL)
     input("\nEnter your inventory to equip weapons and armour. Press Enter to continue...")
 
     clear_console()
+
 
 
 
