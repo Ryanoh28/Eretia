@@ -46,7 +46,7 @@ def mine(player, location, ore_level_table):
             gain_mining_experience(player, ore)
 
             # Monster encounter check
-            if random.randint(1, 4) == 1:
+            if random.randint(1, 5) == 1:
                 print(Fore.RED + "\nAs you mine, a monster emerges from the depths of the mine!" + Style.RESET_ALL)
                 input("\nPress enter to continue...")
                 fight_monster(player, location)

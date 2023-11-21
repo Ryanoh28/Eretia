@@ -37,8 +37,8 @@ def show_northern_hills_menu(player):
         player.current_location = 'northern_hills'
         clear_console()
         print("What would you like to do?\n")
-        print("1. Visit Smithy")
-        print("2. Hunt on the Hills")
+        print("1. Hunt on the Hills")
+        print("2. Visit Smithy")
         print("3. Inventory")
         print("4. Rest ")
         print("5. View Quests")
@@ -47,11 +47,11 @@ def show_northern_hills_menu(player):
         choice = input("\nEnter your choice (1-4): ").strip()
         clear_console()
 
-        if choice == "1":
+        if choice == "2":
             visit_blacksmith(player)
         elif choice == "3":
             player.inventory.inventory_menu(player)
-        elif choice == "2":
+        elif choice == "1":
             clear_console()
             fight_monster(player, "Northern Hills")  
         elif choice == "4":
