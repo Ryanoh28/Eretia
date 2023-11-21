@@ -1,10 +1,11 @@
-from combat import combat, create_monster
+from combat import combat, create_monster, fight_monster
 from items import Armour
 from utilities import clear_console
 from colorama import Fore, Style
-
+from locations.locationfunctions import rest_in_location
 
 def enter_northern_hills(player):
+    player.current_location = 'northern_hills'
     clear_console()
     print("You head towards the Northern Hills...\n")
 
@@ -33,29 +34,39 @@ def lead_player_to_smithy(player):
 def show_northern_hills_menu(player):
     clear_console()
     while True:
+        player.current_location = 'northern_hills'
         clear_console()
         print("What would you like to do?\n")
         print("1. Visit Smithy")
-        print("2. Inventory")
-        print("3. View Quests")
-        print("4. Return")
+        print("2. Hunt on the Hills")
+        print("3. Inventory")
+        print("4. Rest ")
+        print("5. View Quests")
+        print("6. Return")
 
         choice = input("\nEnter your choice (1-4): ").strip()
         clear_console()
 
         if choice == "1":
             visit_blacksmith(player)
-        elif choice == "2":
-            player.inventory.inventory_menu(player)  
         elif choice == "3":
+            player.inventory.inventory_menu(player)
+        elif choice == "2":
+            clear_console()
+            fight_monster(player, "Northern Hills")  
+        elif choice == "4":
+            clear_console()
+            rest_in_location(player)  
+        elif choice == "5":
+            clear_console()
             from bordertown import view_quest_log
             view_quest_log(player)  
-        elif choice == "4" or 'q':
+        elif choice == "6" or choice == 'q':
             player.current_location = 'border_town'
             from bordertown import leave_town
-            leave_town(player)
+            leave_town(player)  
         else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
+            print("Invalid choice. Please enter a number between 1 and 6.")
 
 def visit_blacksmith(player):
     while True:
@@ -111,7 +122,9 @@ def armour_menu(player):
         print("   Price: 5 Copper Ore, 5 Tin Ore, 50 Gold")
         print("\n2. Iron Armour: +7 Defence Buff")
         print("   Price: 10 Iron Ore, 200 Gold")
-        print("\n3. Back")
+        print("\n3. Steel Armour: +15 Defence Buff")
+        print("   Price: 25 Iron Ore, 10 Coal, 600 Gold")
+        print("\n4. Back")
 
         choice = input("\nChoose an armour to purchase or go back: ").strip()
 
@@ -136,16 +149,23 @@ def armour_menu(player):
             else:
                 print("\nYou cannot afford the Iron Armour.")
             input("\nPress enter to continue...")
-        elif choice == '3' or choice == 'q':
+        elif choice == '3':
+            if player.inventory.count_item("Iron Ore") >= 25 and player.inventory.count_item("Coal") >= 10 and player.gold >= 600:
+                player.inventory.remove_items("Iron Ore", 25)
+                player.inventory.remove_items("Coal", 10)
+                player.gold -= 600
+                steel_armour = Armour("Steel Armour", "+15 Defence Buff", 15)
+                player.inventory.add_equipment(steel_armour)
+                print("You have purchased Steel Armour.")
+            else:
+                print("\nYou cannot afford the Steel Armour.")
+            input("\nPress enter to continue...")
+
+        elif choice == '4' or choice == 'q':
             break
         else:
             print("Invalid choice. Please enter a valid number.")
             input("\nPress enter to continue...")
-
-
-
-
-
 
 def check_ores_in_inventory(player, tin_count, copper_count):
     
