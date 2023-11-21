@@ -133,7 +133,7 @@ def armour_menu(player):
                 player.inventory.remove_items("Copper Ore", 5)
                 player.inventory.remove_items("Tin Ore", 5)
                 player.gold -= 50
-                bronze_armour = Armour("Bronze Armour", "+2 Defence Buff", 3)
+                bronze_armour = Armour("Bronze Armour", "+3 Defence Buff", 3)
                 player.inventory.add_equipment(bronze_armour)
                 print("You have purchased Bronze Armour.")
             else:
@@ -143,7 +143,7 @@ def armour_menu(player):
             if player.inventory.count_item("Iron Ore") >= 10 and player.gold >= 200:
                 player.inventory.remove_items("Iron Ore", 10)
                 player.gold -= 200
-                iron_armour = Armour("Iron Armour", "+5 Defence Buff", 7)
+                iron_armour = Armour("Iron Armour", "+7 Defence Buff", 7)
                 player.inventory.add_equipment(iron_armour)
                 print("You have purchased Iron Armour.")
             else:
