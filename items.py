@@ -313,7 +313,8 @@ class Inventory:
 
         print("=== Skill Stats ===")
         print(f"Mining Level: {player.mining_level} (Exp: {player.mining_experience}/100)")
-        # Add other skills here as needed
+        print(f"Horticulture Level: {player.horticulture_level} (Exp: {player.horticulture_experience}/100)")
+
         print("====================\n")
 
         input("\nPress Enter to return...")

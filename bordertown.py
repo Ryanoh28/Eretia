@@ -40,39 +40,71 @@ def return_to_border_town(player):
         clear_console()
         print("You are in Border Town. What would you like to do?\n")
         print("1. Train")
-        print("2. Leave Border Town")
-        print("3. Visit Tavern")
-        print("4. Rest")
-        print("5. Inventory")
-        print("6. Shop")
-        print("7. Quests")
-        print("8. Exit to Main Menu")
+        print("2. East Gate")
+        print("3. West Gate")
+        print("4. Visit Tavern")
+        print("5. Rest")
+        print("6. Inventory")
+        print("7. Shop")
+        print("8. Quests")
+        print("9. Exit to Main Menu")
 
-        choice = input("\nEnter your choice (1-8): ").strip()
+        choice = input("\nEnter your choice (1-9): ").strip()
 
         if choice == "1":
             player.training()
         elif choice == "2":
             leave_town(player)
         elif choice == "3":
-            
-            visit_tavern(player)
+            leave_town_west(player)
+            #pass
         elif choice == "4":
-            rest(player)
+            visit_tavern(player)
         elif choice == "5":
-            player.inventory.inventory_menu(player)  
+            rest(player)
         elif choice == "6":
-            shop.shop_menu(player)
+            player.inventory.inventory_menu(player)  
         elif choice == "7":
-            view_quest_log(player)
+            shop.shop_menu(player)
         elif choice == "8":
-            
+            view_quest_log(player)
+        elif choice == "9":
             from game1 import main_menu
-            
             main_menu(player)
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 8.\n")
+            print("\nInvalid choice. Please enter a number between 1 and 9.\n")
 
+def leave_town_west(player):
+    while True:
+        clear_console()
+        print("Not implemented yet\n")
+        print("The western path leads inland to more peaceful locations.\n")
+        print("1. Meadowlands")
+        print("2. Crystal Lake")
+        print("3. Ancient Library")
+        print("4. Inventory")
+        print("5. Return to Border Town")
+
+        choice = input("\nEnter your choice (1-5): ").strip()
+
+        if choice == "1":
+            pass
+            #enter_meadowlands(player)
+        elif choice == "2":
+            pass
+            #enter_crystal_lake(player)
+        elif choice == "3":
+            pass
+            #visit_ancient_library(player)
+        elif choice == "4":
+            player.inventory.inventory_menu(player)
+        elif choice == "5":
+            print("\nYou decide to return to the safety of Border Town.")
+            return_to_border_town(player)
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 5.")
+
+    
 
 
 def visit_tavern(player):
@@ -147,7 +179,8 @@ def leave_town(player):
         print("3. Northern Hills")
         print("4. The Border")
         print("5. Border Town")
-        choice = input("\nEnter your choice (1-5): ").strip()
+        print("6. View Sign Post")
+        choice = input("\nEnter your choice (1-6): ").strip()
 
         if choice == "1":
             enter_dark_forest(player)
@@ -163,12 +196,20 @@ def leave_town(player):
             from locations.theborder import enter_the_border
             enter_the_border(player)
             break
-        elif choice == "5" or 'q':
+        elif choice == "5" or choice == 'q':
             print("\nYou return to Border Town.")
             return_to_border_town(player)
             player.current_location = 'border_town'
+        elif choice == "6":
+            clear_console()
+            print("The old, weather-beaten sign post creaks as you approach. The faded lettering reads:\n")
+            print("   'Traveler, beware! Beyond lies the Dark Forest, home to creatures most foul.")
+            print("    The Border is near, where the unknown meets the known.")
+            print("    Heed this warning: only the brave or foolish tread these paths. Prepare well!'\n")
+            input("Press enter to continue...")
+
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 5.")
+            print("\nInvalid choice. Please enter a number between 1 and 6.")
 
 
 

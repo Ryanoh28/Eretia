@@ -115,6 +115,8 @@ class Warrior(Human):
         self.gold = 0
         self.choice = None
         self.search_count = 0
+        self.horticulture_level = 1
+        self.horticulture_experience = 0
         self.mining_experience = 0
         self.mining_level = 1
         self.echo_cavern_completed = False

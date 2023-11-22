@@ -428,7 +428,7 @@ def adventure_into_wilds(player, first_time=True):
 
     if random.randint(1, 2) == 2:
         clear_console()
-        print(Fore.LIGHTRED_EX + "\nAs you explore, a monster emerges from the wildlands!" + Style.RESET_ALL)
+        print(Fore.LIGHTRED_EX + "As you explore, a monster emerges from the wildlands!" + Style.RESET_ALL)
         input("\nPress enter to continue...")
         fight_monster(player, "The Border")
 
@@ -452,12 +452,12 @@ def follow_ancient_road(player):
     while True:
         clear_console()
         print("You are on the Ancient Road. You see the a mine entrance just off to the right covered with overgrown vines, and on the other side a decrepit waystation. What would you like to do?\n")
-        print("1. Mine for resources.")
-        print("2. Follow the road and fight monsters.")
-        print("3. Decrepit Waystation.")
+        print("1. Mine ")
+        print("2. Hunt Monsters")
+        print("3. Decrepit Waystation")
         print("4. Rest")
         print("5. Inventory")
-        print("6. Return to the Lower Bonefields.")
+        print("6. Return to the Lower Bonefields")
 
         choice = input("\nEnter your choice (1-6): ").strip()
 
@@ -557,7 +557,10 @@ LOWER_BONEFIELDS_ORE_LEVEL_TABLE = {
     "Tin Ore": 1,
     "Iron Ore": 5,
     "Coal": 8,
-    "Mithril": 10  # Mithril available in the Lower Bonefields Mine
+    "Silver": 10,  
+    "Gold": 15,
+    #"Mithril": 20,
+    #"Adamantine": 25
 }
 
 def enter_mine(player):
