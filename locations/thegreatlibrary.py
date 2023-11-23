@@ -143,7 +143,7 @@ def read_lyra_starwhisper(player):
     print("Heroes of Eretia - Lyra Starwhisper")
     print("\nLyra Starwhisper, a sorceress of great renown, wielded the arcane arts with a grace and power that few could match. Her command of elemental magic was unparalleled, a beacon of hope in the darkest hours of the Great Beast Tide.")
 
-    print("\nDuring the direst moment of the siege on the Great Library, where ancient knowledge was threatened by the encroaching beasts, Lyra stood as the last line of defense. She summoned a vortex of wind and lightning, creating a barrier that no beast could penetrate.")
+    print("\nDuring the direst moment of the siege on the Great Library, where ancient knowledge was threatened by the encroaching beasts, Lyra stood as the last line of defence. She summoned a vortex of wind and lightning, creating a barrier that no beast could penetrate.")
 
     print("\nAs the monstrous tide battered against her spell, Lyra's strength waned. With a final, defiant cry, she unleashed all her magical energy, obliterating the attackers but also dissipating her own form. The tempest she conjured was so potent that not a single creature could approach the Library, but it cost Lyra her physical existence.")
 
