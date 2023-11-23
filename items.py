@@ -7,6 +7,17 @@ class Item:
         self.name = name
         self.description = description
 
+class ReadableItem(Item):
+    def __init__(self, name, description, potion_type):
+        super().__init__(name, description)
+        self.potion_type = potion_type
+
+    def use(self, player):
+        print(f"\nYou read the {self.name}.")
+        player.known_potions[self.potion_type] = True
+        print(f"\nThe knowledge of concocting {self.potion_type} sinks in, and the item disappears from your inventory.")
+        player.inventory.remove_items(self.name, 1)
+
 
 
 
@@ -22,7 +33,9 @@ class EyeOfInsight(Item):
         print(f"Defence: {monster.defence}")
         input("Press enter to continue...")
         
-
+class FishingRod(Item):
+    def __init__(self, name, description):
+        super().__init__(name, description)
 class MageStaff(Item):
     def __init__(self):
         super().__init__("Mage Staff", "A mystical staff used by mages to channel magical energy.")
@@ -41,18 +54,56 @@ class Cauldron(Item):
             self.concoct_potion(player)
 
     def concoct_potion(self, player):
-        if "Health Potion Recipe" in [item.name for item in player.inventory.items]:
-            if player.inventory.count_item("Mystic Herb") >= 2:
-                # Remove ingredients and add potion
-                player.inventory.remove_items("Mystic Herb", 2)
-                health_potion = HealthPotion()  # Creating an instance of HealthPotion
-                player.inventory.add_item(health_potion)
-                print("\nYou successfully concocted a Health Potion!")
-            else:
-                print("\nYou don't have enough Mystic Herbs to concoct a Health Potion.")
+        potion_options = self.get_available_potions(player)
+        if not potion_options:
+            print("\nYou do not have the knowledge or ingredients to concoct any potions.")
+            
+            return
+
+        print("\nChoose a potion to concoct:")
+        for i, potion in enumerate(potion_options, 1):
+            print(f"{i}. {potion['name']}")
+
+        choice = input("\nEnter your choice, or 'Q' to return: ").lower().strip()
+        if choice.isdigit() and 1 <= int(choice) <= len(potion_options):
+            selected_potion = potion_options[int(choice) - 1]
+            self.create_potion(selected_potion, player)
+        elif choice == 'q':
+            return
         else:
-            print("\nYou do not have the required recipe to concoct a potion.")
-        input("\nPress Enter to continue...")
+            print("\nInvalid choice.")
+
+    def get_available_potions(self, player):
+        available_potions = []
+        if player.known_potions.get("Health Potion") and player.inventory.count_item("Simple Herb") >= 5:
+            available_potions.append({
+                "name": "Health Potion",
+                "ingredients": {"Simple Herb": 5},
+                "potion_class": HealthPotion,
+                "xp": 5
+            })
+
+        if player.known_potions.get("Mana Potion") and player.inventory.count_item("Simple Herb") >= 3 and player.inventory.count_item("Moonflower Seed") >= 1:
+            available_potions.append({
+                "name": "Mana Potion",
+                "ingredients": {"Simple Herb": 3, "Moonflower Seed": 1},
+                "potion_class": ManaPotion,
+                "xp": 8
+            })
+
+        return available_potions
+
+    def create_potion(self, potion_info, player):
+        for ingredient, quantity in potion_info["ingredients"].items():
+            player.inventory.remove_items(ingredient, quantity)
+        potion = potion_info["potion_class"]()
+        player.inventory.add_item(potion)
+        player.concoction_experience += potion_info["xp"]
+        print(f"\nYou successfully concocted a {potion_info['name']}! You gained {potion_info['xp']} concoction experience points.")
+        
+
+
+
 
 class Pickaxe(Item):
     def __init__(self, name, description, boost):
@@ -63,8 +114,8 @@ class Pickaxe(Item):
 class HealthPotion:
     def __init__(self):
         self.name = "Health Potion"
-        self.description = "A potion that restores 25 health."
-        self.healing_amount = 25
+        self.description = "A potion that restores 50 health."
+        self.healing_amount = 50
 
     def use(self, target):
         if target.health < target.max_health:
@@ -228,10 +279,19 @@ class Inventory:
         return self.items.get(item_name, {'quantity': 0})['quantity']
 
     def remove_items(self, item_name, count):
-        if item_name in self.items:
+        if item_name in self.items and self.items[item_name]['quantity'] >= count:
             self.items[item_name]['quantity'] -= count
             if self.items[item_name]['quantity'] <= 0:
                 del self.items[item_name]
+            return True
+        else:
+            return False
+    
+    # def remove_items(self, item_name, count):
+    #     if item_name in self.items:
+    #         self.items[item_name]['quantity'] -= count
+    #         if self.items[item_name]['quantity'] <= 0:
+    #             del self.items[item_name]
     
     
 
@@ -244,9 +304,12 @@ class Inventory:
         if equipment in self.equipment:
             self.equipment.remove(equipment)
 
-    
     def add_item(self, item, quantity=1, print_confirmation=True, found_quantity=1):
-        item_name = item.name
+    
+        if isinstance(item, dict):
+            item_name = item.get('name', 'Unknown')
+        else:
+            item_name = item.name
 
         if item_name in self.items:
             self.items[item_name]['quantity'] += quantity
@@ -255,9 +318,22 @@ class Inventory:
 
         if print_confirmation:
             if found_quantity > 1:
-                print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} ({found_quantity}) to inventory\n" + Style.RESET_ALL)
+                print(Fore.LIGHTBLUE_EX + f"Added {item_name} ({found_quantity}) to inventory" + Style.RESET_ALL)
             else:
-                print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} to inventory\n" + Style.RESET_ALL)
+                print(Fore.LIGHTBLUE_EX + f"Added {item_name} to inventory" + Style.RESET_ALL)
+    # def add_item(self, item, quantity=1, print_confirmation=True, found_quantity=1):
+    #     item_name = item.name
+
+    #     if item_name in self.items:
+    #         self.items[item_name]['quantity'] += quantity
+    #     else:
+    #         self.items[item_name] = {'object': item, 'quantity': quantity}
+
+    #     if print_confirmation:
+    #         if found_quantity > 1:
+    #             print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} ({found_quantity}) to inventory\n" + Style.RESET_ALL)
+    #         else:
+    #             print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} to inventory\n" + Style.RESET_ALL)
 
 
     def show_equipment(self, player):
@@ -314,6 +390,8 @@ class Inventory:
         print("=== Skill Stats ===")
         print(f"Mining Level: {player.mining_level} (Exp: {player.mining_experience}/100)")
         print(f"Horticulture Level: {player.horticulture_level} (Exp: {player.horticulture_experience}/100)")
+        print(f"Fishing Level: {player.fishing_level} (Exp: {player.fishing_experience}/100)")
+        print(f"Concoction Level: {player.concoction_level} (Exp: {player.concoction_experience}/100)")
 
         print("====================\n")
 

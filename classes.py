@@ -1,8 +1,10 @@
 #classes.py
 import random
-from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion, EyeOfInsight
+from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion, EyeOfInsight, FishingRod
 from utilities import clear_console
 from colorama import Fore, Style
+from datetime import datetime, timedelta
+from locations.meadowlands import plants_table
 class Human:
     def __init__(self, name):
         self.name = name
@@ -87,6 +89,7 @@ class Logbook:
 
 
 
+
 class Warrior(Human):
     def __init__(self, name):
         super().__init__(name)
@@ -117,8 +120,14 @@ class Warrior(Human):
         self.search_count = 0
         self.horticulture_level = 1
         self.horticulture_experience = 0
-        self.mining_experience = 0
+        self.fishing_level = 1
+        self.fishing_experience = 0
+        self.known_potions = {"Health Potion": False, "Mana Potion": False}
+        self.concoction_level = 1
+        self.concoction_experience = 0
+        self.garden = [] 
         self.mining_level = 1
+        self.mining_experience = 0
         self.echo_cavern_completed = False
         self.flags = set()
         self.mana = 100
@@ -127,7 +136,70 @@ class Warrior(Human):
         self.total_training_count = 0
         self.first_time_northern_hills = True
  
+    def plant_seed(self, seed_name):
+        for plant_info in plants_table:
+            if plant_info['seed_name'] == seed_name:
+                if self.horticulture_level >= plant_info['req_level']:
+                    if self.inventory.count_item(seed_name) > 0:
+                        self.inventory.remove_items(seed_name, 1)
+                        self.garden.append({
+                            'name': plant_info['plant_name'],
+                            'planted_time': datetime.now(),
+                            'growth_time': plant_info['growth_time'],
+                            'harvesting_xp': plant_info['harvesting_xp']
+                        })
+                        print(f"Planted {seed_name}.")
+                        return
+                    else:
+                        print(f"You do not have any {seed_name}.")
+                        return
+                else:
+                    print(f"Your horticulture level is not high enough to plant {seed_name}.")
+                    return
+        print("Invalid seed selection.")
+
+
+
+
+    def check_crops(self):
+        for i, plant in enumerate(self.garden, 1):
+            time_elapsed = datetime.now() - plant['planted_time']
+            time_left = plant['growth_time'] - time_elapsed.total_seconds() / 60
+            status = "Ready for harvest" if time_left <= 0 else f"Ready in {time_left:.2f} minutes"
+            print(f"{i}. {plant['name']} - {status}")
+
+    def harvest_crops(self, plant_number):
+        if 0 < plant_number <= len(self.garden):
+            plant = self.garden[plant_number - 1]
+            time_elapsed = datetime.now() - plant['planted_time']
+            if time_elapsed.total_seconds() / 60 >= plant['growth_time']:
+                self.horticulture_experience += plant['harvesting_xp']
+                harvested_quantity = random.randint(*plants_table[plant_number - 1]['yield_range'])
+                self.inventory.add_item({'name': plant['name']}, quantity=harvested_quantity)
+                print(f"\nHarvested {harvested_quantity} {plant['name']}(s), gained {plant['harvesting_xp']} XP.")
+                self.garden.pop(plant_number - 1)
+            else:
+                print(f"{plant['name']} is not ready for harvest yet.")
+        else:
+            print("Invalid plant number.")
+
+
+
     
+    # def harvest_crops(self, plant_number):
+    #     if 0 < plant_number <= len(self.garden):
+    #         plant = self.garden[plant_number - 1]
+    #         time_elapsed = datetime.now() - plant['planted_time']
+    #         if time_elapsed.total_seconds() / 60 >= plant['growth_time']:
+    #             self.horticulture_experience += plant['harvesting_xp']
+    #             print(f"Harvested {plant['name']}. Gained {plant['harvesting_xp']} XP.")
+    #             self.garden.pop(plant_number - 1)
+    #             # Check for level up...
+    #         else:
+    #             print(f"{plant['name']} is not ready for harvest yet.")
+    #     else:
+    #         print("Invalid plant number.")
+
     def check_level_up(self):
         while self.experience >= self.experience_required:
             self.experience -= self.experience_required
@@ -491,13 +563,14 @@ class Monster:
 class Shop:
     def __init__(self, additional_items=None):
         self.base_items_for_sale = {
-            'health potion': {'price': 20, 'object': HealthPotion()},
-            'mana potion': {'price': 20, 'object': ManaPotion()},
+            'health potion': {'price': 60, 'object': HealthPotion()},
+            'mana potion': {'price': 40, 'object': ManaPotion()},
             'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
             'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 20)},
             'Deluxe Energy Potion': {'price': 100, 'object': EnergyPotion("Deluxe Energy Potion", "A powerful potion that boosts your energy to 500.")},
-            'Eye of Insight': {'price': 0, 'object': EyeOfInsight()}
+            'Eye of Insight': {'price': 0, 'object': EyeOfInsight()},
+            'Fishing Rod': {'price': 20, 'object': FishingRod("Fishing Rod", "A basic fishing rod for catching fish.")}
         }
         
 
@@ -545,7 +618,11 @@ class Shop:
             'Cursed Coin': 25,
             'Bone Amulet': 25,
             'Phantom Feather': 17,
-            'Bronze Armour': 35
+            'Bronze Armour': 35,
+            "Small Fish": 5,
+            'Iron Armour': 100,
+            'Steel Armour': 200,
+            'Simple Herb': 5
             
         }
 

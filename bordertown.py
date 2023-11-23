@@ -57,7 +57,7 @@ def return_to_border_town(player):
             leave_town(player)
         elif choice == "3":
             leave_town_west(player)
-            #pass
+            
         elif choice == "4":
             visit_tavern(player)
         elif choice == "5":
@@ -81,21 +81,23 @@ def leave_town_west(player):
         print("The western path leads inland to more peaceful locations.\n")
         print("1. Meadowlands")
         print("2. Crystal Lake")
-        print("3. Ancient Library")
+        print("3. The Great Library")
         print("4. Inventory")
         print("5. Return to Border Town")
 
         choice = input("\nEnter your choice (1-5): ").strip()
 
         if choice == "1":
-            pass
-            #enter_meadowlands(player)
+            from locations.meadowlands import meadowlands_menu
+            
+            meadowlands_menu(player)
         elif choice == "2":
-            pass
-            #enter_crystal_lake(player)
+            from locations.crystallake import enter_crystal_lake
+            
+            enter_crystal_lake(player)
         elif choice == "3":
-            pass
-            #visit_ancient_library(player)
+            from locations.thegreatlibrary import visit_great_library
+            visit_great_library(player)
         elif choice == "4":
             player.inventory.inventory_menu(player)
         elif choice == "5":
@@ -268,9 +270,11 @@ def meet_guard_captain(player):
     print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL + f"'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     health_potion = HealthPotion()
     player.inventory.add_item(health_potion)
-    # from items import Armour
-    # iron_armour = Armour("Iron Armour", "+7 Defence Buff", 7)
-    # player.inventory.add_equipment(iron_armour)
+    seed_name = "Simple Herb Seed"
+    seed_quantity = 5
+    seed = {'name': seed_name}
+    player.inventory.add_item(seed, quantity=seed_quantity, found_quantity=seed_quantity)
+        
     input("\nPress Enter to continue...")
     clear_console()
     

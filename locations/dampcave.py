@@ -1,6 +1,6 @@
 from utilities import clear_console
 from skills.mining import mine_in_damp_cave
-from items import get_location_loot, Item, EnchantedFruit, MageStaff, Rune
+from items import get_location_loot, Item, EnchantedFruit, MageStaff, Rune, ReadableItem
 from locations.locationfunctions import rest_in_location
 from colorama import Fore
 import random
@@ -231,7 +231,7 @@ def rune_sequence_barrier(player):
                 player.inventory.add_item(water_rune)
                 player.inventory.add_item(fire_rune)
 
-                print("You have received three mystical runes: Earth, Water, and Fire.")
+                print("\nYou have received three mystical runes: Earth, Water, and Fire.")
                 player.flags.add('RunesReceived')
             else:
                 print("The path ahead is clear, but you find nothing new here.")
@@ -412,8 +412,8 @@ def enter_mages_abode(player):
     print("\nAn elderly mage, with eyes that hold centuries of wisdom, greets you. 'Ah, the one who has journeyed through the cave. I have indeed been watching your progress.'")
     
     print("\n'The path you've chosen and the choices you've made reveal much about you. It's time for you to learn the art of potion concoction,' the Mage continues.\n")
-
-    health_potion_recipe = Item("Health Potion Recipe", "A recipe for concocting Health Potions using Mystic Herbs.")
+    
+    health_potion_recipe = ReadableItem("Health Potion Recipe", "A recipe for concocting Health Potions using Mystic Herbs.", "Health Potion")
     player.inventory.add_item(health_potion_recipe)
     print("\nThe Mage hands you a scroll. 'This is the recipe for a basic Health Potion. To create one, you'll need two Mystic Herbs and a Cauldron.'")
 
