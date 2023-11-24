@@ -76,62 +76,6 @@ def combat(player, monster):
 
 
 
-# def combat(player, monster):
-    
-#     while player.alive and monster.alive:
-#         print("\nChoose your action:\n")
-#         print("1. Attack")
-#         print("2. Use Spell")
-#         print("3. Inventory")
-#         print("4. Run")
-#         # print(f" DEBUG Monster strength: {monster.strength}")
-#         # print(f"DEBUG Player defence: {player.defence}")
-        
-        
-#         eye_of_insight = next((item for item in player.inventory.items if isinstance(item, EyeOfInsight)), None)
-#         if eye_of_insight:
-#             print("5. Use Eye of Insight")
-
-#         choice = input("\nEnter your choice: ").strip()
-#         clear_console()
-
-#         if choice == "1":
-#             player.normal_attack(monster)
-#         elif choice == "2":
-#             selected_spell = spell_menu(player, monster)
-#             if selected_spell:
-#                 selected_spell.cast(player, monster)
-#         elif choice == "3":
-#             player.inventory.use_item_interface(player)
-#         elif choice == "4":
-#             print("You managed to escape from the Monster safely.\n")
-#             input("Press enter to continue...")
-#             return 'escaped'
-#         elif choice == "5" and eye_of_insight:
-#             eye_of_insight.use(monster)
-
-#         if monster.alive:
-#             monster.monster_attack(player)
-#             if player.stone_skin_turns_remaining > 0:
-#                 player.stone_skin_turns_remaining -= 1
-#                 if player.stone_skin_turns_remaining == 0:
-#                     player.reduce_defence_post_effect()
-
-#         if not monster.check_if_alive():
-#             print(f"\nThe {monster.name} has been defeated!")
-#             player.gain_experience(monster.level) 
-#             handle_loot_and_examine(player)  
-#             input("\nPress Enter to continue...")
-#             return 'monster_defeated'
-
-#     if not player.alive:
-#         return 'player_defeated'
-
-#     return 'end_of_combat'
-
-
-
-
 def handle_loot_and_examine(player):
     loot = get_loot_drop()
     for item in loot:

@@ -1,6 +1,6 @@
 from combat import fight_monster, create_monster, combat
 from utilities import clear_console
-from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight
+from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight, Armour
 from locations.locationfunctions import rest_in_location, return_to_location
 from colorama import Style, Fore
 from missions.missiongenerator import generate_mission, accept_mission, complete_mission
@@ -501,7 +501,87 @@ def decrepit_waystation(player):
             input("\nPress Enter to continue...")
 
 def investigate_waystation(player):
-    pass  # Placeholder for future implementation
+    clear_console()
+    print("You step cautiously into the waystation, its eerie silence punctuated only by the creaking of old wood underfoot.")
+    input("\nPress Enter to continue...")
+
+    while True:
+        clear_console()
+        print("Where would you like to search?\n")
+        print("1. Search the bar area")
+        print("2. Search the cupboards")
+        print("3. Search the rest area")
+        print("4. Search upstairs")
+        print("5. Leave")
+
+        choice = input("\nEnter your choice (1-5): ").strip()
+
+        if choice == "1":
+            search_bar_area(player)
+        elif choice == "2":
+            search_cupboards(player)
+        elif choice == "3":
+            search_rest_area(player)
+        elif choice == "4":
+            encounter_bandit(player)
+        elif choice == "5":
+            follow_ancient_road(player)
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 4.")
+            input("\nPress Enter to continue...")
+
+mithril_armour = Armour("Mithril Armour", "+21 Defence Buff", 21)
+medium_fish = Item("Medium Fish", "A fish caught from Crystal Lake.")
+mana_potion = Item("Mana Potion", "Restores mana.")
+health_potion = Item("Health Potion", "Restores health.")
+beirut_blade = Weapon("Shadowfang", "An old blade dating back to before 'The Great Beast Tide', inscribed D.B", 5, 4.5)
+
+
+
+
+def search_area(player, area_name):
+    global remaining_health_potions, remaining_mana_potions, remaining_fish
+
+    if not hasattr(player, area_name):
+        if area_name == 'search_bar_area':
+            player.inventory.add_item(HealthPotion(), quantity=3, found_quantity=3)
+            
+
+        elif area_name == 'search_cupboards':
+            player.inventory.add_item(medium_fish, quantity=1, found_quantity=1)
+            
+
+        elif area_name == 'search_rest_area':
+           player.inventory.add_item(ManaPotion(), quantity=2, found_quantity=2)
+            
+
+        setattr(player, area_name, True)
+        input("\nPress Enter to continue...")
+    else:
+        print("Already searched here.")
+        input("\nPress enter to cotinue...")
+
+def search_bar_area(player):
+    clear_console()  
+    search_area(player, 'search_bar_area')
+
+def search_cupboards(player):
+    clear_console()  
+    search_area(player, 'search_cupboards')
+
+def search_rest_area(player):
+    clear_console()  
+    search_area(player, 'search_rest_area')
+
+
+
+def encounter_bandit(player):
+    print("\nAs you ascend the creaky stairs, a figure emerges from the shadows, brandishing a weapon.")
+    print('"Your luck isn\'t good today..." the human bandit sneers.')
+    input("\nPress Enter to continue...")
+    fight_monster(player, "Human Bandit")
+
+
 
 def fight_on_road(player):
     while True:
