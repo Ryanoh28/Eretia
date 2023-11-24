@@ -10,12 +10,12 @@ class Human:
         self.name = name
         self.alive = True
         self.inventory = Inventory()
-        self.health = 100  # Default max health for all humans
+        self.health = 100  
 
     def increase_defence_temporarily(self, increase, duration):
         self.defence += increase
         print(f"{self.name}'s defence increased by {increase} for {duration} turns.")
-        return duration  # return the duration for which the effect lasts
+        return duration  
 
     def reduce_defence_post_effect(self, decrease):
         self.defence = max(0, self.defence - decrease)
@@ -23,18 +23,18 @@ class Human:
 
     def lose_health(self, damage, attacker_strength):
         damage_reduction = max(0, self.defence - attacker_strength)
-        effective_damage = max(1, damage - damage_reduction)  # Ensure minimum damage of 1
+        effective_damage = max(1, damage - damage_reduction)  
 
-        self.health -= effective_damage
+        self.health -= round(effective_damage,1)
         self.health = round(self.health, 1)
 
         if damage_reduction > 0:
             print("\n=============================================")
             print(f"{self.name}'s defence negated {damage_reduction} points of damage from the attack!")
             print("=============================================")
-        print("\n=============================================")
-        print(f"{self.name} lost {effective_damage} health and now has {self.health} health.")
-        print("=============================================")
+        #print("\n=============================================")
+        #print(f"{self.name} lost {effective_damage} health and now has {self.health} health.")
+        #print("=============================================")
 
         if self.health <= 0:
             self.defeated()
