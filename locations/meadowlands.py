@@ -85,30 +85,26 @@ def harvest_plants(player):
         clear_console()
         if not player.garden:
             print("You have no plants ready for harvest.")
-            input("Press enter to contue...")
+            input("Press enter to continue...")
             return
         else:
             print("Select a Plant to Harvest:")
-            player.check_crops()  
+            player.check_crops()
             choice = input("\nEnter the number of the plant to harvest, or 'Q' to return: \n").strip()
 
             if choice.lower() == 'q':
                 return
-            elif choice.isdigit() and 1 <= int(choice) <= len(player.garden):
-                player.harvest_crops(int(choice))
+            elif choice.isdigit():
+                choice_number = int(choice)
+                if 0 <= choice_number - 1 < len(player.garden):
+                    player.harvest_crops(choice_number)
+                else:
+                    print("\nInvalid choice. Please enter a valid number.")
             else:
-                print("\nInvalid choice. Please enter a valid number.")
+                print("\nInvalid input. Please enter a number.")
 
         input("\nPress Enter to continue...")
 
-{
-    "fish_pie_quest": {
-        "accepted": False,
-        "completed": False,
-        "reward_given": False,
-        "fish_collected": 0
-    }
-}
 
 
 def talk_to_farmer(player):

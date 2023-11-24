@@ -25,6 +25,14 @@ monster_names = {
         "Corrupted Ent", 
         "Nightmare Wisp", 
         "Barren Drake"
+    ],
+    "Northern Hills": [
+        "Frost-Feathered Eagle", 
+        "Stonehide Boar", 
+        "Gale Howler Wolf", 
+        "Hill Serpent", 
+        "Mist Wraith",
+        "Hill Hound"
     ]
 }
 

@@ -172,7 +172,7 @@ class Warrior(Human):
             print(f"{i}. {plant['name']} - {status}")
 
     def harvest_crops(self, plant_number):
-        if 0 < plant_number <= len(self.garden):
+        if 0 <= plant_number - 1 < len(self.garden) and 0 <= plant_number - 1 < len(plants_table):
             plant = self.garden[plant_number - 1]
             time_elapsed = datetime.now() - plant['planted_time']
             if time_elapsed.total_seconds() / 60 >= plant['growth_time']:
@@ -181,12 +181,14 @@ class Warrior(Human):
                 self.inventory.add_item({'name': plant['name']}, quantity=harvested_quantity)
                 print(f"\nHarvested {harvested_quantity} {plant['name']}(s), gained {plant['harvesting_xp']} XP.")
                 from locations.meadowlands import gain_horticulture_experience
-                gain_horticulture_experience(self, plant['harvesting_xp'])  
+                gain_horticulture_experience(self, plant['harvesting_xp'])
                 self.garden.pop(plant_number - 1)
             else:
                 print(f"{plant['name']} is not ready for harvest yet.")
         else:
             print("Invalid plant number.")
+
+
 
 
 
@@ -612,7 +614,8 @@ class Shop:
             "Small Fish": 5,
             'Iron Armour': 100,
             'Steel Armour': 200,
-            'Simple Herb': 5
+            'Simple Herb': 5,
+            'Medium Fish': 10
             
         }
 
