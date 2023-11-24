@@ -205,6 +205,27 @@ class Weapon:
         self.extra_damage = extra_damage
         self.crit_chance_bonus = crit_chance_bonus
 
+
+
+
+def display_status(player):
+    
+    if player.health > 75:
+        health_color = Fore.GREEN
+    elif 40 < player.health <= 75:
+        health_color = Fore.YELLOW
+    else:
+        health_color = Fore.RED
+
+    
+    status = (
+        f"Status: Health: {health_color}{player.health}{Style.RESET_ALL} | "
+        f"Energy: {player.energy} | Mana: {player.mana} | "
+        f"Gold: {player.gold} | Level: {player.level} | "
+        f"Experience: {player.experience}/{player.experience_required}\n"
+    )
+
+    print(status)
 class Inventory:
     def __init__(self):
         self.items = {}
@@ -495,7 +516,8 @@ class Inventory:
     def inventory_menu(self, player):
         while True:
             clear_console()
-            print(f"Status: {player.health} Health | {player.energy} Energy | {player.mana} Mana | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/{player.experience_required}\n")
+            display_status(player)
+            #print(f"Status: {player.health} Health | {player.energy} Energy | {player.mana} Mana | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/{player.experience_required}\n")
             self.show_inventory()  
 
             self.show_equipment(player)  
@@ -527,20 +549,21 @@ class Inventory:
     def use_item_interface(self, player):
         while True:
             clear_console()
-            
             self.show_inventory()
             print("====================\n")
             
-            item_choice = input("\nEnter the number of the item you want to use or (B)ack: ").lower().strip()
+            item_choice = input("\nEnter the number of the item you want to use or 'Q' to return: \n").lower().strip()
 
             if item_choice in ['b', 'back', 'q']:
-                clear_console()  # Clear console when going back to combat
-                break  # Break the inner loop to go back to the main inventory menu
+                clear_console()
+                return False  
             else:
                 try:
                     choice_index = int(item_choice) - 1
                     if self.use_item(choice_index, player):
                         input("\nPress Enter to continue...")
+                        clear_console()
+                        return True  
                     else:
                         input("\nPress Enter to continue...")
                 except ValueError:
@@ -549,6 +572,7 @@ class Inventory:
                 except IndexError:
                     print("Item not found. Try again or type 'B' to go back.")
                     input("\nPress Enter to continue...")
+
 
     
     def equip_weapon_interface(self, player):
