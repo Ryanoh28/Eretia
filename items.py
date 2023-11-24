@@ -43,6 +43,17 @@ class MageStaff(Item):
 class Rune(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
+
+def gain_concoction_experience(player, xp_gained):
+    player.concoction_experience += xp_gained
+    print(f"\n{player.name} gained {xp_gained} concoction experience points.")
+
+    while player.concoction_experience >= 100 + (10 * (player.concoction_level - 1)):
+        player.concoction_experience -= 100 + (10 * (player.concoction_level - 1))
+        player.concoction_level += 1
+        print(f"\nCongratulations! Your concoction level is now {player.concoction_level}.")
+
+
 class Cauldron(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
@@ -99,6 +110,7 @@ class Cauldron(Item):
         potion = potion_info["potion_class"]()
         player.inventory.add_item(potion)
         player.concoction_experience += potion_info["xp"]
+        gain_concoction_experience(player, potion_info["xp"])
         print(f"\nYou successfully concocted a {potion_info['name']}! You gained {potion_info['xp']} concoction experience points.")
         
 
@@ -388,12 +400,18 @@ class Inventory:
         print("====================\n")
 
         print("=== Skill Stats ===")
-        print(f"Mining Level: {player.mining_level} (Exp: {player.mining_experience}/100)")
-        print(f"Horticulture Level: {player.horticulture_level} (Exp: {player.horticulture_experience}/100)")
-        print(f"Fishing Level: {player.fishing_level} (Exp: {player.fishing_experience}/100)")
-        print(f"Concoction Level: {player.concoction_level} (Exp: {player.concoction_experience}/100)")
+
+        next_level_exp_mining = 100 + (10 * (player.mining_level - 1))
+        print(f"Mining Level: {player.mining_level} (Exp: {player.mining_experience}/{next_level_exp_mining})")
+        next_level_exp_horticulture = 100 + (10 * (player.horticulture_level - 1))
+        print(f"Horticulture Level: {player.horticulture_level} (Exp: {player.horticulture_experience}/{next_level_exp_horticulture})")
+        next_level_exp_fishing = 100 + (10 * (player.fishing_level - 1))
+        print(f"Fishing Level: {player.fishing_level} (Exp: {player.fishing_experience}/{next_level_exp_fishing})")
+        next_level_exp_concoction = 100 + (10 * (player.concoction_level - 1))
+        print(f"Concoction Level: {player.concoction_level} (Exp: {player.concoction_experience}/{next_level_exp_concoction})")
 
         print("====================\n")
+
 
         input("\nPress Enter to return...")
 

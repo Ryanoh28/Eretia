@@ -77,7 +77,7 @@ def return_to_border_town(player):
 def leave_town_west(player):
     while True:
         clear_console()
-        print("Not implemented yet\n")
+        
         print("The western path leads inland to more peaceful locations.\n")
         print("1. Meadowlands")
         print("2. Crystal Lake")

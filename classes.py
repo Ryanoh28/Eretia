@@ -148,7 +148,9 @@ class Warrior(Human):
                             'growth_time': plant_info['growth_time'],
                             'harvesting_xp': plant_info['harvesting_xp']
                         })
-                        print(f"Planted {seed_name}.")
+                        print(f"\nPlanted {seed_name}.")
+                        from locations.meadowlands import gain_horticulture_experience
+                        gain_horticulture_experience(self, plant_info['planting_xp'])  
                         return
                     else:
                         print(f"You do not have any {seed_name}.")
@@ -157,6 +159,7 @@ class Warrior(Human):
                     print(f"Your horticulture level is not high enough to plant {seed_name}.")
                     return
         print("Invalid seed selection.")
+
 
 
 
@@ -177,6 +180,8 @@ class Warrior(Human):
                 harvested_quantity = random.randint(*plants_table[plant_number - 1]['yield_range'])
                 self.inventory.add_item({'name': plant['name']}, quantity=harvested_quantity)
                 print(f"\nHarvested {harvested_quantity} {plant['name']}(s), gained {plant['harvesting_xp']} XP.")
+                from locations.meadowlands import gain_horticulture_experience
+                gain_horticulture_experience(self, plant['harvesting_xp'])  
                 self.garden.pop(plant_number - 1)
             else:
                 print(f"{plant['name']} is not ready for harvest yet.")
@@ -184,21 +189,6 @@ class Warrior(Human):
             print("Invalid plant number.")
 
 
-
-    
-    # def harvest_crops(self, plant_number):
-    #     if 0 < plant_number <= len(self.garden):
-    #         plant = self.garden[plant_number - 1]
-    #         time_elapsed = datetime.now() - plant['planted_time']
-    #         if time_elapsed.total_seconds() / 60 >= plant['growth_time']:
-    #             self.horticulture_experience += plant['harvesting_xp']
-    #             print(f"Harvested {plant['name']}. Gained {plant['harvesting_xp']} XP.")
-    #             self.garden.pop(plant_number - 1)
-    #             # Check for level up...
-    #         else:
-    #             print(f"{plant['name']} is not ready for harvest yet.")
-    #     else:
-    #         print("Invalid plant number.")
 
     def check_level_up(self):
         while self.experience >= self.experience_required:

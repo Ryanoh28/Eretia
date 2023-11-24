@@ -11,7 +11,7 @@ def enter_northern_hills(player):
 
     if player.first_time_northern_hills:
         print("As you ascend the hills, you see an old man being attacked by a monster!\n")
-        monster = create_monster("Northern Hills")  
+        monster = create_monster("Northern Hills Unique")  
         combat_result = combat(player, monster)
 
         if combat_result == "monster_defeated":
@@ -20,6 +20,9 @@ def enter_northern_hills(player):
             lead_player_to_smithy(player)
         else:
             print("You decide to retreat for now.")
+            input("Grow stronger before returning...")
+            from bordertown import return_to_border_town
+            return_to_border_town(player)
     else:
         show_northern_hills_menu(player)
 

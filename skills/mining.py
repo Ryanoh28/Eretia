@@ -66,17 +66,15 @@ def mine(player, location, ore_level_table):
 
 def gain_mining_experience(player, ore):
     exp = ORE_EXPERIENCE_POINTS.get(ore, 0)
-    level_factor = 1 + (player.mining_level - 1) * 0.1  
-    exp_gained = int(exp * level_factor)
-    player.mining_experience += exp_gained
+    player.mining_experience += exp
 
-    print(f"{player.name} gained {exp_gained} mining experience points.")
+    print(f"\n{player.name} gained {exp} mining experience points.")
 
-    
     while player.mining_experience >= 100 + (10 * (player.mining_level - 1)):
-        player.mining_experience -= 100
+        player.mining_experience -= 100 + (10 * (player.mining_level - 1))
         player.mining_level += 1
         print(f"Congratulations! Your mining level is now {player.mining_level}.")
+
 
 
 

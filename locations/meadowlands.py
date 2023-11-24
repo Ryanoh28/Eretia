@@ -9,10 +9,10 @@ def meadowlands_menu(player):
     while True:
         clear_console()
         print("Welcome to the Meadowlands!")
-        print("A peaceful area filled with lush greenery and vibrant flora.\n")
+        print("\nA peaceful area filled with lush greenery and vibrant flora.\n")
         print("1. Horticulture Activities")
         print("2. Talk to the Local Farmer")
-        print("3. Return to Border Town")
+        print("3. Return")
 
         choice = input("\nEnter your choice (1-4): ").strip()
         if choice == "1":
@@ -20,9 +20,8 @@ def meadowlands_menu(player):
         elif choice == "2":
             talk_to_farmer(player)
         elif choice == "3":
-            print("\nReturning to Border Town.")
-            from bordertown import return_to_border_town
-            return_to_border_town(player)
+            from bordertown import leave_town_west
+            leave_town_west(player)
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 4.")
@@ -190,11 +189,20 @@ def visit_seed_shop(player):
     }
 
     seed_shop = Shop()
-    seed_shop.items_for_sale = seed_shop_items  # Directly set the items for sale
+    seed_shop.items_for_sale = seed_shop_items  
 
     seed_shop.display_items_for_sale(player)
     input("\nPress Enter to continue...")
 
+def gain_horticulture_experience(player, xp_gained):
+    player.horticulture_experience += xp_gained
+    print(f"\n{player.name} gained {xp_gained} horticulture experience points.")
+
+    while player.horticulture_experience >= 100 + (10 * (player.horticulture_level - 1)):
+        player.horticulture_experience -= 100 + (10 * (player.horticulture_level - 1))
+        
+        player.horticulture_level += 1
+        print(f"Congratulations! Your horticulture level is now {player.horticulture_level}.")
 
 
 
@@ -202,11 +210,11 @@ def visit_seed_shop(player):
 
 
 plants_table = [
-    {"seed_name": "Simple Herb Seed", "plant_name": "Simple Herb", "req_level": 1, "growth_time": 0.1, "planting_xp": 5, "harvesting_xp": 10, "yield_range": (1, 2)},
-    {"seed_name": "Moonflower Seed", "plant_name": "Moonflower", "req_level": 5, "growth_time": 15, "planting_xp": 10, "harvesting_xp": 20, "yield_range": (1, 2)},
-    {"seed_name": "Starleaf Seed", "plant_name": "Starleaf", "req_level": 10, "growth_time": 20, "planting_xp": 20, "harvesting_xp": 40, "yield_range": (1, 2)},
-    {"seed_name": "Sunblossom Seed", "plant_name": "Sunblossom", "req_level": 15, "growth_time": 25, "planting_xp": 30, "harvesting_xp": 60, "yield_range": (1, 2)},
-    {"seed_name": "Eldertree Sapling Seed", "plant_name": "Eldertree Sapling", "req_level": 20, "growth_time": 60, "planting_xp": 50, "harvesting_xp": 100, "yield_range": (1, 1)}
+    {"seed_name": "Simple Herb Seed", "plant_name": "Simple Herb", "req_level": 1, "growth_time": 10, "planting_xp": 1, "harvesting_xp": 3, "yield_range": (1, 2)},
+    {"seed_name": "Moonflower Seed", "plant_name": "Moonflower", "req_level": 5, "growth_time": 15, "planting_xp": 3, "harvesting_xp": 5, "yield_range": (1, 2)},
+    {"seed_name": "Starleaf Seed", "plant_name": "Starleaf", "req_level": 10, "growth_time": 20, "planting_xp": 3, "harvesting_xp": 6, "yield_range": (1, 2)},
+    {"seed_name": "Sunblossom Seed", "plant_name": "Sunblossom", "req_level": 15, "growth_time": 25, "planting_xp": 4, "harvesting_xp": 7, "yield_range": (1, 2)},
+    {"seed_name": "Eldertree Sapling Seed", "plant_name": "Eldertree Sapling", "req_level": 20, "growth_time": 60, "planting_xp": 10, "harvesting_xp": 10, "yield_range": (1, 1)}
 ]
 
 

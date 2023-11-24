@@ -49,9 +49,9 @@ def combat(player, monster):
         # Check if the monster is defeated
         if not monster.check_if_alive():
             print(f"\nThe {monster.name} has been defeated!")
-            player.gain_experience(monster.level)  # Handle experience gain and printing
-            handle_loot_and_examine(player)  # Handle loot and examination
-            input("Press Enter to continue...")
+            player.gain_experience(monster.level) 
+            handle_loot_and_examine(player)  
+            input("\nPress Enter to continue...")
             return 'monster_defeated'
 
     if not player.alive:
@@ -119,7 +119,7 @@ def handle_loot_and_examine(player):
         print(f"You found a {item.name}!")
         player.inventory.add_item(item)
 
-        examine_choice = input("Do you want to examine it? (Y/N):\n ").lower().strip()
+        examine_choice = input("\nDo you want to examine it? (Y/N):\n ").lower().strip()
         if examine_choice == 'y':
             clear_console()
             print(f"\n{item.name}: {item.description}\n")
