@@ -106,9 +106,9 @@ class Warrior(Human):
             'monster_kills': {}
         }
         self.quests = {}
-        self.strength = 200
-        self.speed = 200
-        self.defence = 200
+        self.strength = 2
+        self.speed = 2
+        self.defence = 2
         self.attack = 2
         self.max_health = 100
         self.level = 1

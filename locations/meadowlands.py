@@ -84,7 +84,7 @@ def harvest_plants(player):
     while True:
         clear_console()
         if not player.garden:
-            print("You have no plants ready for harvest.")
+            print("You have no plants ready for harvest.\n")
             input("Press enter to continue...")
             return
         else:
@@ -96,6 +96,7 @@ def harvest_plants(player):
                 return
             elif choice.isdigit():
                 choice_number = int(choice)
+                clear_console()
                 if 0 <= choice_number - 1 < len(player.garden):
                     player.harvest_crops(choice_number)
                 else:

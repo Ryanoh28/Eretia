@@ -28,6 +28,6 @@ waystation_journal_pages = [
     "Day 7.\n\nToday, I dueled with an upstart, overconfident in his skills. A reminder that even in these lands, human conflict persists.",
     "Day 10.\n\nEncountered human bandits. It's disheartening to see humanity so divided in this forsaken land. We should stand united.",
     "Day 13.\n\nTook time to sharpen Shadowfang and clean my mithril armour. Both have served me well and will continue to do so.",
-    "Day 27.\n\nMy final day at the waystation. Preparing to head deeper into the unknown. What lies ahead, I cannot say, but I must find out."
+    "Day 27.\n\nMy final day at the waystation. Preparing to head deeper into the unknown. What lies ahead, I cannot say, but I must find out. D.B"
 ]
 waystation_journal = Journal("Waystation Journal", "A journal found within the Mithril Armour at the waystation", waystation_journal_pages)

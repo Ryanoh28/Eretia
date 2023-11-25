@@ -270,10 +270,10 @@ def meet_guard_captain(player):
     print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL + f"'Ah, {player.name}, the one who seeks glory in battle! Before you head into the fray, take this Health Potion. You'll need it if you're to survive the dangers that lie ahead.'\n")
     health_potion = HealthPotion()
     player.inventory.add_item(health_potion)
-    seed_name = "Simple Herb Seed"
-    seed_quantity = 5
-    seed = {'name': seed_name}
-    player.inventory.add_item(seed, quantity=seed_quantity, found_quantity=seed_quantity)
+    #seed_name = "Simple Herb Seed"
+    #seed_quantity = 5
+    #seed = {'name': seed_name}
+    #player.inventory.add_item(seed, quantity=seed_quantity, found_quantity=seed_quantity)
         
     input("\nPress Enter to continue...")
     clear_console()

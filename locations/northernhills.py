@@ -189,7 +189,7 @@ def complete_blacksmith_quest(player):
         bronze_armour = Armour("Bronze Armour", "Sturdy armour crafted by the Northern Hills blacksmith.", defense_boost=3)
         player.inventory.add_equipment(bronze_armour)
         print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + f" 'Thank you, {player.name}! Here is your Bronze Armour, as promised.'")
-        print("You received 'Bronze Armour' from the blacksmith.")
+        print(Fore.LIGHTBLUE_EX + "\nYou received 'Bronze Armour' from the blacksmith." + Style.RESET_ALL)
     else:
         print(Fore.YELLOW + "Old Man:" + Style.RESET_ALL + f" '{player.name}, remember, I need 5 Tin Ore and 5 Copper Ore for the armour.'")
 
