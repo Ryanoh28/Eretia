@@ -82,8 +82,9 @@ def leave_town_west(player):
         print("1. Meadowlands")
         print("2. Crystal Lake")
         print("3. The Great Library")
-        print("4. Inventory")
-        print("5. Return to Border Town")
+        print("4. Carriageway")
+        print("5. Inventory")
+        print("6. Return to Border Town")
 
         choice = input("\nEnter your choice (1-5): ").strip()
 
@@ -99,14 +100,35 @@ def leave_town_west(player):
             from locations.thegreatlibrary import visit_great_library
             visit_great_library(player)
         elif choice == "4":
+            
+            enter_carriageway(player)
+        elif choice == "5":
             player.inventory.inventory_menu(player)
-        elif choice == "5" or choice == 'q':
+        elif choice == "6" or choice == 'q':
             print("\nYou decide to return to the safety of Border Town.")
             return_to_border_town(player)
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")
 
-    
+def enter_carriageway(player):
+    while True:
+        clear_console()
+        print("You walk towards the carriageway and come across a sign board: \n" )
+        print("--------------------")
+        print("*** Destinations ***")
+        print("--------------------")
+        print("   Elderglen City ")
+        print("--------------------\n")
+              
+        print("1. Elderglen City via carriage")
+        print("2. Return")
+
+        choice = input("\nEnter your choice (1-2): ").strip()
+        if choice == '1':
+            pass
+        else:
+            leave_town_west(player)
+  
 
 
 def visit_tavern(player):

@@ -469,6 +469,7 @@ def follow_ancient_road(player):
         elif choice == "3":
             decrepit_waystation(player)
         elif choice == "4":
+            clear_console()
             rest_in_location(player)
         elif choice == "5":
             player.inventory.inventory_menu(player)

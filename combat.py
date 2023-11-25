@@ -131,16 +131,16 @@ def fight_monster(player, location):
 
 def create_monster(location):
     from classes import Monster
-    base_health = 60
+    base_health = 80
     
     location_level_ranges = {
         "Dark Forest": (1, 3),  
         "Damp Cave": (4, 7),    
-        "The Border": (8, 20),
+        "The Border": (11, 25),
         "Echoing Cavern": (10,10), # Special mission monster
-        "Human Bandit": (10,15),
+        "Human Bandit": (10,25),
         "Northern Hills Unique": (3,3),
-        "Northern Hills": (5,9)
+        "Northern Hills": (5,10)
     }
     
     min_level, max_level = location_level_ranges.get(location, (1, 1))  

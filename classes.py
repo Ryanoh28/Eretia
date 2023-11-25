@@ -566,21 +566,12 @@ class Shop:
             'Fishing Rod': {'price': 20, 'object': FishingRod("Fishing Rod", "A basic fishing rod for catching fish.")}
         }
         
-
-        # Merge base items with additional items specific to the shop instance
         self.items_for_sale = {**self.base_items_for_sale, **(additional_items if additional_items else {})}
 
-        # ... rest of your Shop class methods ...
-
-
-
-
-
-        
         self.item_value = {
             "Gilded Feather": 6, 
             "Enchanted Stone": 10,
-            "Health Potion": 5,
+            "Health Potion": 15,
             "Mystic Herb": 3,  
             "Ancient Coin": 5,  
             "Lost Necklace": 10,  
@@ -616,7 +607,16 @@ class Shop:
             'Iron Armour': 100,
             'Steel Armour': 200,
             'Simple Herb': 5,
-            'Medium Fish': 10
+            'Medium Fish': 10,
+            'Coal': 16,
+            'Mithril Armour': 450,
+            'Fishing Rod': 15,
+            'Cauldron': 65,
+            'Mage Staff': 100,
+            'Mana Potion': 15,
+            'Shadowfang': 250,
+            'Silver': 25
+
             
         }
 
