@@ -552,6 +552,7 @@ def trigger_bandit_encounter(player):
 
 def search_guest_room(player):
     clear_console()
+    has_searched = False
     while True:
         clear_console()
         print("You are in the guest room.")
@@ -572,11 +573,11 @@ def search_guest_room(player):
                 mithril_armour = Armour("Mithril Armour", "+21 Defence Buff", 21)
                 print(Fore.YELLOW + "\nYou found Mithril Armour!\n" + Style.RESET_ALL)
                 player.inventory.add_equipment(mithril_armour)
-                print("You found the Waystation Journal within the Mithril breastplate!\n")
+                print("You found a Journal within the Mithril breastplate!\n")
                 player.inventory.add_item(waystation_journal)
                 
                 
-
+                has_searched = True
                 setattr(player, 'searched_guest_room', True)
                 input("\nPress enter to continue...")
             else:
@@ -584,6 +585,9 @@ def search_guest_room(player):
                 input("\nPress Enter to continue...")
         elif choice == "2":
             print("\nYou head back downstairs.")
+            if has_searched and not getattr(player, 'bandit_encountered', False):
+                trigger_bandit_encounter(player)
+                setattr(player, 'bandit_encountered', True)
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 2.")

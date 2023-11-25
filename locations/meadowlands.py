@@ -66,6 +66,7 @@ def plant_seeds(player):
         if choice.lower() == 'q':
             return
         elif choice.isdigit() and 1 <= int(choice) <= len(plants_table):
+            clear_console()
             selected_seed = plants_table[int(choice) - 1]['seed_name']
             player.plant_seed(selected_seed)
             input("\nPress Enter to continue...")
@@ -199,7 +200,7 @@ def gain_horticulture_experience(player, xp_gained):
         player.horticulture_experience -= 100 + (10 * (player.horticulture_level - 1))
         
         player.horticulture_level += 1
-        print(f"Congratulations! Your horticulture level is now {player.horticulture_level}.")
+        print(Fore.YELLOW + f"\nCongratulations! Your horticulture level is now {player.horticulture_level}." + Style.RESET_ALL)
 
 
 

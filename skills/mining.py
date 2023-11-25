@@ -73,7 +73,7 @@ def gain_mining_experience(player, ore):
     while player.mining_experience >= 100 + (10 * (player.mining_level - 1)):
         player.mining_experience -= 100 + (10 * (player.mining_level - 1))
         player.mining_level += 1
-        print(f"Congratulations! Your mining level is now {player.mining_level}.")
+        print(Fore.YELLOW + f"\nCongratulations! Your mining level is now {player.mining_level}." + Style.RESET_ALL)
 
 
 

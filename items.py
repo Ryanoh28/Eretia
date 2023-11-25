@@ -57,9 +57,11 @@ class Cauldron(Item):
         super().__init__(name, description)
 
     def use(self, player):
-        print("\nWould you like to concoct a potion? (Y/N): ")
+        clear_console()
+        print("Would you like to concoct a potion? (Y/N): \n")
         choice = input().lower().strip()
         if choice == 'y':
+            clear_console()
             self.concoct_potion(player)
 
     def concoct_potion(self, player):
@@ -69,11 +71,12 @@ class Cauldron(Item):
             
             return
 
-        print("\nChoose a potion to concoct:")
+        print("Choose a potion to concoct:\n")
         for i, potion in enumerate(potion_options, 1):
             print(f"{i}. {potion['name']}")
 
         choice = input("\nEnter your choice, or 'Q' to return: ").lower().strip()
+        clear_console()
         if choice.isdigit() and 1 <= int(choice) <= len(potion_options):
             selected_potion = potion_options[int(choice) - 1]
             self.create_potion(selected_potion, player)
@@ -232,7 +235,6 @@ class Inventory:
     def equip_armour(self, player):
         clear_console()
         print("Available Armour:")
-        # Display list of armours in player's inventory
         armour_list = [item for item in self.equipment if isinstance(item, Armour)]
         for index, armour in enumerate(armour_list, 1):
             print(f"{index}. {armour.name}")
@@ -247,10 +249,10 @@ class Inventory:
                 raise ValueError
             selected_armour = armour_list[choice_index]
 
-            if player.armour:  # Unequip current armour if any
+            if player.armour:  
                 player.defence -= player.armour.defense_boost
             player.armour = selected_armour
-            player.defence += selected_armour.defense_boost  # Increase defence stat
+            player.defence += selected_armour.defense_boost  
 
             print(f"\n{player.name} equipped {selected_armour.name}.\n")
         except (ValueError, IndexError):
@@ -260,12 +262,24 @@ class Inventory:
         clear_console()
         if player.armour:
             print(f"Unequipping {player.armour.name}.")
-            player.defence -= player.armour.defense_boost  # Decrease defence stat
-            self.equipment.append(player.armour)  # Add the unequipped armour back to equipment
+            player.defence -= player.armour.defense_boost  
+            if player.armour not in self.equipment:  
+                self.equipment.append(player.armour)  
             player.armour = None
         else:
             print("You have no armour equipped.")
         input("\nPress Enter to continue...")
+   
+    # def unequip_armour(self, player):
+    #     clear_console()
+    #     if player.armour:
+    #         print(f"Unequipping {player.armour.name}.")
+    #         player.defence -= player.armour.defense_boost  # Decrease defence stat
+    #         self.equipment.append(player.armour)  # Add the unequipped armour back to equipment
+    #         player.armour = None
+    #     else:
+    #         print("You have no armour equipped.")
+    #     input("\nPress Enter to continue...")
 
   
     def equip_weapon_from_inventory(self, player):
@@ -353,19 +367,6 @@ class Inventory:
                 print(Fore.LIGHTBLUE_EX + f"Added {item_name} ({found_quantity}) to inventory" + Style.RESET_ALL)
             else:
                 print(Fore.LIGHTBLUE_EX + f"Added {item_name} to inventory" + Style.RESET_ALL)
-    # def add_item(self, item, quantity=1, print_confirmation=True, found_quantity=1):
-    #     item_name = item.name
-
-    #     if item_name in self.items:
-    #         self.items[item_name]['quantity'] += quantity
-    #     else:
-    #         self.items[item_name] = {'object': item, 'quantity': quantity}
-
-    #     if print_confirmation:
-    #         if found_quantity > 1:
-    #             print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} ({found_quantity}) to inventory\n" + Style.RESET_ALL)
-    #         else:
-    #             print(Style.BRIGHT + Fore.BLUE + f"Added {item_name} to inventory\n" + Style.RESET_ALL)
 
 
     def show_equipment(self, player):

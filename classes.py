@@ -149,7 +149,7 @@ class Warrior(Human):
                             'growth_time': plant_info['growth_time'],
                             'harvesting_xp': plant_info['harvesting_xp']
                         })
-                        print(f"\nPlanted {seed_name}.")
+                        print(f"Planted {seed_name}.")
                         from locations.meadowlands import gain_horticulture_experience
                         gain_horticulture_experience(self, plant_info['planting_xp'])  
                         return

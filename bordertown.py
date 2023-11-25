@@ -100,7 +100,7 @@ def leave_town_west(player):
             visit_great_library(player)
         elif choice == "4":
             player.inventory.inventory_menu(player)
-        elif choice == "5":
+        elif choice == "5" or choice == 'q':
             print("\nYou decide to return to the safety of Border Town.")
             return_to_border_town(player)
         else:

@@ -138,7 +138,7 @@ def armour_menu(player):
                 player.gold -= 50
                 bronze_armour = Armour("Bronze Armour", "+3 Defence Buff", 3)
                 player.inventory.add_equipment(bronze_armour)
-                print("You have purchased Bronze Armour.")
+                print("\nYou have purchased Bronze Armour.")
             else:
                 print("\nYou cannot afford the Bronze Armour.")
             input("\nPress enter to continue...")

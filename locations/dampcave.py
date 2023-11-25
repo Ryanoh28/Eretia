@@ -220,7 +220,7 @@ def rune_sequence_barrier(player):
 
         if sequence == correct_sequence:
             clear_console()
-            print("\nThe barrier dissipates, revealing the path ahead.\n")
+            print("The barrier dissipates, revealing the path ahead.\n")
 
             if 'RunesReceived' not in player.flags:
                 earth_rune = Rune("Earth Rune", "A rune embodying the essence of Earth.")
@@ -397,7 +397,7 @@ def confront_illusionary_monster(player):
             alignment_score -= 1
 
     if alignment_score > 0:
-        print("\n'The path of righteousness is yours. Leaders of the human race during the perilous times of ancient often had to make such decisions...' The illusion fades away, revealing the way forward.")
+        print("'The path of righteousness is yours. Leaders of the human race during the perilous times of ancient often had to make such decisions...' The illusion fades away, revealing the way forward.")
         input("\nPress Enter to enter the Mage's abode...")
         enter_mages_abode(player)
     else:
