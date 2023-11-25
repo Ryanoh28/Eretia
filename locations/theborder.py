@@ -1,10 +1,11 @@
 from combat import fight_monster, create_monster, combat
 from utilities import clear_console
-from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight, Armour, Journal
+from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight, Armour
 from locations.locationfunctions import rest_in_location, return_to_location
 from colorama import Style, Fore
 from missions.missiongenerator import generate_mission, accept_mission, complete_mission
 from classes import Shop
+from misc.journal import waystation_journal
 
 from game1 import main_menu, save_game, load_game, show_instructions
 import random
@@ -487,6 +488,7 @@ def decrepit_waystation(player):
 
     clear_console()
     while True:
+        clear_console()
         print("What would you like to do at the Decrepit Waystation?\n")
         print("1. Investigate Waystation.")
         print("2. Return.")
@@ -495,7 +497,7 @@ def decrepit_waystation(player):
 
         if choice == "1":
             investigate_waystation(player)
-        elif choice == "2" or 'q':
+        elif choice == "2" or choice == 'q':
             break
         else:
             print("\nInvalid choice. Please enter a number between 1 and 2.")
@@ -530,17 +532,21 @@ def investigate_waystation(player):
                 trigger_bandit_encounter(player)
         elif choice == "5":
             clear_console()
-            print("You leave the waystation and head back to the road.")
+            print("You leave the waystation and head back to the road.\n")
             input("Press enter to continue...")
-            break
+            follow_ancient_road(player)
+            return
+            
         else:
             print("\nInvalid choice. Please enter a number between 1 and 5.")
             input("\nPress Enter to continue...")
 
 
 def trigger_bandit_encounter(player):
-    print("\nAs you descend the stairs, a bandit emerges from the shadows.")
-    print('"I\'ve been watching you," he sneers. "What you got there for me?"')
+    clear_console()
+    print("As you descend the stairs, a bandit emerges from the shadows.\n")
+    print(Fore.RED + 'Bandit:' + Style.RESET_ALL + ' "I\'ve been watching you. What did you find for me?"')
+    input("\nPress enter to continue...")
     fight_monster(player, "Human Bandit")
 
 
@@ -557,16 +563,21 @@ def search_guest_room(player):
         if choice == "1":
             if not hasattr(player, 'searched_guest_room'):
                 clear_console()
-                print("You carefully search the Guest Room and find a few items of inerest...")
+                print("You carefully search the Guest Room and find a few items of interest...")
+
                 beirut_blade = Weapon("Shadowfang", "An old blade dating back to before 'The Great Beast Tide', inscribed D.B", 5, 4.5)
                 print(Fore.YELLOW + "\nYou found the Shadowfang Sword!" + Style.RESET_ALL)
                 player.inventory.add_equipment(beirut_blade)
+
                 mithril_armour = Armour("Mithril Armour", "+21 Defence Buff", 21)
-                print(Fore.YELLOW + "\nYou found Mithril Armour!" + Style.RESET_ALL)
+                print(Fore.YELLOW + "\nYou found Mithril Armour!\n" + Style.RESET_ALL)
                 player.inventory.add_equipment(mithril_armour)
-                journal = Journal("Ancient Journal", "A journal lodged inside the Mithril Armour\n")
-                print("\nYou found a Journal within the Mithril breastplate!")
-                player.inventory.add_item(journal)
+                print("You found the Waystation Journal within the Mithril breastplate!\n")
+                player.inventory.add_item(waystation_journal)
+                
+                
+
+                setattr(player, 'searched_guest_room', True)
                 input("\nPress enter to continue...")
             else:
                 print("You have already searched the Guest Room.")
@@ -579,16 +590,10 @@ def search_guest_room(player):
             input("\nPress Enter to continue...")
 
 
-
-
     
 medium_fish = Item("Medium Fish", "A fish caught from Crystal Lake.")
 mana_potion = Item("Mana Potion", "Restores mana.")
 health_potion = Item("Health Potion", "Restores health.")
-
-
-
-
 
 def search_area(player, area_name):
     global remaining_health_potions, remaining_mana_potions, remaining_fish
