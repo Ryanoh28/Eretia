@@ -1,6 +1,6 @@
 from combat import fight_monster, create_monster, combat
 from utilities import clear_console
-from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight, Armour
+from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight, Armour, Journal
 from locations.locationfunctions import rest_in_location, return_to_location
 from colorama import Style, Fore
 from missions.missiongenerator import generate_mission, accept_mission, complete_mission
@@ -480,6 +480,7 @@ def follow_ancient_road(player):
 
 
 def decrepit_waystation(player):
+    player.current_location = 'investigate_waystation'
     clear_console()
     print("Before you stands an ancient waystation, a relic from times when these roads were frequented by travelers. Its walls are crumbling, and the roof has long since given way to the elements. Despite its ruinous state, it exudes an aura of forgotten tales and hidden secrets.")
     input("\nPress Enter to continue...")
@@ -500,21 +501,21 @@ def decrepit_waystation(player):
             print("\nInvalid choice. Please enter a number between 1 and 2.")
             input("\nPress Enter to continue...")
 
+
+
 def investigate_waystation(player):
     clear_console()
-    print("You step cautiously into the waystation, its eerie silence punctuated only by the creaking of old wood underfoot.")
-    input("\nPress Enter to continue...")
-
+    player.current_location = 'investigate_waystation'
     while True:
         clear_console()
-        print("Where would you like to search?\n")
-        print("1. Search the bar area")
+        print("You are inside the decrepit waystation. It feels eerie and abandoned.")
+        print("\n1. Search the bar area")
         print("2. Search the cupboards")
         print("3. Search the rest area")
         print("4. Search upstairs")
-        print("5. Leave")
+        print("5. Leave the waystation")
 
-        choice = input("\nEnter your choice (1-5): ").strip()
+        choice = input("\nWhere would you like to search? (1-5): ").strip()
 
         if choice == "1":
             search_bar_area(player)
@@ -523,18 +524,68 @@ def investigate_waystation(player):
         elif choice == "3":
             search_rest_area(player)
         elif choice == "4":
-            encounter_bandit(player)
+            search_guest_room(player)
+            if not hasattr(player, 'bandit_encounter') and not player.in_combat:
+                player.bandit_encounter = True
+                trigger_bandit_encounter(player)
         elif choice == "5":
-            follow_ancient_road(player)
+            clear_console()
+            print("You leave the waystation and head back to the road.")
+            input("Press enter to continue...")
+            break
         else:
-            print("\nInvalid choice. Please enter a number between 1 and 4.")
+            print("\nInvalid choice. Please enter a number between 1 and 5.")
             input("\nPress Enter to continue...")
 
-mithril_armour = Armour("Mithril Armour", "+21 Defence Buff", 21)
+
+def trigger_bandit_encounter(player):
+    print("\nAs you descend the stairs, a bandit emerges from the shadows.")
+    print('"I\'ve been watching you," he sneers. "What you got there for me?"')
+    fight_monster(player, "Human Bandit")
+
+
+def search_guest_room(player):
+    clear_console()
+    while True:
+        clear_console()
+        print("You are in the guest room.")
+        print("\n1. Search Guest Room")
+        print("2. Downstairs")
+
+        choice = input("\nWhat would you like to do? (1-2): ").strip()
+
+        if choice == "1":
+            if not hasattr(player, 'searched_guest_room'):
+                clear_console()
+                print("You carefully search the Guest Room and find a few items of inerest...")
+                beirut_blade = Weapon("Shadowfang", "An old blade dating back to before 'The Great Beast Tide', inscribed D.B", 5, 4.5)
+                print(Fore.YELLOW + "\nYou found the Shadowfang Sword!" + Style.RESET_ALL)
+                player.inventory.add_equipment(beirut_blade)
+                mithril_armour = Armour("Mithril Armour", "+21 Defence Buff", 21)
+                print(Fore.YELLOW + "\nYou found Mithril Armour!" + Style.RESET_ALL)
+                player.inventory.add_equipment(mithril_armour)
+                journal = Journal("Ancient Journal", "A journal lodged inside the Mithril Armour\n")
+                print("\nYou found a Journal within the Mithril breastplate!")
+                player.inventory.add_item(journal)
+                input("\nPress enter to continue...")
+            else:
+                print("You have already searched the Guest Room.")
+                input("\nPress Enter to continue...")
+        elif choice == "2":
+            print("\nYou head back downstairs.")
+            break
+        else:
+            print("\nInvalid choice. Please enter a number between 1 and 2.")
+            input("\nPress Enter to continue...")
+
+
+
+
+    
 medium_fish = Item("Medium Fish", "A fish caught from Crystal Lake.")
 mana_potion = Item("Mana Potion", "Restores mana.")
 health_potion = Item("Health Potion", "Restores health.")
-beirut_blade = Weapon("Shadowfang", "An old blade dating back to before 'The Great Beast Tide', inscribed D.B", 5, 4.5)
+
 
 
 
@@ -575,11 +626,9 @@ def search_rest_area(player):
 
 
 
-def encounter_bandit(player):
-    print("\nAs you ascend the creaky stairs, a figure emerges from the shadows, brandishing a weapon.")
-    print('"Your luck isn\'t good today..." the human bandit sneers.')
-    input("\nPress Enter to continue...")
-    fight_monster(player, "Human Bandit")
+
+
+
 
 
 

@@ -106,9 +106,9 @@ class Warrior(Human):
             'monster_kills': {}
         }
         self.quests = {}
-        self.strength = 2
-        self.speed = 2
-        self.defence = 2
+        self.strength = 200
+        self.speed = 200
+        self.defence = 200
         self.attack = 2
         self.max_health = 100
         self.level = 1
@@ -135,6 +135,7 @@ class Warrior(Human):
         self.training_count = 4 
         self.total_training_count = 0
         self.first_time_northern_hills = True
+        self.defeated_bandit = False
  
     def plant_seed(self, seed_name):
         for plant_info in plants_table:

@@ -45,6 +45,9 @@ def return_to_location(player):
         if player.current_location == 'northern_hills':
             from locations.northernhills import show_northern_hills_menu
             show_northern_hills_menu(player)
+        if player.current_location == 'investigate_waystation':
+            from locations.theborder import investigate_waystation
+            investigate_waystation(player)
         else:
             print("Unknown location. Redirecting to a default location.")
             player.current_location = 'border_town'

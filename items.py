@@ -18,9 +18,23 @@ class ReadableItem(Item):
         print(f"\nThe knowledge of concocting {self.potion_type} sinks in, and the item disappears from your inventory.")
         player.inventory.remove_items(self.name, 1)
 
+class Journal(Item):
+    def __init__(self, name, description):
+        super().__init__(name, description)
+        self.name = name
+        self.description = description
+        self.content = (
+            "Day 1.\n\n"
+            "I have made it to the waystation alongside the Ancient Road. Human presence beyond the border is minimal, "
+            "however, here we have somewhat of a stronghold.\n\n"
+            "Tomorrow I will be pushing deeper into the uncharted zones. - D.B"
+        )
 
+    def use(self, player):
+        print(self.content)
 
-
+        
+        
 class EyeOfInsight(Item):
     def __init__(self):
         super().__init__("Eye of Insight", "A mystical artifact that reveals the true nature of your foes.")
@@ -332,6 +346,7 @@ class Inventory:
 
     def add_equipment(self, equipment):
         self.equipment.append(equipment)
+        
 
     def remove_equipment(self, equipment):
         if equipment in self.equipment:

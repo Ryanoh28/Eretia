@@ -88,6 +88,8 @@ def handle_loot_and_examine(player):
             print(f"\n{item.name}: {item.description}\n")
 
 
+
+
 def fight_monster(player, location):
     clear_console()
     player.in_combat = True
