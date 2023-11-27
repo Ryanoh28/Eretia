@@ -1,6 +1,6 @@
-from combat import fight_monster
-from utilities import clear_console
-from items import get_location_loot
+from misc.combat import fight_monster
+from misc.utilities import clear_console
+from misc.items import get_location_loot
 from locations.locationfunctions import rest_in_location
 
 
@@ -28,7 +28,7 @@ def enter_dark_forest(player):
             clear_console()
             rest_in_location(player)
         elif choice == "5":
-            from bordertown import leave_town
+            from locations.bordertown import leave_town
             player.current_location = 'border_town'
             leave_town(player)
             break

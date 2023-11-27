@@ -1,7 +1,7 @@
 #classes.py
 import random
-from items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion, EyeOfInsight, FishingRod
-from utilities import clear_console
+from misc.items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion, EyeOfInsight, FishingRod
+from misc.utilities import clear_console
 from colorama import Fore, Style
 from datetime import datetime, timedelta
 from locations.meadowlands import plants_table
@@ -67,7 +67,7 @@ class Logbook:
             if mission['monster'] == monster:
                 mission['current_kills'] += 1
 
-        # Track all kills
+        
         if monster in self.all_kills:
             self.all_kills[monster] += 1
         else:
@@ -482,7 +482,7 @@ class Warrior(Human):
         print(f"{self.name} stumbled back to town after being defeated and regained 50% health.\n")
           
         input("Press Enter to return to town...")  
-        from bordertown import return_to_border_town
+        from locations.bordertown import return_to_border_town
         return_to_border_town(self)
 
 

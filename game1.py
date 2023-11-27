@@ -1,9 +1,9 @@
 import pickle
 import os
 import sys
-from classes import Warrior
-from bordertown import meet_guard_captain, return_to_border_town
-from utilities import clear_console
+from misc.classes import Warrior
+from locations.bordertown import meet_guard_captain, return_to_border_town
+from misc.utilities import clear_console
 from colorama import init, Fore, Style
 from locations.locationfunctions import return_to_location
 init(autoreset=True)  
@@ -76,7 +76,7 @@ def game_over():
 def start_game():
     player_name = welcome()
     player = Warrior(player_name)
-    player.gold = 50 # Testing
+    player.gold = 50
     meet_guard_captain(player)
     return_to_border_town(player)
     return player

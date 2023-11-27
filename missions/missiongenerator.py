@@ -41,7 +41,6 @@ def generate_mission():
     kill_count = random.randint(2, 14)
     monster_area = random.choice(monster_areas)
 
-    # Select a random monster from the chosen area
     monster_name = random.choice(monster_names[monster_area])
 
     mission = {

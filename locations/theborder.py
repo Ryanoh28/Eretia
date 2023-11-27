@@ -1,10 +1,10 @@
-from combat import fight_monster, create_monster, combat
-from utilities import clear_console
-from items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight, Armour
+from misc.combat import fight_monster, create_monster, combat
+from misc.utilities import clear_console
+from misc.items import get_location_loot, HealthPotion, ManaPotion, Rune, Item, Weapon, EyeOfInsight, Armour
 from locations.locationfunctions import rest_in_location, return_to_location
 from colorama import Style, Fore
 from missions.missiongenerator import generate_mission, accept_mission, complete_mission
-from classes import Shop
+from misc.classes import Shop
 from misc.journal import waystation_journal
 
 from game1 import main_menu, save_game, load_game, show_instructions
@@ -48,7 +48,7 @@ def enter_the_border(player):
         elif choice == "5":
             player.inventory.inventory_menu(player)
         elif choice == "6":
-            from bordertown import view_quest_log
+            from locations.bordertown import view_quest_log
             view_quest_log(player)
             pass
         elif choice == "8":
@@ -56,7 +56,7 @@ def enter_the_border(player):
             main_menu(player)  
         elif choice == "7":
             print("\nReturning to Border Town.")
-            from bordertown import leave_town
+            from locations.bordertown import leave_town
             leave_town(player)
             break
         else:
@@ -354,7 +354,7 @@ def cross_menu(player):
         elif choice == "3":
             player.inventory.inventory_menu(player)
         elif choice == "4":
-            from bordertown import view_quest_log
+            from locations.bordertown import view_quest_log
             view_quest_log(player)
         elif choice == "5" or 'q':
             

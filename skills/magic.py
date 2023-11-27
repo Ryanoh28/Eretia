@@ -1,5 +1,5 @@
-from utilities import clear_console
-from classes import Monster
+from misc.utilities import clear_console
+from misc.classes import Monster
 
 class Spell:
     def __init__(self, name, mana_cost, rune_type, effect, potency):

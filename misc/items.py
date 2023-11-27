@@ -1,4 +1,4 @@
-from utilities import clear_console
+from misc.utilities import clear_console
 import random
 from colorama import Style, Fore
 

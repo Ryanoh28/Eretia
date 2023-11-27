@@ -1,10 +1,10 @@
-from utilities import clear_console
+from misc.utilities import clear_console
 from skills.mining import mine_in_damp_cave
-from items import get_location_loot, Item, EnchantedFruit, MageStaff, Rune, ReadableItem
+from misc.items import get_location_loot, Item, EnchantedFruit, MageStaff, Rune, ReadableItem
 from locations.locationfunctions import rest_in_location
 from colorama import Fore
 import random
-from combat import fight_monster
+from misc.combat import fight_monster
 
 
 
@@ -34,7 +34,7 @@ def enter_damp_cave(player):
         elif choice == "4":
             player.inventory.inventory_menu(player)
         elif choice == "5":
-            from bordertown import leave_town
+            from locations.bordertown import leave_town
             player.current_location = None
             leave_town(player)
             break
@@ -444,16 +444,6 @@ def enter_mages_abode(player):
     print("\n'Remember, the path of magic is complex and demanding. Use this knowledge wisely.'")
     input("\nPress Enter to leave the Mage's abode and return to the cave entrance...")
     explore_passages(player)
-
-
-# def fight_illusionary_monster(player):
-#     from classes import Monster
-#     monster = Monster("Illusionary Monster", 200, 10, 10, 10, 10)
-#     fight_monster(player, "Echoing Cavern", monster)
-
-
-
-
 
 DAMP_CAVE_LOOT = {
     "Damp Moss": {"description": "Common moss with basic alchemical properties.", "chance": 40},

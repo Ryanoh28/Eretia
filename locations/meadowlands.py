@@ -1,8 +1,8 @@
 from colorama import Fore, Style
-from utilities import clear_console
+from misc.utilities import clear_console
 import random
 from datetime import datetime, timedelta
-from items import Item
+from misc.items import Item
 
 
 def meadowlands_menu(player):
@@ -20,7 +20,7 @@ def meadowlands_menu(player):
         elif choice == "2":
             talk_to_farmer(player)
         elif choice == "3":
-            from bordertown import leave_town_west
+            from locations.bordertown import leave_town_west
             leave_town_west(player)
             break
         else:
@@ -177,7 +177,7 @@ def offer_fish_pie_quest(player):
 
 
 def visit_seed_shop(player):
-    from classes import Shop
+    from misc.classes import Shop
     clear_console()
     print("Welcome! Do you want to buy any Simple Herb Seeds or Moonflower Seeds?")
 

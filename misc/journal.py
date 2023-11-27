@@ -1,5 +1,5 @@
-from utilities import clear_console
-from items import Item
+from misc.utilities import clear_console
+from misc.items import Item
 
 class Journal(Item):
     def __init__(self, name, description, pages):

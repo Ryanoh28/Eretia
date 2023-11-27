@@ -1,6 +1,6 @@
-from utilities import clear_console
+from misc.utilities import clear_console
 import random
-from items import Item
+from misc.items import Item
 from locations.locationfunctions import rest_in_location
 
 def enter_crystal_lake(player):
@@ -24,7 +24,7 @@ def enter_crystal_lake(player):
         elif choice == "2":
             player.inventory.inventory_menu(player)
         elif choice == "4":
-            from bordertown import leave_town_west
+            from locations.bordertown import leave_town_west
             leave_town_west(player)
         elif choice == "3":
             clear_console()

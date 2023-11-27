@@ -1,5 +1,5 @@
-from utilities import clear_console
-from items import get_loot_drop, EyeOfInsight
+from misc.utilities import clear_console
+from misc.items import get_loot_drop, EyeOfInsight
 from skills.magic import spell_menu
 import random
 from colorama import Fore, Style
@@ -130,7 +130,7 @@ def fight_monster(player, location):
 
 
 def create_monster(location):
-    from classes import Monster
+    from misc.classes import Monster
     base_health = 80
     
     location_level_ranges = {

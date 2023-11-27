@@ -1,6 +1,6 @@
-from items import HealthPotion, Weapon
-from classes import Shop
-from utilities import clear_console
+from misc.items import HealthPotion, Weapon
+from misc.classes import Shop
+from misc.utilities import clear_console
 from locations.darkforest import enter_dark_forest
 from locations.northernhills import enter_northern_hills
 from missions.eldrin import speak_with_eldrin
@@ -164,7 +164,7 @@ import random
 def listen_to_crowd(player):
     clear_console()
 
-    # Your updated list of random dialogues/tips
+    
     tavern_chatter = [
         '"I heard they found a vast deposit of ore in the Damp Caves... shame about the monsters though."',
         '"The Adventurers Guild are hiring... if you got 100 gold spare and don\'t mind life on the border."',
@@ -255,7 +255,7 @@ def converse_with_guard_captain(player):
         print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"\"Remember, use your strengths wisely and learn from each battle. Every challenge is an opportunity to grow stronger.\"")
     elif choice == '2':
         clear_console()
-        # dialogue based on Eldrin's quest status
+        
         if "monster_loot_quest" in player.quests:
             if player.quests["monster_loot_quest"]["completed"]:
                 print(Fore.YELLOW + "Guard Captain: " + Style.RESET_ALL +  f"'I've heard you've been quite successful in the Dark Forest, {player.name}. It's no small feat to take on those creatures.'")

@@ -1,4 +1,4 @@
-from utilities import clear_console
+from misc.utilities import clear_console
 
 def visit_great_library(player):
     while True:

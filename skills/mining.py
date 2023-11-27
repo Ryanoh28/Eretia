@@ -1,7 +1,7 @@
-from utilities import clear_console
+from misc.utilities import clear_console
 import random
-from combat import fight_monster
-from items import Item
+from misc.combat import fight_monster
+from misc.items import Item
 from colorama import Fore, Style, init
 
 init(autoreset=True)
@@ -42,10 +42,8 @@ def mine(player, location, ore_level_table):
             mined_ore = Item(ore, f"A piece of {ore} mined from the {location}.")
             player.inventory.add_item(mined_ore)
 
-            # Gain mining experience
             gain_mining_experience(player, ore)
 
-            # Monster encounter check
             if random.randint(1, 5) == 1:
                 print(Fore.RED + "\nAs you mine, a monster emerges from the depths of the mine!" + Style.RESET_ALL)
                 input("\nPress enter to continue...")
@@ -56,7 +54,6 @@ def mine(player, location, ore_level_table):
             stone_item = Item("Stone", "A common stone, not worth much but can be sold.\n")
             player.inventory.add_item(stone_item)
 
-            # Gain mining experience for stone
             gain_mining_experience(player, "Stone")
 
     else:
@@ -83,7 +80,7 @@ ORE_LEVEL_TABLE = {
     "Tin Ore": 1,
     "Iron Ore": 5,
     "Coal": 8
-    # Add more ores and their corresponding levels here
+    
 }
 
 

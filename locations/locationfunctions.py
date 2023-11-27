@@ -34,7 +34,7 @@ def return_to_location(player):
             from locations.theborder import lower_bonefields
             lower_bonefields(player)    
         elif player.current_location == 'border_town':
-            from bordertown import return_to_border_town
+            from locations.bordertown import return_to_border_town
             return_to_border_town(player)
         elif player.current_location == 'crossing':
             from locations.theborder import cross_menu
@@ -51,5 +51,5 @@ def return_to_location(player):
         else:
             print("Unknown location. Redirecting to a default location.")
             player.current_location = 'border_town'
-            from bordertown import return_to_border_town
+            from locations.bordertown import return_to_border_town
             return_to_border_town(player)

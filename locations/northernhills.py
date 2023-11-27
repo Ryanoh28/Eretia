@@ -1,6 +1,6 @@
-from combat import combat, create_monster, fight_monster
-from items import Armour
-from utilities import clear_console
+from misc.combat import combat, create_monster, fight_monster
+from misc.items import Armour
+from misc.utilities import clear_console
 from colorama import Fore, Style
 from locations.locationfunctions import rest_in_location
 
@@ -21,7 +21,7 @@ def enter_northern_hills(player):
         else:
             print("You decide to retreat for now.")
             input("Grow stronger before returning...")
-            from bordertown import return_to_border_town
+            from locations.bordertown import return_to_border_town
             return_to_border_town(player)
     else:
         show_northern_hills_menu(player)
@@ -62,11 +62,11 @@ def show_northern_hills_menu(player):
             rest_in_location(player)  
         elif choice == "5":
             clear_console()
-            from bordertown import view_quest_log
+            from locations.bordertown import view_quest_log
             view_quest_log(player)  
         elif choice == "6" or choice == 'q':
             player.current_location = 'border_town'
-            from bordertown import leave_town
+            from locations.bordertown import leave_town
             leave_town(player)  
         else:
             print("Invalid choice. Please enter a number between 1 and 6.")
