@@ -127,7 +127,7 @@ class Pickaxe(Item):
 class HealthPotion:
     def __init__(self):
         self.name = "Health Potion"
-        self.description = "A potion that restores 50 health."
+        self.description = "A potion that restores health."
         self.healing_amount = 50
 
     def use(self, target):
@@ -143,8 +143,8 @@ class HealthPotion:
 class ManaPotion:
     def __init__(self):
         self.name = "Mana Potion"
-        self.description = "A potion that restores 25 mana."
-        self.mana_amount = 25
+        self.description = "A potion that restores mana."
+        self.mana_amount = 50
 
     def use(self, target):
         if target.mana < target.max_mana:
@@ -155,6 +155,15 @@ class ManaPotion:
         else:
             print(f"{target.name}'s mana is already full. Cannot use {self.name}.")
             return False
+class EnergyPotion:
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
+    def use(self, target):
+        target.energy += 500
+        print(f"\n{target.name}'s energy has been increased by 500!")
+        return True
 
 
 class EnchantedFruit(Item):
@@ -165,19 +174,7 @@ class EnchantedFruit(Item):
     def use(self, target):
         target.gain_experience(self.experience)
         print(f"{target.name} consumes the {self.name}.")
-        return True  # Indicate that the use was successful
-
-
-class EnergyPotion:
-    def __init__(self, name, description):
-        self.name = name
-        self.description = description
-
-    def use(self, player):
-        player.energy = 500
-        print(f"\n{player.name}'s energy has been boosted to 500!")
-
-
+        return True  
 
 class Bedroll(Item):
     def __init__(self, name, description):
@@ -636,12 +633,12 @@ class Inventory:
             item = self.items[item_name]['object']
 
             if hasattr(item, 'use'):
-                if item.use(target):  # Check if the use was successful
-                    self.remove_items(item_name, 1)  # Remove one item after successful use
-                    #print(f"Used {item.name}.")
+                if item.use(target):  
+                    self.remove_items(item_name, 1)  
+                    
                     return True
                 else:
-                    #print(f"Cannot use {item.name}.")
+                    
                     return False
 
 

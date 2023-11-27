@@ -561,7 +561,7 @@ class Shop:
             'cauldron': {'price': 100, 'object': Cauldron("Cauldron", "An iron cauldron for brewing potions.")},
             'bedroll': {'price': 50, 'object': Bedroll("Bedroll", "A durable bedroll for resting outdoors.")},
             'Iron Pickaxe': {'price': 60, 'object': Pickaxe("Iron Pickaxe", "A sturdy pickaxe made of iron. Increases mining efficiency.", 20)},
-            'Deluxe Energy Potion': {'price': 100, 'object': EnergyPotion("Deluxe Energy Potion", "A powerful potion that boosts your energy to 500.")},
+            'Deluxe Energy Potion': {'price': 150, 'object': EnergyPotion("Deluxe Energy Potion", "A powerful potion that boosts your energy to 500.")},
             'Eye of Insight': {'price': 0, 'object': EyeOfInsight()},
             'Fishing Rod': {'price': 20, 'object': FishingRod("Fishing Rod", "A basic fishing rod for catching fish.")}
         }
