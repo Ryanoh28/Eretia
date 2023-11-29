@@ -87,8 +87,8 @@ ORE_LEVEL_TABLE = {
 def mine_in_damp_cave(player):
     player.current_location = 'damp_cave'
     while True:
-        continue_mining = input("\nDo you want to mine in the Damp Cave? (Y/N): ").lower()
-        if continue_mining == 'y':
+        continue_mining = input("\nDo you want to mine in the Damp Cave? (1/2): ").lower()
+        if continue_mining == '1':
             mine(player, 'Damp Cave', ORE_LEVEL_TABLE)
         else:
             break

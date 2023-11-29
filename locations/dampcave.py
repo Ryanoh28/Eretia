@@ -14,17 +14,17 @@ def enter_damp_cave(player):
     while True:
         clear_console()
         print("You are in the Damp Cave. What would you like to do?\n")
-        print("1. Explore the Passages")
-        print("2. Mine")
+        print("1. Mine")
+        print("2. Explore the Passages")
         print("3. Rest")
         print("4. Inventory")
         print("5. Border Town Outskirts")
 
         choice = input("\nEnter your choice (1-5): ").strip()
 
-        if choice == "1":
+        if choice == "2":
             explore_passages(player)
-        elif choice == "2":
+        elif choice == "1":
             player.current_location = "Damp Cave"
             
             mine_in_damp_cave(player)
