@@ -116,23 +116,77 @@ def harvest_plants(player):
             input("Press enter to continue...")
             return
         else:
-            print("Select a Plant to Harvest:")
-            player.check_crops()
-            choice = input("\nEnter the number of the plant to harvest, or 'Q' to return: \n").strip()
+            print("Select an option:\n")
+            print("1. Harvest a specific plant")
+            print("2. Harvest all plants")
+            print("3. Return")
+            choice = input("\nEnter your choice (1-3): ").strip()
 
-            if choice.lower() == 'q':
+            if choice == '3':
                 return
-            elif choice.isdigit():
-                choice_number = int(choice)
+            elif choice == '1':
                 clear_console()
-                if 0 <= choice_number - 1 < len(player.garden):
-                    player.harvest_crops(choice_number)
+                print("Select a Plant to Harvest:")
+                player.check_crops()
+                plant_choice = input("\nEnter the number of the plant to harvest, or 'Q' to return: ").strip()
+
+                if plant_choice.lower() == 'q':
+                    return
+                elif plant_choice.isdigit():
+                    plant_number = int(plant_choice)
+                    clear_console()
+                    if 0 <= plant_number - 1 < len(player.garden):
+                        harvested_info = player.harvest_crops(plant_number)
+                        print(f"\nHarvested {harvested_info['quantity']} {harvested_info['plant_name']}(s), gained {harvested_info['xp']} XP.")
+                    else:
+                        print("\nInvalid choice. Please enter a valid number.")
                 else:
-                    print("\nInvalid choice. Please enter a valid number.")
+                    print("\nInvalid input. Please enter a number.")
+            elif choice == '2':
+                clear_console()
+                harvested_summary = []
+
+                for i in range(len(player.garden)):
+                    harvested_info = player.harvest_crops(1)
+                    harvested_summary.append((harvested_info['quantity'], harvested_info['plant_name'], harvested_info['xp']))
+
+                total_quantity = sum(item[0] for item in harvested_summary)
+                total_xp = sum(item[2] for item in harvested_summary)
+
+                print(f"\nHarvested a total of {Fore.YELLOW}{total_quantity} plants{Style.RESET_ALL} and gained {Fore.YELLOW}{total_xp} XP{Style.RESET_ALL}.")
+
             else:
-                print("\nInvalid input. Please enter a number.")
+                print("\nInvalid choice. Please enter a valid option.")
 
         input("\nPress Enter to continue...")
+
+
+
+# def harvest_plants(player):
+#     while True:
+#         clear_console()
+#         if not player.garden:
+#             print("You have no plants ready for harvest.\n")
+#             input("Press enter to continue...")
+#             return
+#         else:
+#             print("Select a Plant to Harvest:")
+#             player.check_crops()
+#             choice = input("\nEnter the number of the plant to harvest, or 'Q' to return: \n").strip()
+
+#             if choice.lower() == 'q':
+#                 return
+#             elif choice.isdigit():
+#                 choice_number = int(choice)
+#                 clear_console()
+#                 if 0 <= choice_number - 1 < len(player.garden):
+#                     player.harvest_crops(choice_number)
+#                 else:
+#                     print("\nInvalid choice. Please enter a valid number.")
+#             else:
+#                 print("\nInvalid input. Please enter a number.")
+
+#         input("\nPress Enter to continue...")
 
 
 

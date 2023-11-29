@@ -184,10 +184,34 @@ class Warrior(Human):
                 from locations.meadowlands import gain_horticulture_experience
                 gain_horticulture_experience(self, plant['harvesting_xp'])
                 self.garden.pop(plant_number - 1)
+                
+                # Return the harvested information as a dictionary
+                return {
+                    'quantity': harvested_quantity,
+                    'plant_name': plant['name'],
+                    'xp': plant['harvesting_xp']
+                }
             else:
                 print(f"{plant['name']} is not ready for harvest yet.")
         else:
             print("Invalid plant number.")
+    
+    # def harvest_crops(self, plant_number):
+    #     if 0 <= plant_number - 1 < len(self.garden) and 0 <= plant_number - 1 < len(plants_table):
+    #         plant = self.garden[plant_number - 1]
+    #         time_elapsed = datetime.now() - plant['planted_time']
+    #         if time_elapsed.total_seconds() / 60 >= plant['growth_time']:
+    #             self.horticulture_experience += plant['harvesting_xp']
+    #             harvested_quantity = random.randint(*plants_table[plant_number - 1]['yield_range'])
+    #             self.inventory.add_item({'name': plant['name']}, quantity=harvested_quantity)
+    #             print(f"\nHarvested {harvested_quantity} {plant['name']}(s), gained {plant['harvesting_xp']} XP.")
+    #             from locations.meadowlands import gain_horticulture_experience
+    #             gain_horticulture_experience(self, plant['harvesting_xp'])
+    #             self.garden.pop(plant_number - 1)
+    #         else:
+    #             print(f"{plant['name']} is not ready for harvest yet.")
+    #     else:
+    #         print("Invalid plant number.")
 
 
 
