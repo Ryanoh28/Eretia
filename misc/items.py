@@ -1,7 +1,7 @@
 from misc.utilities import clear_console
 import random
 from colorama import Style, Fore
-
+from prettytable import PrettyTable
 class Item:
     def __init__(self, name, description):
         self.name = name
@@ -366,28 +366,55 @@ class Inventory:
                 print(Fore.LIGHTBLUE_EX + f"Added {item_name} to inventory" + Style.RESET_ALL)
 
 
+    
     def show_equipment(self, player):
-        print("\n==== Equipment ====")
-        
-        # Display the equipped weapon
+        table = PrettyTable()
+        table.field_names = ["Slot", "Equipped Item", "Stats"]
+
         if player.weapon:
             weapon = player.weapon
-            print(f"Equipped Weapon: {weapon.name}")
-            print(f"  - Extra Damage: {weapon.extra_damage}")
-            print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
-            print()  # Adding a space after the weapon section
+            table.add_row(["Weapon", weapon.name, f"Extra Damage: {weapon.extra_damage}, Critical Hit Bonus: {weapon.crit_chance_bonus}"])
         else:
-            print("No weapon equipped.\n")  # Ensure there's a space even when no weapon is equipped
+            table.add_row(["Weapon", "No weapon equipped", ""])
 
-        # Display the equipped armor
+        table.add_row(["---", "---", "---"])
+
         if player.armour:
             armour = player.armour
-            print(f"Equipped Armour: {armour.name}")
-            print(f"  - Defense Boost: {armour.defense_boost}")
+            table.add_row(["Armour", armour.name, f"Defense Boost: {armour.defense_boost}"])
         else:
-            print("No armour equipped.")
+            table.add_row(["Armour", "No armour equipped", ""])
 
-        print("====================")
+        print(table)
+
+        
+
+
+
+
+    
+    # def show_equipment(self, player):
+    #     print("\n==== Equipment ====")
+        
+    #     # Display the equipped weapon
+    #     if player.weapon:
+    #         weapon = player.weapon
+    #         print(f"Equipped Weapon: {weapon.name}")
+    #         print(f"  - Extra Damage: {weapon.extra_damage}")
+    #         print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
+    #         print()  # Adding a space after the weapon section
+    #     else:
+    #         print("No weapon equipped.\n")  # Ensure there's a space even when no weapon is equipped
+
+    #     # Display the equipped armor
+    #     if player.armour:
+    #         armour = player.armour
+    #         print(f"Equipped Armour: {armour.name}")
+    #         print(f"  - Defense Boost: {armour.defense_boost}")
+    #     else:
+    #         print("No armour equipped.")
+
+    #     print("====================")
 
         
     
@@ -395,10 +422,26 @@ class Inventory:
         if not self.items:
             print("\nYour inventory is empty.\n")
         else:
-            print("==== Inventory ====")
+            print("================ Inventory =================")
+
+            table = PrettyTable()
+            table.field_names = ["#", "Item Name", "Quantity"]
+
             for index, (item_name, item_info) in enumerate(self.items.items(), 1):
                 quantity = item_info['quantity']
-                print(f"{index}. {item_name} ({quantity})")
+                table.add_row([index, item_name.title(), quantity])
+
+            print(table)
+
+    
+    # def show_inventory(self):
+    #     if not self.items:
+    #         print("\nYour inventory is empty.\n")
+    #     else:
+    #         print("==== Inventory ====")
+    #         for index, (item_name, item_info) in enumerate(self.items.items(), 1):
+    #             quantity = item_info['quantity']
+    #             print(f"{index}. {item_name} ({quantity})")
 
 
 
@@ -519,7 +562,7 @@ class Inventory:
 
             self.show_equipment(player)  
 
-            print("1. Use Item")
+            print("\n1. Use Item")
             print("2. Equipment Menu")
             print("3. View Stats and Skills")
             print("4. View Logbook")
@@ -547,7 +590,7 @@ class Inventory:
         while True:
             clear_console()
             self.show_inventory()
-            print("====================\n")
+            print("============================================\n")
             
             item_choice = input("\nEnter the number of the item you want to use or 'Q' to return: \n").lower().strip()
 

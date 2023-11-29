@@ -1,4 +1,4 @@
-#classes.py
+from prettytable import PrettyTable
 import random
 from misc.items import Inventory, Cauldron, Bedroll, Pickaxe, HealthPotion, ManaPotion, Rune, Armour, EnergyPotion, EyeOfInsight, FishingRod
 from misc.utilities import clear_console
@@ -627,17 +627,23 @@ class Shop:
             clear_console()
             print(f"You have {player.gold} gold.\n")
             print("Items for sale:\n")
+
+            # Create a table to display items for sale
+            table = PrettyTable()
+            table.field_names = ["#", "Item Name", "Price (Gold)"]
+
             item_list = list(self.items_for_sale.keys())
             for index, item_name in enumerate(item_list, 1):
                 price = self.items_for_sale[item_name]['price']
-                print(f"{index}. {item_name.title()}: {price} gold")
+                table.add_row([index, item_name.title(), price])
 
-            
+            print(table)
+
             print("\nEnter the number of the item you would like to buy or press (Q) to go back.")
             choice = input().lower().strip()
 
             if choice == 'q':
-                break  
+                break
             else:
                 try:
                     choice_index = int(choice) - 1
@@ -647,6 +653,33 @@ class Shop:
                     self.buy_item(player, selected_item_name)
                 except (ValueError, IndexError):
                     print("Invalid choice. Please enter a valid number.")
+
+    
+    # def display_items_for_sale(self, player):
+    #     while True:
+    #         clear_console()
+    #         print(f"You have {player.gold} gold.\n")
+    #         print("Items for sale:\n")
+    #         item_list = list(self.items_for_sale.keys())
+    #         for index, item_name in enumerate(item_list, 1):
+    #             price = self.items_for_sale[item_name]['price']
+    #             print(f"{index}. {item_name.title()}: {price} gold")
+
+            
+    #         print("\nEnter the number of the item you would like to buy or press (Q) to go back.")
+    #         choice = input().lower().strip()
+
+    #         if choice == 'q':
+    #             break  
+    #         else:
+    #             try:
+    #                 choice_index = int(choice) - 1
+    #                 if choice_index < 0 or choice_index >= len(item_list):
+    #                     raise ValueError
+    #                 selected_item_name = item_list[choice_index]
+    #                 self.buy_item(player, selected_item_name)
+    #             except (ValueError, IndexError):
+    #                 print("Invalid choice. Please enter a valid number.")
 
     def buy_item(self, player, item_name):
         item_info = self.items_for_sale.get(item_name, None)
