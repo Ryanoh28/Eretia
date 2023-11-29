@@ -3,7 +3,7 @@ from misc.utilities import clear_console
 import random
 from datetime import datetime, timedelta
 from misc.items import Item
-
+from prettytable import PrettyTable
 
 def meadowlands_menu(player):
     while True:
@@ -58,8 +58,16 @@ def plant_seeds(player):
     while True:
         clear_console()
         print("Available Seeds to Plant:")
+
+        table = PrettyTable()
+        table.field_names = ["#", "Seed Name", "Required Level"]
+
         for i, plant in enumerate(plants_table, 1):
-            print(f"\n{i}. {plant['seed_name']} (Required Level: {plant['req_level']})")
+            seed_name = plant['seed_name']
+            req_level = plant['req_level']
+            table.add_row([i, seed_name, req_level])
+
+        print(table)
 
         choice = input("\nEnter your choice (number) or 'Q' to return: \n").strip()
 
@@ -72,6 +80,25 @@ def plant_seeds(player):
             input("\nPress Enter to continue...")
         else:
             print("Invalid choice. Please enter a valid number.")
+
+# def plant_seeds(player):
+#     while True:
+#         clear_console()
+#         print("Available Seeds to Plant:")
+#         for i, plant in enumerate(plants_table, 1):
+#             print(f"\n{i}. {plant['seed_name']} (Required Level: {plant['req_level']})")
+
+#         choice = input("\nEnter your choice (number) or 'Q' to return: \n").strip()
+
+#         if choice.lower() == 'q':
+#             return
+#         elif choice.isdigit() and 1 <= int(choice) <= len(plants_table):
+#             clear_console()
+#             selected_seed = plants_table[int(choice) - 1]['seed_name']
+#             player.plant_seed(selected_seed)
+#             input("\nPress Enter to continue...")
+#         else:
+#             print("Invalid choice. Please enter a valid number.")
 
 
 
