@@ -423,9 +423,9 @@ def adventure_into_wilds(player, first_time=True):
                 print(f"{found_item.name}: {found_item.description}\n")
         elif isinstance(found_item, Weapon):
             print(Fore.CYAN + f"You found a {found_item.name} (Damage: {found_item.extra_damage}, Crit: {found_item.crit_chance_bonus})!" + Style.RESET_ALL)
-            player.available_weapons.append(found_item)
-        
+            player.inventory.add_equipment(found_item)
         input("Press enter to continue...")
+
 
     if random.randint(1, 2) == 2:
         clear_console()
@@ -668,7 +668,7 @@ LOWER_BONEFIELDS_LOOT = {
     'Fossilised Scale': {'chance': 10, 'object': Item("Fossilised Scale", "A scale from a long-extinct creature.")},
     'Cursed Coin': {'chance': 5, 'object': Item("Cursed Coin", "A coin that seems to absorb light.")},
     'Bone Amulet': {'chance': 10, 'object': Item("Bone Amulet", "An amulet made from the bones of an unknown creature.")},
-    'Sentinel Sword': {'chance': 1, 'object': sentinel_sword}  
+    'Sentinel Sword': {'chance': 100, 'object': sentinel_sword}  
 }
 
 def get_lower_bonefields_loot(loot_table):

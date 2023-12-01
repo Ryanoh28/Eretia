@@ -228,6 +228,7 @@ class Inventory:
     def __init__(self):
         self.items = {}
         self.equipment = []
+        self.items_per_page = 10
 
     def equip_armour(self, player):
         clear_console()
@@ -251,38 +252,14 @@ class Inventory:
             player.armour = selected_armour
             player.defence += selected_armour.defense_boost  
 
-            print(f"\n{player.name} equipped {selected_armour.name}.\n")
+            input(f"\n{player.name} equipped {selected_armour.name}.\n")
         except (ValueError, IndexError):
             print("Invalid choice. Please enter a valid number.")
-
-    def unequip_armour(self, player):
-        clear_console()
-        if player.armour:
-            print(f"Unequipping {player.armour.name}.")
-            player.defence -= player.armour.defense_boost  
-            if player.armour not in self.equipment:  
-                self.equipment.append(player.armour)  
-            player.armour = None
-        else:
-            print("You have no armour equipped.")
-        input("\nPress Enter to continue...")
-   
-    # def unequip_armour(self, player):
-    #     clear_console()
-    #     if player.armour:
-    #         print(f"Unequipping {player.armour.name}.")
-    #         player.defence -= player.armour.defense_boost  # Decrease defence stat
-    #         self.equipment.append(player.armour)  # Add the unequipped armour back to equipment
-    #         player.armour = None
-    #     else:
-    #         print("You have no armour equipped.")
-    #     input("\nPress Enter to continue...")
-
+ 
   
     def equip_weapon_from_inventory(self, player):
         clear_console()
         print("Available Weapons:")
-        # Display list of weapons in player's inventory
         weapon_list = [item for item in self.equipment if isinstance(item, Weapon)]
         for index, weapon in enumerate(weapon_list, 1):
             print(f"{index}. {weapon.name}")
@@ -296,12 +273,18 @@ class Inventory:
             if choice_index < 0 or choice_index >= len(weapon_list):
                 raise ValueError
             selected_weapon = weapon_list[choice_index]
+
+            if player.weapon:
+                print(f"\n{player.name} unequipped {player.weapon.name} and placed it back into the inventory.\n")
+                self.equipment.append(player.weapon)
+
             player.weapon = selected_weapon
-            self.equipment.remove(selected_weapon)  # Remove the equipped weapon from equipment list
+            self.equipment.remove(selected_weapon) 
             print(f"\n{player.name} equipped {selected_weapon.name}.\n")
         except (ValueError, IndexError):
             print("Invalid choice. Please enter a valid number.")
         input("\nPress Enter to continue...")
+
 
     def unequip_weapon(self, player):
         clear_console()
@@ -329,13 +312,7 @@ class Inventory:
         else:
             return False
     
-    # def remove_items(self, item_name, count):
-    #     if item_name in self.items:
-    #         self.items[item_name]['quantity'] -= count
-    #         if self.items[item_name]['quantity'] <= 0:
-    #             del self.items[item_name]
-    
-    
+
 
  
 
@@ -387,61 +364,60 @@ class Inventory:
 
         print(table)
 
-        
-
-
-
-
-    
-    # def show_equipment(self, player):
-    #     print("\n==== Equipment ====")
-        
-    #     # Display the equipped weapon
-    #     if player.weapon:
-    #         weapon = player.weapon
-    #         print(f"Equipped Weapon: {weapon.name}")
-    #         print(f"  - Extra Damage: {weapon.extra_damage}")
-    #         print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
-    #         print()  # Adding a space after the weapon section
-    #     else:
-    #         print("No weapon equipped.\n")  # Ensure there's a space even when no weapon is equipped
-
-    #     # Display the equipped armor
-    #     if player.armour:
-    #         armour = player.armour
-    #         print(f"Equipped Armour: {armour.name}")
-    #         print(f"  - Defense Boost: {armour.defense_boost}")
-    #     else:
-    #         print("No armour equipped.")
-
-    #     print("====================")
 
         
     
-    def show_inventory(self):
+    def show_inventory(self, page=1):
+        if not hasattr(self, 'items_per_page'):
+            self.items_per_page = 10  # Set a default value if not already set
+
         if not self.items:
             print("\nYour inventory is empty.\n")
-        else:
-            print("================ Inventory =================")
+            return
 
-            table = PrettyTable()
-            table.field_names = ["#", "Item Name", "Quantity"]
+        # Calculate total pages
+        total_items = len(self.items)
+        total_pages = (total_items - 1) // self.items_per_page + 1
 
-            for index, (item_name, item_info) in enumerate(self.items.items(), 1):
-                quantity = item_info['quantity']
-                table.add_row([index, item_name.title(), quantity])
+        # Validate page number
+        if page > total_pages or page < 1:
+            print(f"\nInvalid page number. Please enter a number between 1 and {total_pages}.\n")
+            return
 
-            print(table)
+        # Determine items for the current page
+        start_index = (page - 1) * self.items_per_page
+        end_index = start_index + self.items_per_page
+        current_page_items = list(self.items.items())[start_index:end_index]
 
+        # Create and print the table for current page
+        table = PrettyTable()
+        table.field_names = ["#", "Item Name", "Quantity"]
+
+        for index, (item_name, item_info) in enumerate(current_page_items, start_index + 1):
+            quantity = item_info['quantity']
+            table.add_row([index, item_name.title(), quantity])
+
+        print("================ Inventory =================")
+        print(table)
+        print(f"\nPage {page} of {total_pages}\n")
+
+        # Optionally, add navigation instructions here
+        # For example: print("Enter 'next' to go to the next page, 'prev' to go to the previous pag
     
     # def show_inventory(self):
     #     if not self.items:
     #         print("\nYour inventory is empty.\n")
     #     else:
-    #         print("==== Inventory ====")
+    #         print("================ Inventory =================")
+
+    #         table = PrettyTable()
+    #         table.field_names = ["#", "Item Name", "Quantity"]
+
     #         for index, (item_name, item_info) in enumerate(self.items.items(), 1):
     #             quantity = item_info['quantity']
-    #             print(f"{index}. {item_name} ({quantity})")
+    #             table.add_row([index, item_name.title(), quantity])
+
+    #         print(table)
 
 
 
@@ -481,42 +457,30 @@ class Inventory:
     def equipment_menu(self, player):
         while True:
             clear_console()
-            print("==== Equipment Menu ====")
-            print("1. Equip Weapon")
-            print("2. Unequip Weapon")
-            print("3. Equip Armour")
-            print("4. Unequip Armour")
-            print("5. View All Equipment")
-            print("6. Back")
+            print("========================== Equipped Items ===========================")
+            self.show_equipment(player)
+            print("========================== Equipment Menu ===========================")
+            
+            print("\n1. Equip Weapon")
+            print("2. Equip Armour")
+            print("3. View All Equipment")
+            print("4. Back")
 
             choice = input("\nEnter your choice: ").strip()
 
             if choice == '1':
                 self.equip_weapon_from_inventory(player)
             elif choice == '2':
-                self.unequip_weapon(player)
-            elif choice == '3':
                 self.equip_armour(player)
-            elif choice == '4':
-                self.unequip_armour(player)
-            elif choice == '5':
+            elif choice == '3':
                 self.view_all_equipment(player)
-            elif choice == '6' or choice == 'q':
+            elif choice == '4' or choice == 'q':
                 break
             else:
                 print("Invalid choice. Please enter a valid number.")
                 input("\nPress enter to continue...")
 
-    # def view_all_equipment(self, player):
-    #     clear_console()
-    #     print("==== All Equipment ====")
-    #     if player.weapon:
-    #         print(f"Weapon: {player.weapon.name}")
-    #     if player.armour:
-    #         print(f"Armour: {player.armour.name}")
-    #     if not player.weapon and not player.armour:
-    #         print("No equipment available.")
-    #     input("\nPress enter to continue...")
+
     
     def view_all_equipment(self, player):
         clear_console()
@@ -554,31 +518,38 @@ class Inventory:
 
     
     def inventory_menu(self, player):
+        current_page = 1
         while True:
             clear_console()
             display_status(player)
-            #print(f"Status: {player.health} Health | {player.energy} Energy | {player.mana} Mana | {player.gold} Gold | Level: {player.level} | Experience: {player.experience}/{player.experience_required}\n")
-            self.show_inventory()  
+            self.show_inventory(page=current_page)
 
-            self.show_equipment(player)  
+            #self.show_equipment(player)
 
             print("\n1. Use Item")
             print("2. Equipment Menu")
             print("3. View Stats and Skills")
             print("4. View Logbook")
-            print("5. Back")  
+            print("5. Next Page")
+            print("6. Previous Page")
+            print("7. Back")
 
             inventory_choice = input("\nWhat would you like to do? ").strip()
 
             if inventory_choice == '1':
                 self.use_item_interface(player)
             elif inventory_choice == '2':
-                self.equipment_menu(player) 
+                self.equipment_menu(player)
             elif inventory_choice == '3':
                 self.show_skill_stats(player)
             elif inventory_choice == '4':
                 player.view_logbook()
-            elif inventory_choice == '5' or inventory_choice == 'q':
+            elif inventory_choice == '5':
+                current_page += 1
+            elif inventory_choice == '6':
+                if current_page > 1:
+                    current_page -= 1
+            elif inventory_choice == '7' or inventory_choice == 'q':
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
@@ -641,33 +612,6 @@ class Inventory:
             print("No available weapons to equip.")
         #input("\nPress Enter to continue...")
 
-
-    # #def view_equipment(self, player):
-    #     clear_console()
-    #     print("==== Equipment ====")
-
-    #     # Display the equipped weapon
-    #     if player.weapon:
-    #         weapon = player.weapon
-    #         print(f"Equipped Weapon: {weapon.name}")
-    #         print(f"  - Extra Damage: {weapon.extra_damage}")
-    #         print(f"  - Critical Hit Bonus: {weapon.crit_chance_bonus}")
-    #     else:
-    #         print("No weapon equipped.")
-
-    #     # Display unequipped weapons
-    #     print("\nAvailable Weapons:")
-    #     if player.available_weapons:
-    #         for weapon in player.available_weapons:
-    #             print(f"- {weapon.name} (Damage: {weapon.extra_damage}, Crit: {weapon.crit_chance_bonus})")
-    #     else:
-    #         print("No additional weapons available.")
-
-    #     # Armours etc later
-        
-
-        # print("=================\n")
-        # input("\nPress Enter to continue...")
 
     def use_item(self, index, target):
         item_list = list(self.items.keys())
