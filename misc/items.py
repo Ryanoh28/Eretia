@@ -526,7 +526,7 @@ class Inventory:
 
             #self.show_equipment(player)
 
-            print("\n1. Use Item")
+            print("1. Use Item")
             print("2. Equipment Menu")
             print("3. View Stats and Skills")
             print("4. View Logbook")
