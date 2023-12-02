@@ -134,10 +134,10 @@ class HealthPotion:
         if target.health < target.max_health:
             heal_amount = min(self.healing_amount, target.max_health - target.health)
             target.regain_health(heal_amount)
-            print(f"{target.name} uses {self.name} and restores {heal_amount} health.")
+            print(f"\n{target.name} uses {self.name} and restores {heal_amount} health.")
             return True
         else:
-            print(f"{target.name}'s health is already full. Cannot use {self.name}.")
+            print(f"\n{target.name}'s health is already full. Cannot use {self.name}.")
             return False
 
 class ManaPotion:
@@ -150,10 +150,10 @@ class ManaPotion:
         if target.mana < target.max_mana:
             mana_restore_amount = min(self.mana_amount, target.max_mana - target.mana)
             target.regain_mana(mana_restore_amount)
-            print(f"{target.name} uses {self.name} and restores {mana_restore_amount} mana.")
+            #print(f"{target.name} uses {self.name} and restores {mana_restore_amount} mana.")
             return True
         else:
-            print(f"{target.name}'s mana is already full. Cannot use {self.name}.")
+            print(f"\n{target.name}'s mana is already full. Cannot use {self.name}.")
             return False
 class EnergyPotion:
     def __init__(self, name, description):
@@ -369,27 +369,23 @@ class Inventory:
     
     def show_inventory(self, page=1):
         if not hasattr(self, 'items_per_page'):
-            self.items_per_page = 10  # Set a default value if not already set
+            self.items_per_page = 10  
 
         if not self.items:
             print("\nYour inventory is empty.\n")
             return
 
-        # Calculate total pages
         total_items = len(self.items)
         total_pages = (total_items - 1) // self.items_per_page + 1
 
-        # Validate page number
         if page > total_pages or page < 1:
             print(f"\nInvalid page number. Please enter a number between 1 and {total_pages}.\n")
             return
 
-        # Determine items for the current page
         start_index = (page - 1) * self.items_per_page
         end_index = start_index + self.items_per_page
         current_page_items = list(self.items.items())[start_index:end_index]
 
-        # Create and print the table for current page
         table = PrettyTable()
         table.field_names = ["#", "Item Name", "Quantity"]
 
@@ -401,8 +397,7 @@ class Inventory:
         print(table)
         print(f"\nPage {page} of {total_pages}\n")
 
-        # Optionally, add navigation instructions here
-        # For example: print("Enter 'next' to go to the next page, 'prev' to go to the previous pag
+        
     
     # def show_inventory(self):
     #     if not self.items:
@@ -558,31 +553,42 @@ class Inventory:
 
  
     def use_item_interface(self, player):
+        current_page = 1
         while True:
             clear_console()
-            self.show_inventory()
+            self.show_inventory(page=current_page)
             print("============================================\n")
             
-            item_choice = input("\nEnter the number of the item you want to use or 'Q' to return: \n").lower().strip()
+            print("E. Next Page")
+            print("R. Previous Page")
+            print("Q. Return to Menu")
 
-            if item_choice in ['b', 'back', 'q']:
+            item_choice = input("\nEnter the number of the item you want to use, 'E'/'R' to change page, or 'Q' to return: ").lower().strip()
+
+            if item_choice == 'q':
                 clear_console()
-                return False  
+                return False
+            elif item_choice == 'e':
+                current_page += 1
+            elif item_choice == 'r':
+                if current_page > 1:
+                    current_page -= 1
             else:
                 try:
                     choice_index = int(item_choice) - 1
                     if self.use_item(choice_index, player):
                         input("\nPress Enter to continue...")
                         clear_console()
-                        return True  
+                        return True
                     else:
                         input("\nPress Enter to continue...")
                 except ValueError:
-                    print("Invalid choice. Please enter a valid number or 'B' to go back.")
+                    print("Invalid choice. Please enter a valid number, 'E', 'R', or 'Q'.")
                     input("\nPress Enter to continue...")
                 except IndexError:
                     print("Item not found. Try again or type 'B' to go back.")
                     input("\nPress Enter to continue...")
+
 
 
     
