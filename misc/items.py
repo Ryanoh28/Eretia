@@ -525,9 +525,9 @@ class Inventory:
             print("2. Equipment Menu")
             print("3. View Stats and Skills")
             print("4. View Logbook")
-            print("5. Next Page")
-            print("6. Previous Page")
-            print("7. Back")
+            print("5. Back")
+            print("\nE. Next Page")
+            print("R. Previous Page")
 
             inventory_choice = input("\nWhat would you like to do? ").strip()
 
@@ -544,7 +544,7 @@ class Inventory:
             elif inventory_choice == '6':
                 if current_page > 1:
                     current_page -= 1
-            elif inventory_choice == '7' or inventory_choice == 'q':
+            elif inventory_choice == '5' or inventory_choice == 'q':
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
