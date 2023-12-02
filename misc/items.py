@@ -519,7 +519,7 @@ class Inventory:
             display_status(player)
             self.show_inventory(page=current_page)
 
-            #self.show_equipment(player)
+            total_pages = (len(self.items) - 1) // self.items_per_page + 1  # Calculate total pages
 
             print("1. Use Item")
             print("2. Equipment Menu")
@@ -539,15 +539,17 @@ class Inventory:
                 self.show_skill_stats(player)
             elif inventory_choice == '4':
                 player.view_logbook()
-            elif inventory_choice == '5':
-                current_page += 1
-            elif inventory_choice == '6':
-                if current_page > 1:
+            elif inventory_choice == 'e':
+                if current_page < total_pages:  # Check if not on the last page
+                    current_page += 1
+            elif inventory_choice == 'r':
+                if current_page > 1:  # Check if not on the first page
                     current_page -= 1
             elif inventory_choice == '5' or inventory_choice == 'q':
                 break
             else:
                 print("Invalid choice. Please enter a valid option.")
+
 
 
 
