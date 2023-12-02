@@ -13,7 +13,10 @@ ORE_EXPERIENCE_POINTS = {
     "Iron Ore": 5,
     "Stone": 1, 
     "Coal": 8,
-    "Mithril": 12 
+    "Silver": 10,
+    "Gold": 12,
+    "Mithril": 13 
+    
 }
 def mine(player, location, ore_level_table):
     clear_console()
@@ -80,6 +83,7 @@ ORE_LEVEL_TABLE = {
     "Tin Ore": 1,
     "Iron Ore": 5,
     "Coal": 8
+    
     
 }
 
