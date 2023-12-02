@@ -204,8 +204,6 @@ class Weapon:
         self.crit_chance_bonus = crit_chance_bonus
 
 
-
-
 def display_status(player):
     
     if player.health > 75:
@@ -387,65 +385,92 @@ class Inventory:
         current_page_items = list(self.items.items())[start_index:end_index]
 
         table = PrettyTable()
+        table.title = "Inventory"
         table.field_names = ["#", "Item Name", "Quantity"]
 
         for index, (item_name, item_info) in enumerate(current_page_items, start_index + 1):
             quantity = item_info['quantity']
             table.add_row([index, item_name.title(), quantity])
 
-        print("================ Inventory =================")
         print(table)
         print(f"\nPage {page} of {total_pages}\n")
 
         
     
-    # def show_inventory(self):
-    #     if not self.items:
-    #         print("\nYour inventory is empty.\n")
-    #     else:
-    #         print("================ Inventory =================")
-
-    #         table = PrettyTable()
-    #         table.field_names = ["#", "Item Name", "Quantity"]
-
-    #         for index, (item_name, item_info) in enumerate(self.items.items(), 1):
-    #             quantity = item_info['quantity']
-    #             table.add_row([index, item_name.title(), quantity])
-
-    #         print(table)
-
-
-
     def show_skill_stats(self, player):
         clear_console()
-        print("=== Combat Stats ===")
-        print(f"Strength: {player.strength}")
-        print(f"Speed: {player.speed}")
 
-        # Check for equipped armor and its defense boost
+        # Combat Stats Table
+        combat_table = PrettyTable()
+        combat_table.field_names = ["Stat", "Value"]
+        combat_table.title = "Combat Stats"
+        combat_table.align["Stat"] = "l"
+        combat_table.align["Value"] = "r"
+
+        combat_table.add_row(["Strength", player.strength])
+        combat_table.add_row(["Speed", player.speed])
+
         armor_defense_boost = player.armour.defense_boost if player.armour else 0
-        if armor_defense_boost > 0:
-            print(f"Defence: {player.defence} " + Fore.GREEN + f"(+{armor_defense_boost})" + Style.RESET_ALL)
-        else:
-            print(f"Defence: {player.defence}")
+        defense_value = f"{Fore.GREEN}(+{armor_defense_boost}){Style.RESET_ALL} {player.defence}" if armor_defense_boost > 0 else str(player.defence)
+        combat_table.add_row(["Defence", defense_value])
 
-        print("====================\n")
+        print(combat_table)
+        print("\n")
 
-        print("=== Skill Stats ===")
+        # Skill Stats Table
+        skill_table = PrettyTable()
+        skill_table.field_names = ["Skill", "Level", "Experience"]
+        skill_table.title = "Skill Stats"
+        skill_table.align = "l"
 
         next_level_exp_mining = 100 + (10 * (player.mining_level - 1))
-        print(f"Mining Level: {player.mining_level} (Exp: {player.mining_experience}/{next_level_exp_mining})")
+        skill_table.add_row(["Mining", player.mining_level, f"{player.mining_experience}/{next_level_exp_mining}"])
+
         next_level_exp_horticulture = 100 + (10 * (player.horticulture_level - 1))
-        print(f"Horticulture Level: {player.horticulture_level} (Exp: {player.horticulture_experience}/{next_level_exp_horticulture})")
+        skill_table.add_row(["Horticulture", player.horticulture_level, f"{player.horticulture_experience}/{next_level_exp_horticulture}"])
+
         next_level_exp_fishing = 100 + (10 * (player.fishing_level - 1))
-        print(f"Fishing Level: {player.fishing_level} (Exp: {player.fishing_experience}/{next_level_exp_fishing})")
+        skill_table.add_row(["Fishing", player.fishing_level, f"{player.fishing_experience}/{next_level_exp_fishing}"])
+
         next_level_exp_concoction = 100 + (10 * (player.concoction_level - 1))
-        print(f"Concoction Level: {player.concoction_level} (Exp: {player.concoction_experience}/{next_level_exp_concoction})")
+        skill_table.add_row(["Concoction", player.concoction_level, f"{player.concoction_experience}/{next_level_exp_concoction}"])
 
-        print("====================\n")
-
+        print(skill_table)
+        print("\n")
 
         input("\nPress Enter to return...")
+
+    
+    # def show_skill_stats(self, player):
+    #     clear_console()
+    #     print("=== Combat Stats ===")
+    #     print(f"Strength: {player.strength}")
+    #     print(f"Speed: {player.speed}")
+
+    #     # Check for equipped armor and its defense boost
+    #     armor_defense_boost = player.armour.defense_boost if player.armour else 0
+    #     if armor_defense_boost > 0:
+    #         print(f"Defence: {player.defence} " + Fore.GREEN + f"(+{armor_defense_boost})" + Style.RESET_ALL)
+    #     else:
+    #         print(f"Defence: {player.defence}")
+
+    #     print("====================\n")
+
+    #     print("=== Skill Stats ===")
+
+    #     next_level_exp_mining = 100 + (10 * (player.mining_level - 1))
+    #     print(f"Mining Level: {player.mining_level} (Exp: {player.mining_experience}/{next_level_exp_mining})")
+    #     next_level_exp_horticulture = 100 + (10 * (player.horticulture_level - 1))
+    #     print(f"Horticulture Level: {player.horticulture_level} (Exp: {player.horticulture_experience}/{next_level_exp_horticulture})")
+    #     next_level_exp_fishing = 100 + (10 * (player.fishing_level - 1))
+    #     print(f"Fishing Level: {player.fishing_level} (Exp: {player.fishing_experience}/{next_level_exp_fishing})")
+    #     next_level_exp_concoction = 100 + (10 * (player.concoction_level - 1))
+    #     print(f"Concoction Level: {player.concoction_level} (Exp: {player.concoction_experience}/{next_level_exp_concoction})")
+
+    #     print("====================\n")
+
+
+    #     input("\nPress Enter to return...")
 
     
     
@@ -519,7 +544,7 @@ class Inventory:
             display_status(player)
             self.show_inventory(page=current_page)
 
-            total_pages = (len(self.items) - 1) // self.items_per_page + 1  # Calculate total pages
+            total_pages = (len(self.items) - 1) // self.items_per_page + 1 
 
             print("1. Use Item")
             print("2. Equipment Menu")
@@ -540,10 +565,10 @@ class Inventory:
             elif inventory_choice == '4':
                 player.view_logbook()
             elif inventory_choice == 'e':
-                if current_page < total_pages:  # Check if not on the last page
+                if current_page < total_pages:  
                     current_page += 1
             elif inventory_choice == 'r':
-                if current_page > 1:  # Check if not on the first page
+                if current_page > 1:  
                     current_page -= 1
             elif inventory_choice == '5' or inventory_choice == 'q':
                 break
