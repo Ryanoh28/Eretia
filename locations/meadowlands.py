@@ -54,6 +54,27 @@ def horticulture_submenu(player):
 
 
 
+
+
+# def plant_seeds(player):
+#     while True:
+#         clear_console()
+#         print("Available Seeds to Plant:")
+#         for i, plant in enumerate(plants_table, 1):
+#             print(f"\n{i}. {plant['seed_name']} (Required Level: {plant['req_level']})")
+
+#         choice = input("\nEnter your choice (number) or 'Q' to return: \n").strip()
+
+#         if choice.lower() == 'q':
+#             return
+#         elif choice.isdigit() and 1 <= int(choice) <= len(plants_table):
+#             clear_console()
+#             selected_seed = plants_table[int(choice) - 1]['seed_name']
+#             player.plant_seed(selected_seed)
+#             input("\nPress Enter to continue...")
+#         else:
+#             print("Invalid choice. Please enter a valid number.")
+
 def plant_seeds(player):
     while True:
         clear_console()
@@ -80,27 +101,6 @@ def plant_seeds(player):
             input("\nPress Enter to continue...")
         else:
             print("Invalid choice. Please enter a valid number.")
-
-# def plant_seeds(player):
-#     while True:
-#         clear_console()
-#         print("Available Seeds to Plant:")
-#         for i, plant in enumerate(plants_table, 1):
-#             print(f"\n{i}. {plant['seed_name']} (Required Level: {plant['req_level']})")
-
-#         choice = input("\nEnter your choice (number) or 'Q' to return: \n").strip()
-
-#         if choice.lower() == 'q':
-#             return
-#         elif choice.isdigit() and 1 <= int(choice) <= len(plants_table):
-#             clear_console()
-#             selected_seed = plants_table[int(choice) - 1]['seed_name']
-#             player.plant_seed(selected_seed)
-#             input("\nPress Enter to continue...")
-#         else:
-#             print("Invalid choice. Please enter a valid number.")
-
-
 
 
 def check_crops(player):
@@ -137,26 +137,32 @@ def harvest_plants(player):
                     clear_console()
                     if 0 <= plant_number - 1 < len(player.garden):
                         harvested_info = player.harvest_crops(plant_number)
-                        print(f"\nHarvested {harvested_info['quantity']} {harvested_info['plant_name']}(s), gained {harvested_info['xp']} XP.")
+                        if harvested_info:
+                            print(f"\nHarvested {harvested_info['quantity']} {harvested_info['plant_name']}(s), gained {harvested_info['xp']} XP.")
+                        else:
+                            print("\nThe plant is not ready for harvest yet.")
                     else:
                         print("\nInvalid choice. Please enter a valid number.")
                 else:
                     print("\nInvalid input. Please enter a number.")
+
             elif choice == '2':
                 clear_console()
                 harvested_summary = []
 
                 for i in range(len(player.garden)):
                     harvested_info = player.harvest_crops(1)
-                    harvested_summary.append((harvested_info['quantity'], harvested_info['plant_name'], harvested_info['xp']))
+                    if harvested_info:
+                        harvested_summary.append((harvested_info['quantity'], harvested_info['plant_name'], harvested_info['xp']))
+                    else:
+                        
+                        break
 
-                total_quantity = sum(item[0] for item in harvested_summary)
-                total_xp = sum(item[2] for item in harvested_summary)
+                total_quantity = sum(item[0] for item in harvested_summary if item)
+                total_xp = sum(item[2] for item in harvested_summary if item)
 
-                print(f"\nHarvested a total of {Fore.YELLOW}{total_quantity} plants{Style.RESET_ALL} and gained {Fore.YELLOW}{total_xp} XP{Style.RESET_ALL}.")
+                print(f"\nHarvested a total of {total_quantity} plants and gained {total_xp} XP.")
 
-            else:
-                print("\nInvalid choice. Please enter a valid option.")
 
         input("\nPress Enter to continue...")
 
